@@ -1,0 +1,44 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(npx playwright *)",
+      "Bash(supabase start)",
+      "Bash(supabase stop)",
+      "Bash(supabase db reset)",
+      "Bash(supabase test db)",
+      "Bash(supabase migration new *)",
+      "Bash(git status)",
+      "Bash(git diff *)",
+      "Bash(git add *)",
+      "Bash(git commit *)"
+    ],
+    "deny": [
+      "Bash(supabase db push*)",
+      "Bash(supabase link*)",
+      "Bash(supabase functions deploy*)",
+      "Bash(vercel *)",
+      "Bash(git push --force*)",
+      "Read(.env)",
+      "Read(.env.local)",
+      "Read(.env.production*)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -x node_modules/.bin/prettier ] || exit 0; f=$(git diff --name-only --diff-filter=AM | grep -E '\\.(ts|tsx|css|md|json)$'); [ -z \"$f\" ] || node_modules/.bin/prettier --write --log-level warn $f 2>/dev/null || true"
+          },
+          {
+            "type": "command",
+            "command": "grep -q '\"check:tokens\"' package.json 2>/dev/null || exit 0; npm run -s check:tokens 1>&2 || exit 2"
+          }
+        ]
+      }
+    ]
+  }
+}

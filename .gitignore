@@ -1,0 +1,10 @@
+# Secrets (PRD §42) — never commit
+.env
+.env.*
+!.env.example
+
+# Local Claude Code overrides
+.claude/settings.local.json
+.mcp.json
+
+.DS_Store
