@@ -1,0 +1,10 @@
+# Source-of-truth docs are kept byte-for-byte; never reformat
+docs/PRD.md
+docs/claude-code-kit.md
+
+# Generated / vendored
+.next/
+node_modules/
+supabase/.temp/
+playwright-report/
+test-results/

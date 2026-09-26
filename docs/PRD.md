@@ -19,6 +19,72 @@
 
 **Conventions:** money is always integer minor units in code and DB. "Admin" means Sumit. "Client" means an invited user belonging to a client company. MUST/SHOULD/MAY follow RFC 2119 meaning.
 
+## Section map
+
+Phases follow the build kit (`docs/claude-code-kit.md` §7): P0 scaffold, P1 foundation, P2 marketing + leads, P2b interactive portfolio, P5b billing core + self-serve + Care, P3 admin core, P4 portal, P5 admin billing + finance, P6 launch. "All" means every phase reads it when relevant.
+
+| § | Section | Purpose | Used in |
+|---|---|---|---|
+| 1 | Summary | Four jobs of the platform, positioning | P0, P2 |
+| 2 | Problem and evidence | Why each feature exists | P0, P2 |
+| 3 | Personas | Admin, client, prospect sub-types, studio visitor | P0, P2 |
+| 4 | Business model and pricing | Philosophy, lanes, packages and prices (4.3), client infra (4.4), terms (4.5), employment-conflict guardrail (4.6) | P0, P2, P2b, P5b |
+| 5 | Goals, non-goals, metrics | What success is measured by | P0, P6 |
+| 6 | Scope: epics E1–E14 | User stories and acceptance criteria per epic | All |
+| 7 | Non-functional requirements | Performance, security, a11y, cost budgets | All |
+| 8 | Constraints and assumptions | Moonlighting, Razorpay, GST, store billing | P0, P5b |
+| 9 | Design principles | Rules every screen follows | P1 |
+| 10 | Token architecture | Primitive → semantic → component; mode, brand, density axes | P0, P1 |
+| 11 | Color primitives | Green, lime, neutral, dusk, status ramps | P0, P1 |
+| 12 | Semantic color tokens | Per-brand, per-mode tokens; chart palette | P0, P1 |
+| 13 | Typography | Families, fluid and fixed scales, rules | P0, P1, P5 |
+| 14 | Spacing, layout, grid | Spacing scale, breakpoints, containers, density | P0, P1 |
+| 15 | Shape, borders, elevation, layering | Radius, shadows, z-index | P1 |
+| 16 | Motion | Durations, easing, intensity by surface | P1, P2b |
+| 17 | Iconography, imagery, logo | Lucide rules, image rules, logo deliverables | P1, P2 |
+| 18 | Component tokens | Layer-3 tokens for buttons, inputs, cards, tables | P1 |
+| 19 | Components | UI primitives (19.1–19.13), marketing blocks (19.14), interactive portfolio (19.15) | P1, P2, P2b, P3, P4, P5 |
+| 20 | Status mapping | Label, tone, icon per domain status | P1, P3, P4 |
+| 21 | Interaction patterns | Forms, optimistic UI, destructive actions, lists, dates, currency toggle | P1–P5 |
+| 22 | Page templates | Route → template, density, brand, blocks | P1–P5 |
+| 23 | Content and voice | Voice, UI copy rules, client glossary | P2, P4 |
+| 24 | Accessibility | WCAG 2.2 AA baseline and testing | P0, P1, all UI |
+| 25 | Implementation | Authoritative tokens.css (25.1), Tailwind mapping (25.2), theme bootstrap (25.3) | P0, P1 |
+| 26 | Email templates | Transactional set, tone, lead acknowledgements | P2, P5b |
+| 27 | Architecture overview | System and payment sequence diagrams, key decisions | P0 |
+| 28 | Stack | Allowed technologies | P0, P1 |
+| 29 | Code structure | Repo layout and structural rules | P0, P1 |
+| 30 | Data model | 0001_core (30.1), offboarding (30.2), 0007_billing (30.3) | P1, P5b |
+| 31 | Access control (RLS) | Helpers (31.1), policies (31.2), progress view (31.3) | P1, P5b, all DB work |
+| 32 | Auth and lifecycle flows | Invite-only auth, route guarding, onboard/offboard | P1, P3 |
+| 33 | Lead intake and qualification | Flow, 0006_leads, server action, form fields, triage, checkout relation | P2, P3 |
+| 34 | Invoicing, GST, TDS | Rules, 0004_invoicing SQL, printable invoice | P5b, P5 |
+| 35 | Billing module | Payment flows, setup, links, checkout, webhook, DB functions, FX, IAP | P5b, P5 |
+| 36 | Finance reporting | FY summary view, CSV exports | P5b, P5 |
+| 37 | Studio content | MDX frontmatter, playable demos (37.1) | P2, P2b |
+| 38 | SEO and analytics | Metadata, sitemap, robots, redirects, events | P0, P2 |
+| 39 | Environments | Local, preview, production | P1 |
+| 40 | Hosting topology | Vercel bom1, Supabase Mumbai, demo origin | P2b |
+| 41 | DNS and email | Records, custom SMTP, domain hygiene | P6 |
+| 42 | Secrets and configuration | Env vars, where they live, rotation | P0, P1 |
+| 43 | CI/CD | ci.yml, deploy-db.yml, release checklist | P0, P1 |
+| 44 | Database migration policy | Forward-only, RLS-in-same-migration, CI RLS query | P0, all DB work |
+| 45 | Backups and disaster recovery | Platform + off-platform backups, RPO/RTO, drills | P1, P6 |
+| 46 | Monitoring and alerting | Sentry, uptime, health, digests | P1, P6 |
+| 47 | Security | Checklist, headers/CSP (47.2), threat model (47.3) | P0, P5b, P6 |
+| 48 | Cost estimate | Launch-scale costs, break-even | P6 |
+| 49 | Runbooks | Webhooks, offboard, restore, secrets, outages, onboarding | P3, P6 |
+| 50 | Testing strategy | Test levels and release gates | All |
+| 51 | Roadmap and estimates | Phases, hours, ship order, definition of done | All |
+| 52 | Risks | Likelihood, impact, mitigation | P6 |
+| 53 | Deliberately skipped | Features deferred and their triggers | All |
+| 54 | Decision log | Dated decisions and reasons | All |
+| App. A | Environment variables | `.env.example` contents | P0 |
+| App. B | Glossary | Terms | All |
+| App. C | Open items before launch | External blockers (HR, CA, Razorpay) | P6 |
+
+---
+
 ---
 
 # Part I — Product (PRD)
