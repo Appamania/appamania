@@ -1,10 +1,33 @@
+# dependencies
+/node_modules
+
+# testing
+/coverage
+/test-results/
+/playwright-report/
+/blob-report/
+
+# next.js
+/.next/
+/out/
+next-env.d.ts
+*.tsbuildinfo
+.vercel
+
+# supabase
+supabase/.branches
+supabase/.temp
+
 # Secrets (PRD §42) — never commit
 .env
 .env.*
 !.env.example
+*.pem
 
 # Local Claude Code overrides
 .claude/settings.local.json
 .mcp.json
 
+# misc
 .DS_Store
+npm-debug.log*
