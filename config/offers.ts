@@ -28,7 +28,6 @@ export const offers = {
   sprint: {
     id: "sprint",
     name: "Rescue and Migration Sprint",
-    // TODO(content): Sprint price pending owner decision (PRD App. A, A1). Placeholder ends in 9.
     priceMinor: 24_999_00,
     duration: "3–4 weeks",
     payment: "50% to start, 50% on release",
@@ -43,9 +42,8 @@ export const offers = {
     payment: "Monthly in advance",
     milestones: [], // one "Release YYYY-MM" milestone per month, added by admin
   },
-  // TODO(content): MVP and website "from" prices pending owner decision (PRD App. A, A2).
-  mvp: { id: "mvp", name: "MVP build", priceMinor: 1_49_999_00, from: true, milestones: [] },
-  website: { id: "website", name: "Business website", priceMinor: 29_999_00, from: true, milestones: [] },
+  mvp: { id: "mvp", name: "MVP build", priceMinor: 74_999_00, from: true, milestones: [] },
+  website: { id: "website", name: "Business website", priceMinor: 14_999_00, from: true, milestones: [] },
   custom: { id: "custom", name: "Change request", priceMinor: null, milestones: [] },
 } as const satisfies Record<OfferId, Offer>;
 

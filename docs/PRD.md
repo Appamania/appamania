@@ -64,10 +64,10 @@ INR only for now. Target buyer: small businesses and early founders. Every price
 | ID | Offer | Scope | Time | Price | Payment |
 |---|---|---|---|---|---|
 | `audit` | App Health Audit | Written report: architecture and state, crash root causes, startup/jank/memory, Flutter and package debt, store compliance, fixed-price fix plan | 48 hours | **₹2,999** | 100% upfront, self-serve (Razorpay Payment Page) |
-| `sprint` | Rescue and Migration Sprint | SDK upgrade (Flutter, Dart, Gradle, Xcode, UIScene, Swift PM), root-cause crash fixes, GitHub Actions CI/CD, Play Store and App Store release, written handover | 3–4 weeks | **₹[SPRINT] — open item A1** | 50% to start, 50% on release (invoice + payment link) |
+| `sprint` | Rescue and Migration Sprint | SDK upgrade (Flutter, Dart, Gradle, Xcode, UIScene, Swift PM), root-cause crash fixes, GitHub Actions CI/CD, Play Store and App Store release, written handover | 3–4 weeks | **₹24,999** | 50% to start, 50% on release (invoice + payment link) |
 | `retainer` | Care Retainer | Up to 8 hours a month: OS/SDK/package/policy updates, one release a month; no rollover | Monthly | **₹14,999 / month** | Monthly in advance (invoice + payment link); cancel anytime |
-| `mvp` | MVP build | Enquiry only | — | From ₹[MVP] — open item A2 | Proposal |
-| `website` | Business website | Enquiry only | — | From ₹[WEBSITE] — open item A2 | Proposal |
+| `mvp` | MVP build | Enquiry only | — | From ₹74,999 | Proposal |
+| `website` | Business website | Enquiry only | — | From ₹14,999 | Proposal |
 | `custom` | Change request / other | Quoted per change request | — | Quote | Invoice |
 
 **Rules**
@@ -929,7 +929,7 @@ webhook (first refund); USD pricing (first international client); multi-admin (s
 | 3 Nov 2026 | Fresh code on `dev`; port proven infra from `phase/p2` | User decision |
 | 3 Nov 2026 | Vercel Pro, not Cloudflare Workers | User decision; no adapter, `bom1` next to DB |
 | 3 Nov 2026 | Added Cloudinary, Turnstile, React Email, @react-pdf/renderer, next-themes, @dnd-kit | User decision |
-| 3 Nov 2026 | INR only; Audit ₹2,999; Retainer ₹14,999/mo | User decision: affordable for small businesses and founders; retainer under ₹15k autopay limit |
+| 3 Nov 2026 | INR only; Audit ₹2,999; Sprint ₹24,999; Retainer ₹14,999/mo; MVP from ₹74,999; website from ₹14,999 | User decision: affordable for small businesses and founders; retainer under ₹15k autopay limit |
 | 3 Nov 2026 | Retainer billed by monthly invoice + payment link; no Subscriptions in v1 | Least code; Autopay possible later because price < ₹15k |
 | 3 Nov 2026 | Studio/Dusk, Validate/Launch/Landing/Spike/Care, chai, `/start` estimate builder dropped; `/apps` + `/open-source` replace `/studio` with 301s | User decision |
 | 3 Nov 2026 | Audit self-serve via static Razorpay Payment Page → lead `won` + payment row; no auto-onboarding | User decision |
@@ -949,8 +949,8 @@ webhook (first refund); USD pricing (first international client); multi-admin (s
 
 | # | Item | Blocks |
 |---|---|---|
-| A1 | Sprint price (INR, ends in 9, affordable band) | D2 copy, `config/offers.ts` |
-| A2 | MVP and website "from" prices, or hide them | D2 copy |
+| A1 | ~~Sprint price~~ — decided ₹24,999 (3 Nov 2026) | — |
+| A2 | ~~MVP and website "from" prices~~ — decided ₹74,999 / ₹14,999 (3 Nov 2026) | — |
 | A3 | Capture a test-mode Razorpay Payment Page payment to confirm the webhook event and notes shape | D3 audit-page RPC |
 | A4 | Udyam number, PAN for invoice footer | D3 PDF |
 | A5 | HR written clarification on "same domain or industry"; fill `conflictIndustries` | Launch |
