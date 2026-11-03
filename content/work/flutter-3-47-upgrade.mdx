@@ -1,0 +1,44 @@
+export const meta = {
+  eyebrow: "Case study · enterprise · migration",
+  title: "Flutter 3.41 → 3.47.",
+  accent: "Zero regressions.",
+  lead: "A production enterprise app with live users needed a two-step SDK jump, Apple's UIScene lifecycle and a move from CocoaPods to Swift Package Manager — without pausing releases.",
+  teaser: {
+    label: "Enterprise · migration",
+    title: "Flutter 3.41 → 3.47 with zero regressions",
+    summary: "A two-step SDK jump, UIScene and Swift PM, with releases never paused.",
+  },
+  stats: [
+    { label: "SDK", value: "3.47" },
+    { label: "iOS", value: "SPM" },
+    { label: "Regressions", value: "0" },
+  ],
+  problemTitle: "Upgrade without stopping the train.",
+  steps: [
+    { title: "Audit the tree", body: "Every package mapped against the target SDK; blockers flagged first." },
+    { title: "Upgrade in steps", body: "SDK bump, then plugins, each behind a green CI build." },
+    { title: "Move iOS to SPM", body: "Pods replaced with Swift packages; UIScene adopted." },
+    { title: "Release and watch", body: "Staged rollout with crash monitoring before full release." },
+  ],
+  checks: [
+    "flutter --version          # 3.47.x",
+    "flutter analyze --fatal-infos",
+    "flutter test --coverage",
+    "xcodebuild -resolvePackageDependencies",
+  ],
+  result: {
+    title: "Shipped on schedule. No rollback.",
+    body: "The app moved to the current toolchain and stayed releasable at every step. It's the same playbook a Rescue Sprint runs on your app.",
+  },
+  versions: [
+    { from: "Flutter 3.41", to: "3.47" },
+    { from: "CocoaPods", to: "Swift PM" },
+    { from: "AppDelegate", to: "UIScene" },
+  ],
+  stack: ["Flutter", "Dart", "Swift Package Manager", "GitHub Actions"],
+  order: 1,
+};
+
+Several plugins had dropped support for the old toolchain, the iOS build relied on CocoaPods specs being retired, and the scene-based lifecycle had an App Store deadline.
+
+The constraint: releases could not stop. Every step had to land on main behind a green build.

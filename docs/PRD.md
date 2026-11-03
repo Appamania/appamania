@@ -942,6 +942,10 @@ webhook (first refund); USD pricing (first international client); multi-admin (s
 | 3 Nov 2026 | Overdue derived from due date, not stored by cron | One less job; no drift |
 | 3 Nov 2026 | Client payment reads go through `client_payments` view without fee/raw columns | Keep gateway internals admin-only (v3 lesson) |
 | 3 Nov 2026 | Finance and project rows `on delete restrict`; profiles never cascade | v3 safety rule |
+| 3 Nov 2026 | Home "05 — Clients" quotes section renders only when real quotes exist; no placeholder quotes in public | Proof rule: only real quotes (design brief); App. A A6 |
+| 3 Nov 2026 | Lead emails keep idempotency keys `lead-ack-{id}` / `lead-alert-{id}`; Turnstile fails closed without a secret; local/CI use Cloudflare test keys | E2.1–E2.3 |
+| 3 Nov 2026 | Contact-page buttons (pay audit, call, WhatsApp) render only when their URL is configured | No dead-end buy paths |
+| 3 Nov 2026 | `next-themes` not installed: cookie-driven `data-theme` wrapper + CSS `in-data-[theme]` variant | Same behaviour, no dependency, no flash |
 | 3 Nov 2026 | Storage reads go through `files` rows; client upload paths are `{project}/client_upload/{uuid}-{name}` with no `..`; file rows need an object the user uploaded; `created_at` stamped by trigger | D1 RLS audit: expired builds and staged objects were readable; `..` paths and phantom rows were accepted |
 | 3 Nov 2026 | `line-strong` changed: night #3A4640 → #5F6E66, light #9A9282 → #7F786A, dark #5C6A63 → #62706A | Design-system values were 1.9–2.9:1 on paper; control borders need 3:1 (WCAG 1.4.11). Update the design-system artifact to match |
 

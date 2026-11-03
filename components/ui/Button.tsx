@@ -4,7 +4,7 @@ import type { ComponentProps, ReactNode } from "react";
 import { cx } from "@/lib/cx";
 
 // Pill buttons (PRD §8, Chai Studio). One primary per view. Only transform animates.
-export type ButtonVariant = "primary" | "outline" | "ghost" | "danger";
+export type ButtonVariant = "primary" | "outline" | "ghost" | "danger" | "inverse";
 export type ButtonSize = "sm" | "md" | "lg";
 
 const variants: Record<ButtonVariant, string> = {
@@ -12,6 +12,8 @@ const variants: Record<ButtonVariant, string> = {
   outline: "border border-line-strong text-ink hover:border-ink hover:bg-paper-raised",
   ghost: "text-brand hover:bg-brand-tint",
   danger: "border border-danger text-danger hover:bg-paper-sunken",
+  /** On a brand-filled band (CTA). */
+  inverse: "bg-on-brand text-brand hover:-translate-y-px",
 };
 const sizes: Record<ButtonSize, string> = {
   sm: "h-9 px-3.5 text-small",
@@ -52,7 +54,14 @@ export function Button({
   );
 }
 
-export function ButtonLink({ variant, size, icon, className, children, ...rest }: Common & ComponentProps<typeof Link>) {
+export function ButtonLink({
+  variant,
+  size,
+  icon,
+  className,
+  children,
+  ...rest
+}: Common & ComponentProps<typeof Link>) {
   return (
     <Link className={buttonStyles(variant, size, className)} {...rest}>
       {icon}

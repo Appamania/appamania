@@ -113,3 +113,9 @@ h1,
 h2 {
   text-wrap: balance;
 }
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
