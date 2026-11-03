@@ -1,0 +1,7 @@
+<!-- PRD v4 §17: plain HTML, 600px, system fonts, Chai Studio light colors; brand only on the button. -->
+<div style="max-width:600px;margin:0 auto;padding:24px;background:#F6F2EA;font-family:system-ui,-apple-system,'Segoe UI',sans-serif;color:#16231C;line-height:1.6">
+  <p style="font-weight:600;font-size:20px;letter-spacing:-0.03em;margin:0 0 16px">appamania</p>
+  <p>Use this link to sign in to your Appamania portal. It expires in one hour.</p>
+  <p><a href="{{ .SiteURL }}/auth/callback?token_hash={{ .TokenHash }}&type=magiclink" style="display:inline-block;background:#1F5C43;color:#F6F2EA;padding:12px 22px;border-radius:999px;text-decoration:none;font-weight:500">Sign in</a></p>
+  <p style="color:#4A5A52;font-size:14px">Didn't ask for this? Ignore it. Questions? Reply to sumit@appamania.in.</p>
+</div>

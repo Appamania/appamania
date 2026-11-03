@@ -1,0 +1,42 @@
+# PRD §45: weekly encrypted off-platform dump of production.
+# Retention (12 weekly + 12 monthly) is a lifecycle rule on the bucket prefixes weekly/ and monthly/,
+# not code. Restore steps: docs/runbooks/restore.md (P6).
+name: backup
+on:
+  schedule: [{ cron: "30 20 * * 0" }] # Sun 20:30 UTC = Mon 02:00 IST
+  workflow_dispatch:
+permissions: { contents: read }
+jobs:
+  dump:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Install pg_dump 17 and age
+        run: |
+          sudo install -d /usr/share/postgresql-common/pgdg
+          sudo curl -fsSo /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc https://www.postgresql.org/media/keys/ACCC4CF8.asc
+          echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list
+          sudo apt-get update -qq && sudo apt-get install -y -qq postgresql-client-17 age
+      - name: Dump and encrypt
+        env:
+          DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+          AGE_RECIPIENT: ${{ secrets.BACKUP_AGE_RECIPIENT }}
+        run: |
+          set -euo pipefail
+          /usr/lib/postgresql/17/bin/pg_dump -Fc --no-owner --no-privileges "$DB_URL" | age -r "$AGE_RECIPIENT" > dump.pgc.age
+          test -s dump.pgc.age
+      - name: "Upload (S3-compatible: Cloudflare R2 or Backblaze B2)"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.BACKUP_BUCKET_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.BACKUP_BUCKET_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: auto
+          ENDPOINT: ${{ secrets.BACKUP_BUCKET_ENDPOINT }}
+          BUCKET: ${{ secrets.BACKUP_BUCKET_NAME }}
+        run: |
+          set -euo pipefail
+          day=$(date -u +%F)
+          aws s3 cp dump.pgc.age "s3://$BUCKET/weekly/$day.pgc.age" --endpoint-url "$ENDPOINT"
+          # First run of each month also goes to monthly/.
+          if [ "$(date -u +%d)" -le 07 ]; then
+            aws s3 cp dump.pgc.age "s3://$BUCKET/monthly/$day.pgc.age" --endpoint-url "$ENDPOINT"
+          fi

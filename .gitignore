@@ -8,3 +8,23 @@
 .mcp.json
 
 .DS_Store
+
+# Node / Next.js
+/node_modules
+/.next/
+/out/
+/build
+/coverage
+*.tsbuildinfo
+next-env.d.ts
+.vercel
+*.pem
+npm-debug.log*
+
+# Tests
+/test-results/
+/playwright-report/
+
+# Supabase local
+supabase/.branches
+supabase/.temp
