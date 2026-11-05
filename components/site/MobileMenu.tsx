@@ -3,12 +3,14 @@
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useRef } from "react";
+import { portalEnabled } from "@/lib/flags";
 import { navItems } from "./NavLinks";
 
 // Native <dialog> menu below 900px (design brief): Esc closes, focus returns to the trigger.
 export function MobileMenu() {
   const ref = useRef<HTMLDialogElement>(null);
   const close = () => ref.current?.close();
+  const showLogin = portalEnabled();
   return (
     <>
       <button
@@ -41,9 +43,11 @@ export function MobileMenu() {
               {label}
             </Link>
           ))}
-          <Link href="/portal/login" onClick={close} className="mt-6 py-2 text-body-lg text-ink-muted">
-            Client login
-          </Link>
+          {showLogin ? (
+            <Link href="/portal/login" onClick={close} className="mt-6 py-2 text-body-lg text-ink-muted">
+              Client login
+            </Link>
+          ) : null}
         </nav>
       </dialog>
     </>

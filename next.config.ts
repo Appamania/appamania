@@ -48,7 +48,11 @@ const nextConfig: NextConfig = {
       { source: "/studio", destination: "/apps", statusCode: 301 },
       { source: "/studio/:path*", destination: "/apps", statusCode: 301 },
       { source: "/oss/:path*", destination: "/open-source", statusCode: 301 },
-      { source: "/login", destination: "/portal/login", statusCode: 301 },
+      {
+        source: "/login",
+        destination: process.env.NEXT_PUBLIC_PORTAL_ENABLED === "true" ? "/portal/login" : "/",
+        statusCode: 301,
+      },
     ];
   },
 };

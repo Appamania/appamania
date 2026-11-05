@@ -7,6 +7,7 @@ Owner runbook after D3–D6 are green on a Vercel preview of `Appamania/appamani
 - Live today: Vercel serves **`Sam21-39/appamania`** (old).
 - Target: **`Appamania/appamania`** on branch `dev` (PRD v4).
 - Public email: `sumit@appamania.in` (Google Workspace).
+- Marketing-first launch: leave `NEXT_PUBLIC_PORTAL_ENABLED` unset/false on Vercel so `/portal`, `/admin`, `/auth` redirect home and Client login is hidden. Set `true` (and rebuild) when Google OAuth + invites are ready.
 
 ## Old → new URL map
 

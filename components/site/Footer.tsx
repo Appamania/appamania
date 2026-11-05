@@ -1,39 +1,37 @@
 import Link from "next/link";
 import { Logo } from "@/components/ui/Logo";
 import { site } from "@/config/site";
-
-const cols = [
-  {
-    title: "Services",
-    links: [
-      { href: "/services#audit", label: "App audit" },
-      { href: "/services#sprint", label: "Rescue sprint" },
-      { href: "/services#retainer", label: "Care retainer" },
-    ],
-  },
-  {
-    title: "Work",
-    links: [
-      { href: "/work", label: "Case studies" },
-      { href: "/open-source", label: "Open source" },
-      { href: "/apps", label: "Apps" },
-    ],
-  },
-  {
-    title: "Contact",
-    links: [
-      { href: `mailto:${site.email}`, label: site.email },
-      { href: "/contact", label: "Book or enquire" },
-      { href: site.links.x, label: "X" },
-      { href: site.links.github, label: "GitHub" },
-      { href: site.links.linkedin, label: "LinkedIn" },
-      { href: "/portal/login", label: "Client login" },
-    ],
-  },
-];
+import { portalEnabled } from "@/lib/flags";
 
 // Footer with outlined giant wordmark (design brief). One light line: "fuelled by chai".
 export function Footer() {
+  const contactLinks = [
+    { href: `mailto:${site.email}`, label: site.email },
+    { href: "/contact", label: "Book or enquire" },
+    { href: site.links.x, label: "X" },
+    { href: site.links.github, label: "GitHub" },
+    { href: site.links.linkedin, label: "LinkedIn" },
+    ...(portalEnabled() ? [{ href: "/portal/login", label: "Client login" }] : []),
+  ];
+  const cols = [
+    {
+      title: "Services",
+      links: [
+        { href: "/services#audit", label: "App audit" },
+        { href: "/services#sprint", label: "Rescue sprint" },
+        { href: "/services#retainer", label: "Care retainer" },
+      ],
+    },
+    {
+      title: "Work",
+      links: [
+        { href: "/work", label: "Case studies" },
+        { href: "/open-source", label: "Open source" },
+        { href: "/apps", label: "Apps" },
+      ],
+    },
+    { title: "Contact", links: contactLinks },
+  ];
   return (
     <footer className="wrap pt-24 pb-8">
       <div className="grid grid-cols-2 gap-8 text-[15px] min-[900px]:grid-cols-[2fr_1fr_1fr_1fr]">
