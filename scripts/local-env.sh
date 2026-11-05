@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+# Writes .env.local for the local Supabase stack (`supabase start` must be running).
+# Local keys are the CLI's shared defaults, not secrets. Used by README setup and CI.
+set -e
+eval "$(supabase status -o env 2>/dev/null)"
+cat > .env.local <<ENV
+NEXT_PUBLIC_SUPABASE_URL=$API_URL
+NEXT_PUBLIC_SUPABASE_ANON_KEY=$ANON_KEY
+SUPABASE_SERVICE_ROLE_KEY=$SERVICE_ROLE_KEY
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+NEXT_PUBLIC_PORTAL_ENABLED=true
+LEAD_SALT=local-dev-salt
+# Cloudflare Turnstile test keys: widget always passes (https://developers.cloudflare.com/turnstile/troubleshooting/testing/)
+NEXT_PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA
+TURNSTILE_SECRET_KEY=1x0000000000000000000000000000000AA
+ADMIN_EMAIL=admin@appamania.test
+ENV
+echo "wrote .env.local for $API_URL"

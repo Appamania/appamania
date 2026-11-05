@@ -1,0 +1,5 @@
+docs/
+.claude/
+supabase/
+*.md
+package-lock.json

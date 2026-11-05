@@ -1,0 +1,39 @@
+export const meta = {
+  eyebrow: "Case study · internal tooling",
+  title: "Crash reporting,",
+  accent: "built in-house.",
+  lead: "A product team's crash reports and engineering tasks lived in paid third-party tools. I built two internal platforms that replaced them.",
+  teaser: {
+    label: "Internal tooling",
+    title: "A crash reporting platform built in-house",
+    summary: "Offline-capable; replaced a paid SaaS for the mobile team.",
+  },
+  stats: [
+    { label: "Platforms built", value: "2" },
+    { label: "Backend", value: "Node" },
+    { label: "Paid tools left", value: "0" },
+  ],
+  problemTitle: "Paying rent on your own crash data.",
+  steps: [
+    { title: "Map the workflow", body: "How the team actually triaged crashes and tracked release work." },
+    { title: "Crash pipeline", body: "Offline queue on device, sync, grouping, stack traces with release metadata." },
+    { title: "Task tracking", body: "A board shaped around the team's release cycle, not a generic one." },
+    { title: "Switch over", body: "Both vendors removed once the team worked in the new tools." },
+  ],
+  result: {
+    title: "Two vendors gone. Data stays home.",
+    body: "Crash data and engineering tasks now stay inside the company, in tools the team owns and can change.",
+  },
+  versions: [
+    { from: "Paid crash SaaS", to: "In-house" },
+    { from: "Paid task tool", to: "In-house" },
+  ],
+  stack: ["Flutter", "Node.js", "Express.js", "Supabase"],
+  order: 2,
+};
+
+Costs grew with usage, data sat outside the company, and neither tool fitted how the team worked.
+
+The new tools had to run alongside the old ones until the team trusted them, with no gap in crash visibility.
+
+{/* TODO(content): add numbers (monthly cost saved, crashes triaged, team size). */}

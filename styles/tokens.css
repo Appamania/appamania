@@ -1,0 +1,147 @@
+/* Chai Studio tokens (PRD §7). Code copy of the design system's tokens.json — the only place raw colors live.
+   Themes: night = site (fixed); dark (default) / light = portal and admin; light = print and PDF.
+   A theme is set with data-theme on <html> or any wrapper; every color var is redeclared per theme
+   so a wrapper's theme wins over <html>. */
+
+:root,
+[data-theme="night"] {
+  color-scheme: dark;
+  --paper: #070b09;
+  --paper-raised: #0d1411;
+  --paper-sunken: #050807;
+  --ink: #eef2ec;
+  --ink-muted: #a3b0a8;
+  --line: #1a221e;
+  --line-strong: #5f6e66;
+  --brand: #3ddc84;
+  --brand-hover: #5be89a;
+  --on-brand: #04130a;
+  --brand-tint: #12301f;
+  --saffron: #ecbc55;
+  --on-saffron: #16231c;
+  --saffron-tint: #2e2612;
+  --danger: #f08a75;
+  --night: #0d1411;
+  --on-night: #eef2ec;
+  --on-night-muted: #a3b0a8;
+  --score-good: #3ddc84;
+  --score-warn: #ecbc55;
+  --score-bad: var(--danger);
+  --focus: var(--brand);
+  --overlay: rgb(0 0 0 / 0.6);
+  --glow: rgb(61 220 132 / 0.18);
+  --shadow-card: 0 1px 0 rgb(0 0 0 / 0.4), 0 12px 28px -16px rgb(0 0 0 / 0.7);
+  --shadow-glow: 0 0 0 1px rgb(61 220 132 / 0.25), 0 30px 80px -40px rgb(61 220 132 / 0.45);
+  --shadow-hard: none;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #0f1512;
+  --paper-raised: #17201b;
+  --paper-sunken: #0b100d;
+  --ink: #eef2ec;
+  --ink-muted: #a9b5ae;
+  --line: #2a3530;
+  --line-strong: #62706a;
+  --brand: #5fbf8f;
+  --brand-hover: #7dd0a6;
+  --on-brand: #0f1512;
+  --brand-tint: #1c3328;
+  --saffron: #ecbc55;
+  --on-saffron: #16231c;
+  --saffron-tint: #3a2f14;
+  --danger: #f08a75;
+  --night: #070b09;
+  --on-night: #eef2ec;
+  --on-night-muted: #a9b5ae;
+  --score-good: #5fbf8f;
+  --score-warn: #ecbc55;
+  --score-bad: var(--danger);
+  --focus: var(--brand);
+  --overlay: rgb(0 0 0 / 0.6);
+  --glow: rgb(95 191 143 / 0.14);
+  --shadow-card: 0 1px 0 rgb(0 0 0 / 0.4), 0 12px 28px -16px rgb(0 0 0 / 0.7);
+  --shadow-glow: var(--shadow-card);
+  --shadow-hard: 6px 6px 0 0 #5fbf8f;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+  --paper: #f6f2ea;
+  --paper-raised: #fffdf8;
+  --paper-sunken: #ede6da;
+  --ink: #16231c;
+  --ink-muted: #4a5a52;
+  --line: #ddd4c4;
+  --line-strong: #7f786a;
+  --brand: #1f5c43;
+  --brand-hover: #17473a;
+  --on-brand: #f6f2ea;
+  --brand-tint: #d9e6de;
+  --saffron: #ecbc55;
+  --on-saffron: #16231c;
+  --saffron-tint: #f7e7c2;
+  --danger: #b3412e;
+  --night: #10201a;
+  --on-night: #eef2ec;
+  --on-night-muted: #a9b5ae;
+  --score-good: #2e7d57;
+  --score-warn: #9a6a12;
+  --score-bad: var(--danger);
+  --focus: var(--brand);
+  --overlay: rgb(22 35 28 / 0.5);
+  --glow: transparent;
+  --shadow-card: 0 1px 0 rgb(22 35 28 / 0.06), 0 12px 28px -16px rgb(22 35 28 / 0.25);
+  --shadow-glow: 0 12px 28px -16px rgb(22 35 28 / 0.25);
+  --shadow-hard: 6px 6px 0 0 #16231c;
+}
+
+:root {
+  --radius-sm: 12px;
+  --radius-md: 20px;
+  --radius-lg: 28px;
+  --radius-xl: 40px;
+  --radius-pill: 999px;
+  --dur: 180ms;
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  /* next/font exposes --font-geist and --font-geist-mono on <html> */
+  --ff-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --ff-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  --z-nav: 20;
+  --z-overlay: 40;
+  --z-dialog: 50;
+  --z-toast: 60;
+}
+
+/* Wrappers that switch theme repaint their own ground. */
+body,
+[data-theme] {
+  background: var(--paper);
+  color: var(--ink);
+}
+body {
+  font: 400 16px/26px var(--ff-sans);
+  -webkit-font-smoothing: antialiased;
+}
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+@media (forced-colors: active) {
+  :focus-visible {
+    outline-color: CanvasText;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0ms !important;
+  }
+}
+html {
+  scroll-padding-top: 6rem;
+}
