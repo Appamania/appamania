@@ -39,7 +39,7 @@ export default function Home() {
           description: site.tagline,
           areaServed: "Worldwide",
           address: { "@type": "PostalAddress", addressLocality: "Kolkata", addressCountry: "IN" },
-          founder: { "@type": "Person", name: site.owner, jobTitle: "Senior Flutter engineer", sameAs: [site.links.linkedin, site.links.github] },
+          founder: { "@type": "Person", name: site.owner, jobTitle: "Senior Flutter engineer", sameAs: [site.links.linkedin, site.links.github, site.links.x] },
           makesOffer: (["audit", "sprint", "retainer"] as const).map((id) => ({
             "@type": "Offer",
             name: offers[id].name,

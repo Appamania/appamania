@@ -68,15 +68,20 @@ insert into storage.objects (bucket_id, name) values
   ('project-files', 'f2000000-0000-0000-0000-00000000000a/invoice/staged.pdf'), -- no files row yet
   ('project-files', 'f2000000-0000-0000-0000-00000000000b/report/b.pdf');
 
-insert into public.invoices (id, client_id, project_id, title, status, number, total_minor) values
-  ('f3000000-0000-0000-0000-0000000000a1', 'f1000000-0000-0000-0000-00000000000a', 'f2000000-0000-0000-0000-00000000000a', 'Deposit', 'sent', 'INV/26-27/001', 1249950),
-  ('f3000000-0000-0000-0000-0000000000a2', 'f1000000-0000-0000-0000-00000000000a', 'f2000000-0000-0000-0000-00000000000a', 'Draft', 'draft', null, 0),
-  ('f3000000-0000-0000-0000-0000000000b1', 'f1000000-0000-0000-0000-00000000000b', 'f2000000-0000-0000-0000-00000000000b', 'Audit', 'sent', 'INV/26-27/002', 299900);
+insert into public.invoices (id, client_id, project_id, title, status) values
+  ('f3000000-0000-0000-0000-0000000000a1', 'f1000000-0000-0000-0000-00000000000a', 'f2000000-0000-0000-0000-00000000000a', 'Deposit', 'draft'),
+  ('f3000000-0000-0000-0000-0000000000a2', 'f1000000-0000-0000-0000-00000000000a', 'f2000000-0000-0000-0000-00000000000a', 'Draft', 'draft'),
+  ('f3000000-0000-0000-0000-0000000000b1', 'f1000000-0000-0000-0000-00000000000b', 'f2000000-0000-0000-0000-00000000000b', 'Audit', 'draft');
 
 insert into public.invoice_items (invoice_id, description, unit_price_minor) values
   ('f3000000-0000-0000-0000-0000000000a1', 'Sprint deposit', 1249950),
   ('f3000000-0000-0000-0000-0000000000a2', 'Draft line', 100),
   ('f3000000-0000-0000-0000-0000000000b1', 'Audit', 299900);
+
+update public.invoices set status = 'sent', number = 'INV/26-27/001', total_minor = 1249950
+  where id = 'f3000000-0000-0000-0000-0000000000a1';
+update public.invoices set status = 'sent', number = 'INV/26-27/002', total_minor = 299900
+  where id = 'f3000000-0000-0000-0000-0000000000b1';
 
 insert into public.leads (id, name, email, industry, need, stage) values
   ('f6000000-0000-0000-0000-000000000001', 'Lead', 'lead@test.local', 'Health', 'audit', 'won');

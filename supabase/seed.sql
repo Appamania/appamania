@@ -59,13 +59,23 @@ insert into public.change_requests (project_id, created_by, title, details, prio
   ('20000000-0000-0000-0000-00000000000a', '00000000-0000-0000-0000-0000000000a1', 'Add dark mode',
    'Patients asked for it in reviews.', 'nice', 'quoted', 499900, 3);
 
-insert into public.invoices (id, client_id, project_id, title, status, number, total_minor, issue_date, due_date, sent_at, bill_to) values
+-- Draft first so guard_items allows the line, then promote to sent (0004).
+insert into public.invoices (id, client_id, project_id, title, status) values
   ('30000000-0000-0000-0000-0000000000a1', '10000000-0000-0000-0000-00000000000a', '20000000-0000-0000-0000-00000000000a',
-   'Rescue sprint — deposit (50%)', 'sent', 'INV/26-27/001', 1249950, current_date - 10, current_date + 5, now() - interval '10 days',
-   '{"name":"Northwind Health","email":"ana@clienta.test","country":"IN"}');
+   'Rescue sprint — deposit (50%)', 'draft');
 
 insert into public.invoice_items (invoice_id, description, unit_price_minor) values
   ('30000000-0000-0000-0000-0000000000a1', 'Rescue and Migration Sprint — 50% deposit', 1249950);
+
+update public.invoices set
+  status = 'sent',
+  number = 'INV/26-27/001',
+  total_minor = 1249950,
+  issue_date = current_date - 10,
+  due_date = current_date + 5,
+  sent_at = now() - interval '10 days',
+  bill_to = '{"name":"Northwind Health","email":"ana@clienta.test","country":"IN"}'
+where id = '30000000-0000-0000-0000-0000000000a1';
 
 insert into public.invoice_counters (fy, last_no) values ('26-27', 1);
 

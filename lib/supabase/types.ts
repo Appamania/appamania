@@ -797,8 +797,10 @@ export type Database = {
         Args: { p_approve: boolean; p_id: string }
         Returns: undefined
       }
+      fy_label: { Args: { d: string }; Returns: string }
       is_admin: { Args: never; Returns: boolean }
       my_client_ids: { Args: never; Returns: string[] }
+      send_invoice: { Args: { p_id: string }; Returns: string }
       uploaded_by_me: { Args: { p_path: string }; Returns: boolean }
     }
     Enums: {

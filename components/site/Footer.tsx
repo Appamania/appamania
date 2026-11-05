@@ -24,6 +24,8 @@ const cols = [
     links: [
       { href: `mailto:${site.email}`, label: site.email },
       { href: "/contact", label: "Book or enquire" },
+      { href: site.links.x, label: "X" },
+      { href: site.links.github, label: "GitHub" },
       { href: site.links.linkedin, label: "LinkedIn" },
       { href: "/portal/login", label: "Client login" },
     ],

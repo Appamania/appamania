@@ -27,9 +27,11 @@ export const site = {
   callUrl: "",
   availability: "Taking 2 audits in December",
   links: {
-    github: "https://github.com/Sam21-39",
+    github: "https://github.com/Appamania",
     linkedin: "https://www.linkedin.com/in/sumit-dev-flutter",
-    play: "https://play.google.com/store/apps/dev?id=5165842851838633785",
+    x: "https://x.com/SumitMobileDev",
+    // TODO(owner): paste real Play Console developer URL; hide CTA while empty.
+    play: "",
     pubPublisher: "https://pub.dev/publishers/appamania.in",
   },
   // TODO(HR): fill once HR confirms which industries count as "same domain" (PRD §2.1, App. A A5).

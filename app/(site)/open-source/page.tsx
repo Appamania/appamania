@@ -9,7 +9,7 @@ import { cx } from "@/lib/cx";
 
 export const metadata: Metadata = {
   title: "Open source",
-  description: "Flutter and Dart packages from a pub.dev verified publisher. Every one 160/160 pub points.",
+  description: "Flutter and Dart packages from a pub.dev verified publisher under appamania.in.",
   alternates: { canonical: "/open-source" },
 };
 
@@ -39,12 +39,12 @@ export default function OpenSource() {
         </div>
         <Code className="relative p-7 text-[15px]">
           <span className="text-ink-muted"># pubspec.yaml</span>
-          {"\n"}dependencies:{"\n"}  <span className="k">envified</span>: <span className="s">^3.0.0</span>
+          {"\n"}dependencies:{"\n"}  <span className="k">envified</span>: <span className="s">^3.3.2</span>
         </Code>
       </div>
 
       <Section aria-labelledby="all">
-        <SectionHeader id="all" eyebrow="01 — All packages" title={`${packages.length} packages. Every one 160/160.`} />
+        <SectionHeader id="all" eyebrow="01 — All packages" title={`${packages.length} packages on pub.dev.`} />
         <ul className="grid grid-cols-1 gap-4 min-[900px]:grid-cols-2">
           {packages.map((p, i) => (
             <li key={p.name}>

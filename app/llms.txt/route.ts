@@ -18,8 +18,8 @@ export function GET() {
 - ${offers.mvp.name}: ${priceText("mvp")}. ${offers.website.name}: ${priceText("website")}. By enquiry.
 
 ## Proof
-- Open-source Flutter/Dart packages, each 160/160 pub points: ${packages.map((p) => p.name).join(", ")} (${site.links.pubPublisher})
-- Apps on Google Play: ${site.links.play}
+- Open-source Flutter/Dart packages on pub.dev: ${packages.map((p) => `${p.name} (${p.points} pts)`).join(", ")} (${site.links.pubPublisher})
+- Apps on Google Play: ${site.url}/apps
 
 ## Pages
 - [Services and prices](${site.url}/services)
