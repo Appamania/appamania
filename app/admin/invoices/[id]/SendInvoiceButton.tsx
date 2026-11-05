@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { Button } from "@/components/ui/Button";
 import { sendInvoice } from "@/features/invoices/actions";
 
 export function SendInvoiceButton({ invoiceId }: { invoiceId: string }) {
@@ -9,10 +10,10 @@ export function SendInvoiceButton({ invoiceId }: { invoiceId: string }) {
 
   return (
     <div className="grid gap-2">
-      <button
+      <Button
         type="button"
-        disabled={pending}
-        className="justify-self-start rounded-pill bg-brand px-4 py-2.5 text-small font-medium text-on-brand disabled:opacity-50"
+        loading={pending}
+        className="justify-self-start"
         onClick={() => {
           setError(null);
           start(async () => {
@@ -21,9 +22,13 @@ export function SendInvoiceButton({ invoiceId }: { invoiceId: string }) {
           });
         }}
       >
-        {pending ? "Sending…" : "Send and create pay link"}
-      </button>
-      {error ? <p className="text-small text-danger">{error}</p> : null}
+        Send and create pay link
+      </Button>
+      {error ? (
+        <p role="alert" className="text-small text-danger">
+          {error}
+        </p>
+      ) : null}
     </div>
   );
 }

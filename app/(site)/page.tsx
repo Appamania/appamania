@@ -6,7 +6,7 @@ import { JsonLd } from "@/components/site/JsonLd";
 import { PlanCard } from "@/components/site/PlanCard";
 import { priceText } from "@/components/site/Price";
 import { AuditScreen, FloatCard, Marquee, Phone, SprintScreen, sampleAudit } from "@/components/site/Proof";
-import { packages, stack } from "@/config/catalog";
+import { packages, pubPointsRange, stack } from "@/config/catalog";
 import { offers } from "@/config/offers";
 import { site } from "@/config/site";
 
@@ -61,7 +61,7 @@ export default function Home() {
             </span>{" "}
             that actually <span className="text-brand">ship.</span>
           </h1>
-          <p className="max-w-[46ch] text-body-lg text-ink-muted min-[900px]:text-[20px] min-[900px]:leading-[1.55]">
+          <p className="max-w-[46ch] text-body-lg text-ink-muted">
             Slow, crashing, stuck on an old SDK — or the developer left? I rescue, migrate and release production Flutter apps. Fixed price. You own the code.
           </p>
           <div className="flex flex-wrap gap-3">
@@ -75,12 +75,12 @@ export default function Home() {
           <dl className="flex flex-wrap gap-7 pt-2">
             {[
               ["6+ yrs", "production Flutter"],
-              ["4 × 160", "pub.dev points"],
+              [`${pubPointsRange.min}–${pubPointsRange.max}`, "pub.dev points"],
               ["4 apps", "live on Play"],
             ].map(([v, l]) => (
               <div key={l} className="flex flex-col-reverse">
-                <dt className="font-mono text-[13px] text-ink-muted">{l}</dt>
-                <dd className="text-[28px] leading-none font-semibold tracking-[-0.03em]">{v}</dd>
+                <dt className="font-mono text-small text-ink-muted">{l}</dt>
+                <dd className="text-h2 tabular-nums">{v}</dd>
               </div>
             ))}
           </dl>
@@ -93,12 +93,12 @@ export default function Home() {
             <AuditScreen {...sampleAudit} />
           </Phone>
           <FloatCard className="bottom-7.5 left-0 w-52.5">
-            <Eyebrow className="text-[10px]">Delivered in</Eyebrow>
-            <div className="text-[30px] leading-[1.1] font-semibold tracking-[-0.03em]">{offers.audit.duration}</div>
-            <span className="font-mono text-[13px] text-ink-muted">written report + plan</span>
+            <Eyebrow>Delivered in</Eyebrow>
+            <div className="text-h1">{offers.audit.duration}</div>
+            <span className="font-mono text-small text-ink-muted">written report + plan</span>
           </FloatCard>
           <FloatCard className="top-37.5 right-0 hidden min-[900px]:block">
-            <span className="flex items-center gap-2.5 font-mono text-[13px]">
+            <span className="flex items-center gap-2.5 font-mono text-small">
               <span aria-hidden className="size-2 rounded-full bg-brand" />
               You own the repo
             </span>
@@ -120,20 +120,24 @@ export default function Home() {
         <Bento>
           <Tile span={3} tall brand>
             <Eyebrow>What I do</Eyebrow>
-            <h3 className="text-[34px]!">Rescue, migrate and ship production Flutter apps.</h3>
+            <h3 className="text-h1">Rescue, migrate and ship production Flutter apps.</h3>
             <p>SDK upgrades, crash fixes, clean architecture, CI/CD, Play Store and App Store releases.</p>
             <Big>6+ yrs</Big>
           </Tile>
           <Tile span={3}>
             <Eyebrow>Open source</Eyebrow>
-            <h3>{packages.length} packages. Every one 160/160.</h3>
+            <h3>
+              {packages.length} packages. Scores {pubPointsRange.min}–{pubPointsRange.max}.
+            </h3>
             <div className="mt-auto flex items-end gap-5">
               <div aria-hidden className="grid size-30 place-items-center rounded-full bg-brand">
-                <b className="grid size-24 place-items-center rounded-full bg-night text-[24px] font-semibold">160</b>
+                <b className="grid size-24 place-items-center rounded-full bg-night text-h2 tabular-nums">{pubPointsRange.max}</b>
               </div>
-              <p className="font-mono text-[13px]">
+              <p className="font-mono text-small">
                 {packages.map((p) => (
-                  <span key={p.name} className="block">{p.name}</span>
+                  <span key={p.name} className="block">
+                    {p.name}
+                  </span>
                 ))}
               </p>
             </div>
@@ -141,7 +145,7 @@ export default function Home() {
           <Tile span={3}>
             <Eyebrow>Built from zero</Eyebrow>
             <h3>An in-house crash reporting platform that replaced a paid SaaS.</h3>
-            <pre className="mt-auto rounded-[16px] whitespace-pre-wrap border border-line bg-paper-sunken px-4.5 py-4 font-mono text-[13px] leading-[1.7] text-ink-muted">
+            <pre className="mt-auto rounded-md whitespace-pre-wrap border border-line bg-paper-sunken px-4.5 py-4 font-mono text-code leading-[1.7] text-ink-muted">
               <span className="text-brand">crash</span> → offline queue → <span className="text-brand">sync</span> → dashboard{"\n"}
               <span>no SaaS bill</span>
             </pre>
@@ -149,12 +153,12 @@ export default function Home() {
           <Tile>
             <Eyebrow>Start here</Eyebrow>
             <Big>{audit}</Big>
-            <p className="font-mono text-[13px]">{offers.audit.duration} audit</p>
+            <p className="font-mono text-small">{offers.audit.duration} audit</p>
           </Tile>
           <Tile>
             <Eyebrow>Shipped</Eyebrow>
             <Big>4 apps</Big>
-            <p className="font-mono text-[13px]">live on Google Play</p>
+            <p className="font-mono text-small">live on Google Play</p>
           </Tile>
           <Tile>
             <Eyebrow>Domains</Eyebrow>
@@ -164,7 +168,7 @@ export default function Home() {
       </Section>
 
       <Section aria-labelledby="pricing">
-        <SectionHeader id="pricing" eyebrow="02 — Pricing" title="Fixed scope. Fixed price." aside={<span className="font-mono text-[13px]">INR · UPI, cards or netbanking</span>} />
+        <SectionHeader id="pricing" eyebrow="02 — Pricing" title="Fixed scope. Fixed price." aside={<span className="font-mono text-small">INR · UPI, cards or netbanking</span>} />
         <div className="grid gap-4 min-[900px]:grid-cols-3">
           <PlanCard
             id="audit"
@@ -177,7 +181,7 @@ export default function Home() {
             id="sprint"
             featured
             eyebrow="Most chosen"
-            badge={<Chip className="h-6.5 text-[12px]">{offers.sprint.duration}</Chip>}
+            badge={<Chip className="h-6.5 text-label">{offers.sprint.duration}</Chip>}
             summary="A current, stable app released to both stores."
             points={["Flutter and Dart SDK upgrade", "Crash fixes at the root", "CI/CD with GitHub Actions", "Play Store and App Store release", offers.sprint.payment]}
             cta={<Link href="/services#sprint" className={buttonStyles("outline")}>How the sprint works</Link>}
@@ -197,7 +201,7 @@ export default function Home() {
           <div className="relative flex flex-col gap-6">
             <Eyebrow>03 — Recent work · enterprise app</Eyebrow>
             <p className="text-[clamp(96px,14vw,220px)] leading-[0.8] font-semibold tracking-[-0.07em]">0</p>
-            <p className="text-[32px] leading-[1.1] font-semibold tracking-[-0.03em]">regressions after a two-step Flutter upgrade.</p>
+            <p className="text-h1">regressions after a two-step Flutter upgrade.</p>
             <Link href="/work/flutter-3-47-upgrade" className={buttonStyles("outline", "md", "self-start")}>
               Read the case study <Arrow />
             </Link>

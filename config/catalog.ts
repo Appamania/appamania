@@ -20,7 +20,7 @@ export const apps = [
     name: "Spend Analytics",
     initial: "S",
     category: "Finance",
-    badge: "5.0 · 50+ installs",
+    badge: "50+ installs",
     summary: "Offline-first spend tracker with smart limits and real-time charts.",
     url: "https://play.google.com/store/apps/details?id=com.sumit.spofficial.spend_analytics",
   },
@@ -56,9 +56,26 @@ export const inDevelopment = {
 } as const;
 
 export const packages = [
-  { name: "envified", summary: "Runtime dev/prod switching with integrity checks and biometric gating.", points: 160 },
-  { name: "drip_flutter", summary: "Zero-rebuild UI updates through direct RenderObject synchronisation.", points: 160 },
-  { name: "screenx", summary: "Responsive breakpoints and sp/dp converters for Android, iOS and Web.", points: 160 },
+  {
+    name: "envified",
+    summary: "Runtime dev/prod switching with integrity checks and biometric gating.",
+    points: 150,
+  },
+  {
+    name: "drip_flutter",
+    summary: "Zero-rebuild UI updates through direct RenderObject synchronisation (alpha).",
+    points: 150,
+  },
+  {
+    name: "screenx",
+    summary: "Responsive breakpoints and sp/dp converters for Android, iOS and Web.",
+    points: 160,
+  },
 ] as const;
+
+export const pubPointsRange = (() => {
+  const pts = packages.map((p) => p.points);
+  return { min: Math.min(...pts), max: Math.max(...pts) };
+})();
 
 export const pubUrl = (name: string) => `https://pub.dev/packages/${name}`;

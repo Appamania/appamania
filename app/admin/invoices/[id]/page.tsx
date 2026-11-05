@@ -1,7 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { StatusPill } from "@/components/ui/Badge";
+import { Money } from "@/components/ui/Money";
 import { getAdminInvoice } from "@/features/invoices/queries";
-import { formatMinor } from "@/lib/money";
+import { invoiceDisplayStatus } from "@/features/invoices/status";
+import { formatAbsolute } from "@/lib/dates";
 import { SendInvoiceButton } from "./SendInvoiceButton";
 
 export default async function AdminInvoiceDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -10,6 +13,9 @@ export default async function AdminInvoiceDetailPage({ params }: { params: Promi
   if (!inv) notFound();
   const client = inv.clients as { name: string; billing_email: string; phone: string | null } | null;
   const items = inv.invoice_items ?? [];
+  const status = invoiceDisplayStatus(inv.status, inv.due_date);
+  const total =
+    inv.total_minor || items.reduce((s, i) => s + (i.amount_minor ?? 0), 0);
 
   return (
     <div className="mx-auto grid max-w-2xl gap-6">
@@ -17,22 +23,26 @@ export default async function AdminInvoiceDetailPage({ params }: { params: Promi
         ← Invoices
       </Link>
       <div className="flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <p className="font-mono text-small text-ink-muted">
-            {inv.number ?? "Draft"} · {inv.status}
-          </p>
+        <div className="grid gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <p className="font-mono text-small text-ink-muted">{inv.number ?? "Draft"}</p>
+            <StatusPill domain="invoice" value={status} />
+          </div>
           <h1 className="text-h1">{inv.title}</h1>
           <p className="text-small text-ink-muted">{client?.name}</p>
+          {inv.due_date ? (
+            <p className="font-mono text-small text-ink-muted">Due {formatAbsolute(inv.due_date)}</p>
+          ) : null}
         </div>
-        <p className="text-h2 tabular-nums">
-          {formatMinor(inv.total_minor || items.reduce((s, i) => s + (i.amount_minor ?? 0), 0), "INR", { trim: true })}
+        <p className="text-h2">
+          <Money minor={total} trim />
         </p>
       </div>
       <ul className="divide-y divide-line rounded-lg border border-line">
         {items.map((item) => (
           <li key={item.id} className="flex justify-between gap-4 px-4 py-3 text-small">
             <span>{item.description}</span>
-            <span className="tabular-nums">{formatMinor(item.amount_minor ?? 0, "INR", { trim: true })}</span>
+            <Money minor={item.amount_minor ?? 0} trim />
           </li>
         ))}
       </ul>

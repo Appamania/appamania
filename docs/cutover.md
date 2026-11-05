@@ -55,3 +55,30 @@ done
 ## Archive old repo (you)
 
 Add README pointer to `https://github.com/Appamania/appamania`, then archive `Sam21-39/appamania` on GitHub.
+
+## Account hygiene (you)
+
+Facts verified Nov 2026 against live Play / pub.dev / LinkedIn. Site catalog already matches scores.
+
+### Play Console
+
+- [ ] Set support email to `sumit@appamania.in` on Spend Analytics, Medify, Minimalist Forecast, Wally (today: mix of `sp.appamania24@gmail.com` and `sumit.spofficial223@gmail.com`)
+- [ ] Set privacy policy URL to `https://appamania.in` (or a dedicated privacy page once live)
+- [ ] Confirm Spend Analytics install/rating before putting a star rating back on the site (catalog shows installs only)
+
+### pub.dev
+
+- [ ] Fix or remove envified funding URL (`paywithchai.in/appamania` was unreachable → −points risk)
+- [ ] Bump `flutter_secure_storage` constraint to include v11 and publish envified (regain 160 when green)
+- [ ] Replace discontinued `drip_core` dependency (or revive it) so drip_flutter can regain 160
+- [ ] Re-check scores after publish; update `config/catalog.ts` if points change
+
+### LinkedIn (sumit-dev-flutter)
+
+- [ ] Featured: appamania.in, envified, drip_flutter, screenx, Play developer page
+- [ ] About: one line naming Appamania as the Flutter studio
+
+### After domain cutover
+
+- [ ] Merge Sam21-39 P0 SEO/identity PR if still open
+- [ ] Point X / LinkedIn / pub.dev publisher / Play / GitHub website fields at new site

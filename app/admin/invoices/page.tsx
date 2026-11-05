@@ -1,6 +1,13 @@
+import { FileText } from "lucide-react";
 import Link from "next/link";
+import { StatusPill } from "@/components/ui/Badge";
+import { ButtonLink } from "@/components/ui/Button";
+import { Money } from "@/components/ui/Money";
+import { EmptyState } from "@/components/ui/Misc";
+import { Table, THead, Th, Td, Tr } from "@/components/ui/Table";
 import { listAdminInvoices } from "@/features/invoices/queries";
-import { formatMinor } from "@/lib/money";
+import { invoiceDisplayStatus } from "@/features/invoices/status";
+import { formatAbsolute } from "@/lib/dates";
 
 export default async function AdminInvoicesPage() {
   const rows = await listAdminInvoices();
@@ -11,48 +18,61 @@ export default async function AdminInvoicesPage() {
           <h1 className="text-h1">Invoices</h1>
           <p className="text-small text-ink-muted">Draft, send, and track Razorpay links.</p>
         </div>
-        <Link href="/admin/invoices/new" className="rounded-pill bg-brand px-4 py-2 text-small font-medium text-on-brand">
+        <ButtonLink href="/admin/invoices/new" size="sm">
           New draft
-        </Link>
+        </ButtonLink>
       </div>
-      <div className="overflow-x-auto rounded-lg border border-line">
-        <table className="w-full min-w-[640px] text-left text-small">
-          <thead className="border-b border-line bg-paper-sunken font-mono text-ink-muted">
+      {rows.length === 0 ? (
+        <EmptyState
+          icon={FileText}
+          title="No invoices yet"
+          body="Create a draft, add the line, then send a Razorpay pay link."
+          action={
+            <ButtonLink href="/admin/invoices/new" size="sm">
+              New draft
+            </ButtonLink>
+          }
+        />
+      ) : (
+        <Table>
+          <THead>
             <tr>
-              <th className="px-4 py-3">Number</th>
-              <th className="px-4 py-3">Client</th>
-              <th className="px-4 py-3">Title</th>
-              <th className="px-4 py-3">Status</th>
-              <th className="px-4 py-3 tabular-nums">Total</th>
+              <Th>Number</Th>
+              <Th>Client</Th>
+              <Th>Title</Th>
+              <Th>Status</Th>
+              <Th>Due</Th>
+              <Th className="tabular-nums">Total</Th>
             </tr>
-          </thead>
-          <tbody>
+          </THead>
+          <tbody className="max-md:block">
             {rows.map((r) => {
               const client = r.clients as { name: string } | null;
+              const status = invoiceDisplayStatus(r.status, r.due_date);
               return (
-                <tr key={r.id} className="border-b border-line last:border-0">
-                  <td className="px-4 py-3 font-mono">
+                <Tr key={r.id}>
+                  <Td label="Number" className="font-mono">
                     <Link href={`/admin/invoices/${r.id}`} className="text-brand hover:underline">
                       {r.number ?? "Draft"}
                     </Link>
-                  </td>
-                  <td className="px-4 py-3">{client?.name ?? "—"}</td>
-                  <td className="px-4 py-3">{r.title}</td>
-                  <td className="px-4 py-3 font-mono">{r.status}</td>
-                  <td className="px-4 py-3 tabular-nums">{formatMinor(r.total_minor, "INR", { trim: true })}</td>
-                </tr>
+                  </Td>
+                  <Td label="Client">{client?.name ?? "—"}</Td>
+                  <Td label="Title">{r.title}</Td>
+                  <Td label="Status">
+                    <StatusPill domain="invoice" value={status} />
+                  </Td>
+                  <Td label="Due" className="font-mono">
+                    {r.due_date ? formatAbsolute(r.due_date) : "—"}
+                  </Td>
+                  <Td label="Total">
+                    <Money minor={r.total_minor} trim />
+                  </Td>
+                </Tr>
               );
             })}
-            {rows.length === 0 ? (
-              <tr>
-                <td colSpan={5} className="px-4 py-8 text-ink-muted">
-                  No invoices yet.
-                </td>
-              </tr>
-            ) : null}
           </tbody>
-        </table>
-      </div>
+        </Table>
+      )}
     </div>
   );
 }
