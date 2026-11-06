@@ -1,4 +1,5 @@
-// Apps and open-source packages (PRD E1.5). Facts only; numbers as shown on Play and pub.dev.
+// Fallback for the stack marquee and the in-development panel. Remote Config `static` overrides both.
+// Apps and packages live in Firestore.
 
 export const stack = [
   "Flutter",
@@ -15,67 +16,9 @@ export const stack = [
   "App Store",
 ] as const;
 
-export const apps = [
-  {
-    name: "Spend Analytics",
-    initial: "S",
-    category: "Finance",
-    badge: "50+ installs",
-    summary: "Offline-first spend tracker with smart limits and real-time charts.",
-    url: "https://play.google.com/store/apps/details?id=com.sumit.spofficial.spend_analytics",
-  },
-  {
-    name: "Medify",
-    initial: "M",
-    category: "Health",
-    badge: "Live",
-    summary: "Medication reminders and a simple routine tracker.",
-    url: "https://play.google.com/store/apps/details?id=com.sumit.medify",
-  },
-  {
-    name: "Minimalist Forecast",
-    initial: "F",
-    category: "Weather",
-    badge: "Live",
-    summary: "A weather app with a quiet, minimal interface.",
-    url: "https://play.google.com/store/apps/details?id=appamania.sumit.flutter_forecast",
-  },
-  {
-    name: "Wally — The Stupid",
-    initial: "W",
-    category: "Casual",
-    badge: "Live",
-    summary: "Not smart. Not useful. Strangely cheerful.",
-    url: "https://play.google.com/store/apps/details?id=in.appa_mania.wally_the_stupid",
-  },
-] as const;
-
 export const inDevelopment = {
   name: "Network.",
   summary: "A mobile strategy game about building and defending the infrastructure that keeps the internet running.",
 } as const;
-
-export const packages = [
-  {
-    name: "envified",
-    summary: "Runtime dev/prod switching with integrity checks and biometric gating.",
-    points: 150,
-  },
-  {
-    name: "drip_flutter",
-    summary: "Zero-rebuild UI updates through direct RenderObject synchronisation (alpha).",
-    points: 150,
-  },
-  {
-    name: "screenx",
-    summary: "Responsive breakpoints and sp/dp converters for Android, iOS and Web.",
-    points: 160,
-  },
-] as const;
-
-export const pubPointsRange = (() => {
-  const pts = packages.map((p) => p.points);
-  return { min: Math.min(...pts), max: Math.max(...pts) };
-})();
 
 export const pubUrl = (name: string) => `https://pub.dev/packages/${name}`;

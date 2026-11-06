@@ -1,4 +1,4 @@
-// Client checks for the note form. The Apps Script repeats them; that script is the trust boundary.
+// Client checks for the note form. Firestore rules repeat the length caps.
 
 const LIMITS = { name: 200, email: 200, message: 4000, link: 500 } as const;
 

@@ -8,27 +8,22 @@ import { WorkCards } from "@/components/site/WorkCards";
 import { site } from "@/config/site";
 import { getWork } from "@/lib/content";
 
-export const dynamicParams = false;
-export async function generateStaticParams() {
-  return (await getWork()).map((w) => ({ slug: w.slug }));
-}
+export const dynamic = "force-dynamic";
 
 async function find(slug: string) {
   return (await getWork()).find((w) => w.slug === slug);
 }
 
-export async function generateMetadata({ params }: PageProps<"/work/[slug]">): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const w = await find((await params).slug);
-  return w ? { title: w.meta.teaser.title, description: w.meta.lead, alternates: { canonical: `/work/${w.slug}` } } : {};
+  return w ? { title: w.teaser.title, description: w.lead, alternates: { canonical: `/work/${w.slug}` } } : {};
 }
 
-// Case study (canvas board Work, PRD E1.4): problem, what I did, result with a real number, more work.
-export default async function CaseStudy({ params }: PageProps<"/work/[slug]">) {
+export default async function CaseStudy({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const all = await getWork();
   const w = all.find((x) => x.slug === slug);
   if (!w) notFound();
-  const { meta, Body } = w;
   const others = all.filter((x) => x.slug !== slug);
   return (
     <article>
@@ -36,16 +31,16 @@ export default async function CaseStudy({ params }: PageProps<"/work/[slug]">) {
         data={{
           "@context": "https://schema.org",
           "@type": "Article",
-          headline: meta.teaser.title,
-          description: meta.lead,
+          headline: w.teaser.title,
+          description: w.lead,
           author: { "@type": "Person", name: site.owner },
           url: `${site.url}/work/${w.slug}`,
         }}
       />
-      <PageHero eyebrow={meta.eyebrow} title={meta.title} accent={meta.accent} lead={meta.lead} />
+      <PageHero eyebrow={w.eyebrow} title={w.title} accent={w.accent} lead={w.lead} />
       <Bento className="mt-10">
-        {meta.stats.map((s, i) => (
-          <Tile key={s.label} brand={i === meta.stats.length - 1} className="min-h-45">
+        {w.stats.map((s, i) => (
+          <Tile key={s.label} brand={i === w.stats.length - 1} className="min-h-45">
             <Eyebrow>{s.label}</Eyebrow>
             <Big className="text-[56px]!">{s.value}</Big>
           </Tile>
@@ -56,21 +51,23 @@ export default async function CaseStudy({ params }: PageProps<"/work/[slug]">) {
         <div className="grid gap-12 min-[900px]:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)]">
           <div>
             <Eyebrow>01 — The problem</Eyebrow>
-            <h2 className="mt-3 text-[clamp(36px,4vw,56px)] leading-none font-semibold tracking-[-0.045em]">{meta.problemTitle}</h2>
+            <h2 className="mt-3 text-[clamp(36px,4vw,56px)] leading-none font-semibold tracking-[-0.045em]">{w.problemTitle}</h2>
           </div>
-          <div className="flex flex-col gap-5">
-            <Body />
+          <div className="flex flex-col gap-5 text-body-lg text-ink-muted">
+            {w.problem.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
           </div>
         </div>
       </Section>
 
       <Section aria-labelledby="did">
-        <SectionHeader id="did" eyebrow="02 — What I did" title={`${["", "", "Two", "Three", "Four"][meta.steps.length]} steps, all reversible.`} />
-        <Steps items={meta.steps} />
-        {meta.checks && (
+        <SectionHeader id="did" eyebrow="02 — What I did" title={`${["", "", "Two", "Three", "Four"][w.steps.length]} steps, all reversible.`} />
+        <Steps items={w.steps} />
+        {w.checks && (
           <Code className="mt-4 px-7 py-6 text-[14px]">
             <span className="text-ink-muted"># checks on every pull request</span>
-            {meta.checks.map((c) => (
+            {w.checks.map((c) => (
               <span key={c} className="block">
                 <span className="k">{c.split(" ")[0]}</span> {c.slice(c.indexOf(" ") + 1)}
               </span>
@@ -83,14 +80,14 @@ export default async function CaseStudy({ params }: PageProps<"/work/[slug]">) {
         <Panel>
           <div className="relative flex flex-col gap-5">
             <Eyebrow>03 — Result</Eyebrow>
-            <p className="text-[clamp(40px,5vw,72px)] leading-[0.95] font-semibold tracking-[-0.05em]">{meta.result.title}</p>
-            <p className="text-ink-muted">{meta.result.body}</p>
+            <p className="text-[clamp(40px,5vw,72px)] leading-[0.95] font-semibold tracking-[-0.05em]">{w.result.title}</p>
+            <p className="text-ink-muted">{w.result.body}</p>
           </div>
           <div className="relative flex flex-col gap-4">
-            {meta.versions.map((v) => (
+            {w.versions.map((v) => (
               <VersionJump key={v.from} from={v.from} to={v.to} />
             ))}
-            <p className="mt-2 font-mono text-[13px] text-ink-muted">{meta.stack.join(" · ")}</p>
+            <p className="mt-2 font-mono text-[13px] text-ink-muted">{w.stack.join(" · ")}</p>
           </div>
         </Panel>
       </Section>
@@ -103,7 +100,7 @@ export default async function CaseStudy({ params }: PageProps<"/work/[slug]">) {
       )}
 
       <Section>
-        <CtaBand eyebrow="A question" title="Something in this write-up?" body="Send a note. I read every row.">
+        <CtaBand eyebrow="A question" title="Something in this write-up?" body="Send a note. I read every one.">
           <Link href="/contact" className={buttonStyles("inverse", "lg")}>
             Send a note <Arrow />
           </Link>

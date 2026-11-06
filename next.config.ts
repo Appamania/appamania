@@ -1,4 +1,3 @@
-import createMDX from "@next/mdx";
 import type { NextConfig } from "next";
 
 const dev = process.env.NODE_ENV !== "production";
@@ -6,12 +5,11 @@ const dev = process.env.NODE_ENV !== "production";
 // 'unsafe-eval' only in dev: React Refresh needs it.
 const csp = [
   "default-src 'self'",
-  // ponytail: 'unsafe-inline' scripts; move to nonces if a third-party script is ever added.
-  `script-src 'self' 'unsafe-inline'${dev ? " 'unsafe-eval'" : ""} https://va.vercel-scripts.com`,
+  `script-src 'self' 'unsafe-inline'${dev ? " 'unsafe-eval'" : ""} https://www.googletagmanager.com`,
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob:",
+  "img-src 'self' data: blob: https://www.google-analytics.com https://www.googletagmanager.com",
   "font-src 'self'",
-  "connect-src 'self' https://script.google.com https://script.googleusercontent.com https://vitals.vercel-insights.com",
+  "connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com https://firebaseremoteconfig.googleapis.com",
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "form-action 'self'",
@@ -44,10 +42,8 @@ const nextConfig: NextConfig = {
       { source: "/login", destination: "/", statusCode: 301 },
       { source: "/portal", destination: "/", statusCode: 301 },
       { source: "/portal/:path*", destination: "/", statusCode: 301 },
-      { source: "/admin", destination: "/", statusCode: 301 },
-      { source: "/admin/:path*", destination: "/", statusCode: 301 },
     ];
   },
 };
 
-export default createMDX()(nextConfig);
+export default nextConfig;

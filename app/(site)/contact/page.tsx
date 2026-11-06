@@ -4,7 +4,7 @@ import { site } from "@/config/site";
 
 export const metadata: Metadata = {
   title: "Send a note",
-  description: `Send a note to ${site.owner}. It is saved in a Google Sheet and used only to reply.`,
+  description: `Send a note to ${site.owner}. It is saved for a reply.`,
   alternates: { canonical: "/contact" },
 };
 
@@ -25,7 +25,7 @@ export default function Contact() {
           · Kolkata, IST (UTC+5:30)
         </p>
       </div>
-      <NoteForm endpoint={process.env.NEXT_PUBLIC_ENQUIRY_URL ?? ""} />
+      <NoteForm project={process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID ?? ""} apiKey={process.env.NEXT_PUBLIC_FIREBASE_API_KEY ?? ""} />
     </div>
   );
 }

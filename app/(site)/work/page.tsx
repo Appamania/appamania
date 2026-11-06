@@ -3,6 +3,8 @@ import { PageHero, Section } from "@/components/site/Blocks";
 import { WorkCards } from "@/components/site/WorkCards";
 import { getWork } from "@/lib/content";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Work",
   description: "Flutter migrations, crash fixes and internal platforms. Names stay off the page unless someone asked to be named.",

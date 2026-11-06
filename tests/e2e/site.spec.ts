@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { expectNoSeriousAxe } from "./helpers";
 
-const pages = ["/", "/work", "/work/flutter-3-47-upgrade", "/apps", "/open-source", "/contact", "/legal/privacy"];
+const pages = ["/", "/work", "/work/flutter-3-47-upgrade", "/apps", "/open-source", "/blog", "/contact", "/legal/privacy"];
 
 for (const path of pages)
   test(`${path} renders one h1 and passes axe`, async ({ page }) => {
@@ -63,5 +63,5 @@ test("a honeypot note pretends to save", async ({ page }) => {
   await page.getByLabel("Message").fill("Hello from the test.");
   await page.locator('input[name="website"]').fill("https://spam.example", { force: true });
   await page.getByRole("button", { name: "Send note" }).click();
-  await expect(page.getByRole("status")).toContainText("Thanks — it's in the sheet.");
+  await expect(page.getByRole("status")).toContainText("Thanks — it's saved.");
 });

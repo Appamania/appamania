@@ -11,6 +11,7 @@ export function Footer() {
         { href: "/work", label: "Case studies" },
         { href: "/apps", label: "Apps" },
         { href: "/open-source", label: "Open source" },
+        { href: "/blog", label: "Blog" },
       ],
     },
     {

@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, type FocusEvent } from "react";
+import { useEffect, useRef, useState, type FocusEvent } from "react";
 import { Button } from "@/components/ui/Button";
 import { Input, Textarea } from "@/components/ui/Field";
 import { site } from "@/config/site";
 import { fieldError, prepareNote, type NoteField, type NoteFields } from "@/lib/note";
+import { createNote } from "@/lib/store";
 
 function read(form: HTMLFormElement): NoteFields {
   const fd = new FormData(form);
@@ -17,12 +18,22 @@ function read(form: HTMLFormElement): NoteFields {
   };
 }
 
-// Posts to the Apps Script when NEXT_PUBLIC_ENQUIRY_URL is set. Otherwise opens a mailto.
-export function NoteForm({ endpoint }: { endpoint: string }) {
+// Creates a Firestore note when the Firebase keys are set. Otherwise opens a mailto.
+export function NoteForm({ project, apiKey }: { project: string; apiKey: string }) {
   const [errors, setErrors] = useState<Partial<Record<NoteField, string>>>({});
   const [formError, setFormError] = useState("");
   const [sent, setSent] = useState(false);
   const [pending, setPending] = useState(false);
+  const statusRef = useRef<HTMLHeadingElement>(null);
+  const alertRef = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    if (sent) statusRef.current?.focus();
+  }, [sent]);
+
+  useEffect(() => {
+    if (formError) alertRef.current?.focus();
+  }, [formError]);
 
   function onBlur(e: FocusEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const field = e.currentTarget.name as NoteField;
@@ -34,7 +45,9 @@ export function NoteForm({ endpoint }: { endpoint: string }) {
     return (
       <div role="status" className="flex flex-col gap-3 rounded-lg border border-line bg-paper-raised p-9">
         <span className="eyebrow text-brand">Note saved</span>
-        <h2 className="text-h1">Thanks — it&apos;s in the sheet.</h2>
+        <h2 ref={statusRef} tabIndex={-1} className="text-h1 outline-none">
+          Thanks — it&apos;s saved.
+        </h2>
         <p className="text-ink-muted">I read these myself. No newsletter.</p>
       </div>
     );
@@ -57,7 +70,7 @@ export function NoteForm({ endpoint }: { endpoint: string }) {
           setSent(true);
           return;
         }
-        if (!endpoint) {
+        if (!project || !apiKey) {
           const body = [`From: ${prepared.body.name} <${prepared.body.email}>`, "", prepared.body.message, prepared.body.link]
             .filter(Boolean)
             .join("\n");
@@ -65,12 +78,7 @@ export function NoteForm({ endpoint }: { endpoint: string }) {
           return;
         }
         setPending(true);
-        void fetch(endpoint, {
-          method: "POST",
-          mode: "no-cors",
-          headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body: JSON.stringify(prepared.body),
-        })
+        void createNote(project, apiKey, prepared.body)
           .then(() => setSent(true))
           .catch(() => {
             setPending(false);
@@ -80,7 +88,7 @@ export function NoteForm({ endpoint }: { endpoint: string }) {
     >
       <span className="eyebrow text-brand">A note</span>
       {formError && (
-        <p role="alert" className="rounded-sm border border-danger p-3 text-small text-danger">
+        <p ref={alertRef} tabIndex={-1} role="alert" className="rounded-sm border border-danger p-3 text-small text-danger outline-none">
           {formError}{" "}
           <a href={`mailto:${site.email}`} className="underline underline-offset-4">
             {site.email}
@@ -111,9 +119,7 @@ export function NoteForm({ endpoint }: { endpoint: string }) {
         Send note
       </Button>
       <span className="font-mono text-small text-ink-muted">
-        {endpoint
-          ? "Saved in a Google Sheet I own. Used only to reply."
-          : `Opens an email to ${site.email} until the sheet is connected.`}
+        {project && apiKey ? "Saved for me to read. Used only to reply." : `Opens an email to ${site.email} until Firebase is connected.`}
       </span>
     </form>
   );

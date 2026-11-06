@@ -1,9 +1,10 @@
-import { apps, packages } from "@/config/catalog";
 import { site } from "@/config/site";
+import { getApps, getPackages, getPosts } from "@/lib/content";
 
-export const dynamic = "force-static";
+export const dynamic = "force-dynamic";
 
-export function GET() {
+export async function GET() {
+  const [apps, packages, posts] = await Promise.all([getApps(), getPackages(), getPosts()]);
   const body = `# ${site.name}
 
 > ${site.tagline} ${site.owner}, ${site.location}.
@@ -12,11 +13,13 @@ export function GET() {
 - Case studies: ${site.url}/work
 - Apps on Google Play: ${apps.map((a) => a.name).join(", ")} (${site.url}/apps)
 - Open-source packages: ${packages.map((p) => `${p.name} (${p.points} pts)`).join(", ")} (${site.links.pubPublisher})
+- Blog: ${posts.map((p) => p.title).join(", ") || "No posts yet."} (${site.url}/blog)
 
 ## Pages
 - [Work](${site.url}/work)
 - [Apps](${site.url}/apps)
 - [Open source](${site.url}/open-source)
+- [Blog](${site.url}/blog)
 - [Send a note](${site.url}/contact)
 
 ## Contact

@@ -1,0 +1,193 @@
+{
+  "work": [
+    {
+      "slug": "flutter-3-47-upgrade",
+      "order": 1,
+      "eyebrow": "Case study · enterprise · migration",
+      "title": "Flutter 3.41 → 3.47.",
+      "accent": "Zero regressions.",
+      "lead": "A production enterprise app with live users needed a two-step SDK jump, Apple's UIScene lifecycle and a move from CocoaPods to Swift Package Manager — without pausing releases.",
+      "teaser": {
+        "label": "Enterprise · migration",
+        "title": "Flutter 3.41 → 3.47 with zero regressions",
+        "summary": "A two-step SDK jump, UIScene and Swift PM, with releases never paused."
+      },
+      "stats": [
+        { "label": "SDK", "value": "3.47" },
+        { "label": "iOS", "value": "SPM" },
+        { "label": "Regressions", "value": "0" }
+      ],
+      "problemTitle": "Upgrade without stopping the train.",
+      "problem": [
+        "Several plugins had dropped support for the old toolchain, the iOS build relied on CocoaPods specs being retired, and the scene-based lifecycle had an App Store deadline.",
+        "The constraint: releases could not stop. Every step had to land on main behind a green build."
+      ],
+      "steps": [
+        { "title": "Audit the tree", "body": "Every package mapped against the target SDK; blockers flagged first." },
+        { "title": "Upgrade in steps", "body": "SDK bump, then plugins, each behind a green CI build." },
+        { "title": "Move iOS to SPM", "body": "Pods replaced with Swift packages; UIScene adopted." },
+        { "title": "Release and watch", "body": "Staged rollout with crash monitoring before full release." }
+      ],
+      "checks": [
+        "flutter --version          # 3.47.x",
+        "flutter analyze --fatal-infos",
+        "flutter test --coverage",
+        "xcodebuild -resolvePackageDependencies"
+      ],
+      "result": {
+        "title": "Shipped on schedule. No rollback.",
+        "body": "The app moved to the current toolchain and stayed releasable at every step."
+      },
+      "versions": [
+        { "from": "Flutter 3.41", "to": "3.47" },
+        { "from": "CocoaPods", "to": "Swift PM" },
+        { "from": "AppDelegate", "to": "UIScene" }
+      ],
+      "stack": ["Flutter", "Dart", "Swift Package Manager", "GitHub Actions"]
+    },
+    {
+      "slug": "in-house-crash-reporting",
+      "order": 2,
+      "eyebrow": "Case study · internal tooling",
+      "title": "Crash reporting,",
+      "accent": "built in-house.",
+      "lead": "A product team's crash reports and engineering tasks lived in paid third-party tools. I built two internal platforms that replaced them.",
+      "teaser": {
+        "label": "Internal tooling",
+        "title": "A crash reporting platform built in-house",
+        "summary": "Offline-capable; replaced a paid SaaS for the mobile team."
+      },
+      "stats": [
+        { "label": "Platforms built", "value": "2" },
+        { "label": "Backend", "value": "Node" },
+        { "label": "Paid tools left", "value": "0" }
+      ],
+      "problemTitle": "Paying rent on your own crash data.",
+      "problem": [
+        "Costs grew with usage, data sat outside the company, and neither tool fitted how the team worked.",
+        "The new tools had to run alongside the old ones until the team trusted them, with no gap in crash visibility."
+      ],
+      "steps": [
+        { "title": "Map the workflow", "body": "How the team actually triaged crashes and tracked release work." },
+        { "title": "Crash pipeline", "body": "Offline queue on device, sync, grouping, stack traces with release metadata." },
+        { "title": "Task tracking", "body": "A board shaped around the team's release cycle, not a generic one." },
+        { "title": "Switch over", "body": "Both vendors removed once the team worked in the new tools." }
+      ],
+      "result": {
+        "title": "Two vendors gone. Data stays home.",
+        "body": "Crash data and engineering tasks now stay inside the company, in tools the team owns and can change."
+      },
+      "versions": [
+        { "from": "Paid crash SaaS", "to": "In-house" },
+        { "from": "Paid task tool", "to": "In-house" }
+      ],
+      "stack": ["Flutter", "Node.js", "Express.js", "Supabase"]
+    },
+    {
+      "slug": "telecom-flutter-3-migration",
+      "order": 3,
+      "eyebrow": "Case study · telecom · maps",
+      "title": "Flutter 2 → 3.",
+      "accent": "No broken releases.",
+      "lead": "A large, maps-heavy enterprise telecom app was pinned to Flutter 2. It was in daily use, so a broken release was not an option.",
+      "teaser": {
+        "label": "Telecom · maps",
+        "title": "Flutter 2 → 3 for an enterprise telecom app",
+        "summary": "Maps-heavy codebase migrated with no regressions."
+      },
+      "stats": [
+        { "label": "From", "value": "2.x" },
+        { "label": "To", "value": "3.x" },
+        { "label": "Regressions", "value": "0" }
+      ],
+      "problemTitle": "Every month on the old version made it riskier.",
+      "problem": [
+        "Dependencies were ageing out and new platform requirements were landing. The app served field users every day."
+      ],
+      "steps": [
+        { "title": "Audit first", "body": "Every dependency and platform channel checked for Flutter 3 before touching code." },
+        { "title": "Small steps", "body": "Migrated in reviewable steps through the existing release process, no big-bang branch." },
+        { "title": "Fix by module", "body": "Breaking API changes fixed module by module, with regression checks at each step." }
+      ],
+      "result": {
+        "title": "Upgraded. Unblocked.",
+        "body": "The app moved to Flutter 3 with zero regressions reaching production, and the team could use current packages and SDK targets again."
+      },
+      "versions": [{ "from": "Flutter 2.x", "to": "3.x" }],
+      "stack": ["Flutter", "Dart", "Null safety", "Platform channels"]
+    }
+  ],
+  "posts": [],
+  "apps": [
+    {
+      "slug": "spend-analytics",
+      "order": 1,
+      "name": "Spend Analytics",
+      "initial": "S",
+      "category": "Finance",
+      "badge": "50+ installs",
+      "summary": "Offline-first spend tracker with smart limits and real-time charts.",
+      "url": "https://play.google.com/store/apps/details?id=com.sumit.spofficial.spend_analytics",
+      "body": ["Offline-first spend tracker with smart limits and real-time charts."]
+    },
+    {
+      "slug": "medify",
+      "order": 2,
+      "name": "Medify",
+      "initial": "M",
+      "category": "Health",
+      "badge": "Live",
+      "summary": "Medication reminders and a simple routine tracker.",
+      "url": "https://play.google.com/store/apps/details?id=com.sumit.medify",
+      "body": ["Medication reminders and a simple routine tracker."]
+    },
+    {
+      "slug": "minimalist-forecast",
+      "order": 3,
+      "name": "Minimalist Forecast",
+      "initial": "F",
+      "category": "Weather",
+      "badge": "Live",
+      "summary": "A weather app with a quiet, minimal interface.",
+      "url": "https://play.google.com/store/apps/details?id=appamania.sumit.flutter_forecast",
+      "body": ["A weather app with a quiet, minimal interface."]
+    },
+    {
+      "slug": "wally",
+      "order": 4,
+      "name": "Wally — The Stupid",
+      "initial": "W",
+      "category": "Casual",
+      "badge": "Live",
+      "summary": "Not smart. Not useful. Strangely cheerful.",
+      "url": "https://play.google.com/store/apps/details?id=in.appa_mania.wally_the_stupid",
+      "body": ["Not smart. Not useful. Strangely cheerful."]
+    }
+  ],
+  "packages": [
+    {
+      "slug": "envified",
+      "order": 1,
+      "name": "envified",
+      "summary": "Runtime dev/prod switching with integrity checks and biometric gating.",
+      "points": 150,
+      "body": ["Runtime dev/prod switching with integrity checks and biometric gating."]
+    },
+    {
+      "slug": "drip-flutter",
+      "order": 2,
+      "name": "drip_flutter",
+      "summary": "Zero-rebuild UI updates through direct RenderObject synchronisation (alpha).",
+      "points": 150,
+      "body": ["Zero-rebuild UI updates through direct RenderObject synchronisation (alpha)."]
+    },
+    {
+      "slug": "screenx",
+      "order": 3,
+      "name": "screenx",
+      "summary": "Responsive breakpoints and sp/dp converters for Android, iOS and Web.",
+      "points": 160,
+      "body": ["Responsive breakpoints and sp/dp converters for Android, iOS and Web."]
+    }
+  ]
+}

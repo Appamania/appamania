@@ -8,6 +8,7 @@ export const navItems = [
   { href: "/work", label: "Work" },
   { href: "/apps", label: "Apps" },
   { href: "/open-source", label: "Open source" },
+  { href: "/blog", label: "Blog" },
 ] as const;
 
 /** Desktop nav links with aria-current (needs the pathname, so a client leaf). */

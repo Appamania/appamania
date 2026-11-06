@@ -11,7 +11,7 @@ export default function Privacy() {
       <p>The note form asks for your name, email, a message, and an optional link.</p>
       <h2>Where it goes</h2>
       <p>
-        Those fields are stored in a Google Sheet owned by {site.email}. They are used only to reply. Page views use Vercel Web Analytics, which does not use advertising cookies.
+        Those fields are stored in Firestore and are readable only from the admin page signed in as {site.email}. They are used only to reply. Page views use Firebase Analytics. Admin sign-in stores a Firebase Auth session in this browser only.
       </p>
       <h2>Your rights</h2>
       <p>
