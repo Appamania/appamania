@@ -12,7 +12,9 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version: 22, cache: npm }
       - run: npm ci
-      - run: npm audit --audit-level=high --omit=dev # PRD v4 §22
+      # PRD v4 §22. High/critical still fail. The only exception is
+      # GHSA-gcqx-w48m-w2h4 (deepmerge, no fix, React Email only) — see scripts/audit-prod.mjs.
+      - run: node scripts/audit-prod.mjs
       - run: npm run lint && npm run typecheck
       - run: npm run check:tokens
       - uses: supabase/setup-cli@v1
