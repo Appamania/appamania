@@ -1,10 +1,7 @@
-"use client";
-
 import { Eyebrow, Panel } from "@/components/site/Blocks";
-import { useHomeCopy } from "@/components/site/Remote";
+import { inDevelopment } from "@/config/catalog";
 
 export function InDevelopment() {
-  const { inDevelopment } = useHomeCopy();
   return (
     <Panel>
       <div className="relative flex flex-col gap-5">

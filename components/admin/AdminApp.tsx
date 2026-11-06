@@ -5,26 +5,25 @@ import { z } from "zod";
 import { Button } from "@/components/ui/Button";
 import { Input, Textarea } from "@/components/ui/Field";
 import { isOfferId, offers } from "@/config/offers";
+import { deleteDoc, getDoc, listDocs, readToken, saveDoc } from "@/lib/firestore";
 import {
   ADMIN_EMAIL,
   AppSchema,
-  deleteDoc,
   isAdmin,
-  listDocs,
   NoteSchema,
   PackageSchema,
   PostSchema,
-  readToken,
-  saveDoc,
+  SettingsSchema,
   WorkSchema,
   type AppEntry,
   type Note,
   type PackageEntry,
   type Post,
+  type Settings,
   type Work,
-} from "@/lib/store";
+} from "@/lib/schemas";
 
-const tabs = ["Work", "Posts", "Apps", "Packages", "Notes"] as const;
+const tabs = ["Work", "Posts", "Apps", "Packages", "Notes", "Site"] as const;
 type Tab = (typeof tabs)[number];
 
 function Lines({
@@ -533,6 +532,81 @@ function Notes({ token, project, apiKey }: { token: string; project: string; api
   );
 }
 
+/** settings/site: notice banner and availability line. Shown on every page within 60s. */
+function SiteSettings({ token, project, apiKey }: { token: string; project: string; apiKey: string }) {
+  const [draft, setDraft] = useState<Settings | null>(null);
+  const [error, setError] = useState("");
+  const [saved, setSaved] = useState(false);
+  const [pending, setPending] = useState(false);
+
+  useEffect(() => {
+    let ignore = false;
+    getDoc(project, apiKey, "settings/site", token)
+      .then((fields) => {
+        if (ignore) return;
+        const parsed = SettingsSchema.safeParse(fields ?? {});
+        setDraft(parsed.success ? parsed.data : { notice: "", availability: "" });
+      })
+      .catch(() => {
+        if (!ignore) setError("Could not load settings. Reload the page.");
+      });
+    return () => {
+      ignore = true;
+    };
+  }, [apiKey, project, token]);
+
+  if (!draft) return <p className="text-ink-muted">{error || "Loading."}</p>;
+  return (
+    <form
+      noValidate
+      className="flex max-w-xl flex-col gap-4"
+      onSubmit={(event) => {
+        event.preventDefault();
+        const parsed = SettingsSchema.safeParse(draft);
+        if (!parsed.success) {
+          setError(parsed.error.issues[0]?.message ?? "Check the fields.");
+          return;
+        }
+        setPending(true);
+        setError("");
+        setSaved(false);
+        saveDoc(project, apiKey, token, "settings", "site", parsed.data)
+          .then(() => setSaved(true))
+          .catch(() => setError("Could not save. Try again."))
+          .finally(() => setPending(false));
+      }}
+    >
+      {error && (
+        <p role="alert" className="text-small text-danger">
+          {error}
+        </p>
+      )}
+      {saved && (
+        <p role="status" className="text-small text-ink-muted">
+          Saved. Live within a minute.
+        </p>
+      )}
+      <Input
+        label="Notice"
+        name="notice"
+        helper="Banner above the nav. Empty hides it."
+        value={draft.notice}
+        onChange={(e) => setDraft({ ...draft, notice: e.target.value })}
+      />
+      <Input
+        label="Availability"
+        name="availability"
+        helper="Footer line, e.g. Taking one sprint from January. Empty hides it."
+        value={draft.availability}
+        onChange={(e) => setDraft({ ...draft, availability: e.target.value })}
+      />
+      <Button type="submit" loading={pending} className="self-start">
+        Save
+      </Button>
+    </form>
+  );
+}
+
 export function AdminApp({ project, apiKey }: { project: string; apiKey: string }) {
   const [phase, setPhase] = useState<"form" | "sent" | "ready" | "wrong" | "confirm">("form");
   const [email, setEmail] = useState("");
@@ -950,6 +1024,7 @@ export function AdminApp({ project, apiKey }: { project: string; apiKey: string 
             </DocEditor>
           )}
           {tab === "Notes" && <Notes token={token} project={project} apiKey={apiKey} />}
+          {tab === "Site" && <SiteSettings token={token} project={project} apiKey={apiKey} />}
         </div>
       )}
     </>

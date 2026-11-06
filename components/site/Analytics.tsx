@@ -1,23 +1,18 @@
-"use client";
+import Script from "next/script";
 
-import { useEffect } from "react";
-import { firebaseApp } from "@/lib/firebase";
-
+// GA4 via gtag.js. No Firebase SDK: the admin and the forms talk REST, so the browser bundle stays SDK-free.
 export function Analytics() {
-  useEffect(() => {
-    const app = firebaseApp();
-    if (!app) return;
-    let remove = () => {};
-    void import("firebase/analytics").then(async ({ getAnalytics, isSupported, logEvent }) => {
-      if (!(await isSupported())) return;
-      const analytics = getAnalytics(app);
-      const onError = (event: ErrorEvent) => {
-        logEvent(analytics, "exception", { description: event.message, fatal: false });
-      };
-      window.addEventListener("error", onError);
-      remove = () => window.removeEventListener("error", onError);
-    });
-    return () => remove();
-  }, []);
-  return null;
+  const id = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+  if (!id) return null;
+  return (
+    <>
+      <Script
+        src={`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(id)}`}
+        strategy="afterInteractive"
+      />
+      <Script id="gtag" strategy="afterInteractive">
+        {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config',${JSON.stringify(id)});`}
+      </Script>
+    </>
+  );
 }

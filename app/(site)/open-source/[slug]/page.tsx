@@ -7,13 +7,19 @@ import { getPackages } from "@/lib/content";
 
 export const revalidate = 60;
 
+export async function generateStaticParams() {
+  return (await getPackages()).map((row) => ({ slug: row.slug }));
+}
+
 async function find(slug: string) {
   return (await getPackages()).find((p) => p.slug === slug);
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const pkg = await find((await params).slug);
-  return pkg ? { title: pkg.name, description: pkg.summary, alternates: { canonical: `/open-source/${pkg.slug}` } } : {};
+  return pkg
+    ? { title: pkg.name, description: pkg.summary, alternates: { canonical: `/open-source/${pkg.slug}` } }
+    : {};
 }
 
 export default async function PackagePage({ params }: { params: Promise<{ slug: string }> }) {

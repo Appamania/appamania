@@ -18,9 +18,5 @@ env:
     value: ""
   - variable: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
     value: ""
-  - variable: NEXT_PUBLIC_FIREBASE_APP_ID
-    value: ""
   - variable: NEXT_PUBLIC_GA_MEASUREMENT_ID
     value: ""
-  - variable: NEXT_PUBLIC_PAGE_VERSION
-    value: "1"

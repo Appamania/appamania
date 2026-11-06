@@ -6,7 +6,7 @@ import { Input, Select, Textarea } from "@/components/ui/Field";
 import { offerIds, offers, type OfferId } from "@/config/offers";
 import { site } from "@/config/site";
 import { fieldError, prepareNote, type NoteField, type NoteFields } from "@/lib/note";
-import { createNote } from "@/lib/store";
+import { createNote } from "@/lib/firestore";
 
 function read(form: HTMLFormElement): NoteFields {
   const fd = new FormData(form);

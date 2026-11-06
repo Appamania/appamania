@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import { Arrow, buttonStyles } from "@/components/ui/Button";
 import {
@@ -18,11 +16,10 @@ import {
 import { AuditScreen, FloatCard, Marquee, Phone, SprintScreen, sampleAudit } from "@/components/site/Proof";
 import { Plans } from "@/components/site/Plans";
 import { WorkCards } from "@/components/site/WorkCards";
-import { useHomeCopy } from "@/components/site/Remote";
-import type { PackageEntry, Work } from "@/lib/store";
+import { homeCopy as copy } from "@/config/home";
+import type { PackageEntry, Work } from "@/lib/schemas";
 
 export function HomePage({ work, packages, appCount }: { work: Work[]; packages: PackageEntry[]; appCount: number }) {
-  const copy = useHomeCopy();
   const points = packages.map((p) => p.points);
   const min = points.length ? Math.min(...points) : 0;
   const max = points.length ? Math.max(...points) : 0;

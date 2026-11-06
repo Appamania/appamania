@@ -1,9 +1,8 @@
-import { inDevelopment, stack } from "@/config/catalog";
+import { stack } from "@/config/catalog";
 import { formatPrice, offers } from "@/config/offers";
-import type { HomeCopy } from "@/lib/store";
 
-// Checked-in home copy. Remote Config `static` replaces this when the JSON parses.
-export const homeCopy: HomeCopy = {
+// Home copy. Edit here; prices come from config/offers.ts.
+export const homeCopy = {
   hero: {
     before: "Stuck Flutter app?",
     after: "Fixed price,",
@@ -36,5 +35,4 @@ export const homeCopy: HomeCopy = {
     ci: "CI on every push",
   },
   stack: [...stack],
-  inDevelopment: { name: inDevelopment.name, summary: inDevelopment.summary },
-};
+} as const;

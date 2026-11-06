@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { Work } from "@/lib/store";
+import type { Work } from "@/lib/schemas";
 import { Eyebrow } from "./Blocks";
 
 /** Case-study teaser cards (canvas Work "More work"). Whole card is the link. */

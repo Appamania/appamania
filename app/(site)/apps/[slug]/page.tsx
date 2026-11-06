@@ -5,6 +5,10 @@ import { getApps } from "@/lib/content";
 
 export const revalidate = 60;
 
+export async function generateStaticParams() {
+  return (await getApps()).map((row) => ({ slug: row.slug }));
+}
+
 async function find(slug: string) {
   return (await getApps()).find((a) => a.slug === slug);
 }
@@ -24,7 +28,10 @@ export default async function AppPage({ params }: { params: Promise<{ slug: stri
         {app.body.map((paragraph) => (
           <p key={paragraph}>{paragraph}</p>
         ))}
-        <a href={app.url} className="inline-flex min-h-11 items-center font-mono text-[13px] text-brand underline-offset-4 hover:underline">
+        <a
+          href={app.url}
+          className="inline-flex min-h-11 items-center font-mono text-[13px] text-brand underline-offset-4 hover:underline"
+        >
           Get it on Google Play
         </a>
       </div>

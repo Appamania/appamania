@@ -2,13 +2,30 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Arrow, buttonStyles } from "@/components/ui/Button";
-import { Bento, Big, Code, CtaBand, Eyebrow, PageHero, Panel, Section, SectionHeader, Steps, Tile, VersionJump } from "@/components/site/Blocks";
+import {
+  Bento,
+  Big,
+  Code,
+  CtaBand,
+  Eyebrow,
+  PageHero,
+  Panel,
+  Section,
+  SectionHeader,
+  Steps,
+  Tile,
+  VersionJump,
+} from "@/components/site/Blocks";
 import { JsonLd } from "@/components/site/JsonLd";
 import { WorkCards } from "@/components/site/WorkCards";
 import { site } from "@/config/site";
 import { getWork } from "@/lib/content";
 
 export const revalidate = 60;
+
+export async function generateStaticParams() {
+  return (await getWork()).map((row) => ({ slug: row.slug }));
+}
 
 async function find(slug: string) {
   return (await getWork()).find((w) => w.slug === slug);
@@ -51,7 +68,9 @@ export default async function CaseStudy({ params }: { params: Promise<{ slug: st
         <div className="grid gap-12 min-[900px]:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)]">
           <div>
             <Eyebrow>01 — The problem</Eyebrow>
-            <h2 className="mt-3 text-[clamp(36px,4vw,56px)] leading-none font-semibold tracking-[-0.045em]">{w.problemTitle}</h2>
+            <h2 className="mt-3 text-[clamp(36px,4vw,56px)] leading-none font-semibold tracking-[-0.045em]">
+              {w.problemTitle}
+            </h2>
           </div>
           <div className="flex flex-col gap-5 text-body-lg text-ink-muted">
             {w.problem.map((paragraph) => (
@@ -62,7 +81,11 @@ export default async function CaseStudy({ params }: { params: Promise<{ slug: st
       </Section>
 
       <Section aria-labelledby="did">
-        <SectionHeader id="did" eyebrow="02 — What I did" title={`${["", "", "Two", "Three", "Four"][w.steps.length]} steps, all reversible.`} />
+        <SectionHeader
+          id="did"
+          eyebrow="02 — What I did"
+          title={`${["", "", "Two", "Three", "Four"][w.steps.length]} steps, all reversible.`}
+        />
         <Steps items={w.steps} />
         {w.checks && (
           <Code className="mt-4 px-7 py-6 text-[14px]">
@@ -80,7 +103,9 @@ export default async function CaseStudy({ params }: { params: Promise<{ slug: st
         <Panel>
           <div className="relative flex flex-col gap-5">
             <Eyebrow>03 — Result</Eyebrow>
-            <p className="text-[clamp(40px,5vw,72px)] leading-[0.95] font-semibold tracking-[-0.05em]">{w.result.title}</p>
+            <p className="text-[clamp(40px,5vw,72px)] leading-[0.95] font-semibold tracking-[-0.05em]">
+              {w.result.title}
+            </p>
             <p className="text-ink-muted">{w.result.body}</p>
           </div>
           <div className="relative flex flex-col gap-4">
