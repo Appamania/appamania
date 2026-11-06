@@ -17,7 +17,12 @@ jobs:
       - run: node scripts/audit-prod.mjs
       - run: npm run lint && npm run typecheck
       - run: npm run check:tokens
+      # setup-cli@v1 defaults to 2.20.3, which rejects this config.toml
+      # (auth.oauth_server, storage.vector, db.health_timeout, and others).
+      # 2.122.1 is the latest stable v2 and still accepts [inbucket].
       - uses: supabase/setup-cli@v1
+        with:
+          version: 2.122.1
       - run: supabase start && supabase db reset && supabase test db
       - run: ./scripts/local-env.sh # NEXT_PUBLIC_* are inlined at build time
       - run: npm test
