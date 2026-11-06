@@ -13,13 +13,13 @@ export default function NotFound() {
         <div className="relative grid items-center gap-10 pt-20 pb-14 min-[900px]:grid-cols-2 min-[900px]:pt-30">
           <div className="relative flex flex-col gap-6">
             <Eyebrow>Error 404</Eyebrow>
-            <h1 className="text-display-2xl">
+            <h1 className="text-display-xl">
               Route <span className="text-brand">not found.</span>
             </h1>
             <p className="max-w-[46ch] text-body-lg text-ink-muted">This page doesn&apos;t exist — or it moved during a migration. The rest of the site still works.</p>
             <div className="flex flex-wrap gap-3">
               <Link href="/" className={buttonStyles("primary")}>Back to home <Arrow /></Link>
-              <Link href="/services" className={buttonStyles("outline")}>See services</Link>
+              <Link href="/work" className={buttonStyles("outline")}>See the work</Link>
             </div>
           </div>
           <Code aria-hidden className="relative p-7 text-[15px]">

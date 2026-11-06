@@ -2,5 +2,6 @@
 // Mirrors --paper per theme (PRD §7).
 export const themeColor = { night: "#070B09", dark: "#0F1512", light: "#F6F2EA" } as const;
 
-/** Night --brand, for ImageResponse (OG image), which cannot read CSS variables. */
+/** Night --brand and --ink-muted, for ImageResponse (OG image), which cannot read CSS variables. */
 export const nightBrand = "#3DDC84";
+export const nightInkMuted = "#A3B0A8";

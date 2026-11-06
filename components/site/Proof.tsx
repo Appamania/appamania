@@ -28,7 +28,7 @@ export function AuditScreen({ scores, topFix }: { scores: readonly Score[]; topF
   const overall = scores.reduce((a, s) => a + s.value, 0) / scores.length;
   return (
     <>
-      <span className="eyebrow text-[10px] text-brand">App health audit · sample</span>
+      <span className="eyebrow text-[10px] text-brand">Sample report</span>
       <div className="flex items-end justify-between">
         <span className="text-[44px] leading-none font-semibold tracking-[-0.04em]">{overall.toFixed(1)}</span>
         <span className="font-mono text-ink-muted">/ 10</span>
@@ -59,7 +59,7 @@ export function SprintScreen() {
   ];
   return (
     <>
-      <span className="eyebrow text-[10px] text-brand">Rescue sprint · week 3</span>
+      <span className="eyebrow text-[10px] text-brand">Release checklist</span>
       <b className="text-[22px] leading-[1.1] font-semibold tracking-[-0.03em]">Release 1.10.0</b>
       {rows.map(([k, v, ok]) => (
         <div key={k} className={cx(tileCls, "flex justify-between font-mono")}>
@@ -67,7 +67,7 @@ export function SprintScreen() {
           <span className={ok ? "text-score-good" : "text-score-warn"}>{v}</span>
         </div>
       ))}
-      <div className="mt-auto grid h-11 place-items-center rounded-pill bg-brand text-[14px] font-semibold text-on-brand">Ship to production</div>
+      <div className="mt-auto grid h-11 place-items-center rounded-pill bg-brand text-[14px] font-semibold text-on-brand">Checks done</div>
     </>
   );
 }

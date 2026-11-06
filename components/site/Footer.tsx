@@ -1,43 +1,35 @@
 import Link from "next/link";
 import { Logo } from "@/components/ui/Logo";
 import { site } from "@/config/site";
-import { portalEnabled } from "@/lib/flags";
 
 // Footer with outlined giant wordmark (design brief). One light line: "fuelled by chai".
 export function Footer() {
-  const contactLinks = [
-    { href: `mailto:${site.email}`, label: site.email },
-    { href: "/contact", label: "Book or enquire" },
-    { href: site.links.x, label: "X" },
-    { href: site.links.github, label: "GitHub" },
-    { href: site.links.linkedin, label: "LinkedIn" },
-    ...(portalEnabled() ? [{ href: "/portal/login", label: "Client login" }] : []),
-  ];
   const cols = [
-    {
-      title: "Services",
-      links: [
-        { href: "/services#audit", label: "App audit" },
-        { href: "/services#sprint", label: "Rescue sprint" },
-        { href: "/services#retainer", label: "Care retainer" },
-      ],
-    },
     {
       title: "Work",
       links: [
         { href: "/work", label: "Case studies" },
-        { href: "/open-source", label: "Open source" },
         { href: "/apps", label: "Apps" },
+        { href: "/open-source", label: "Open source" },
       ],
     },
-    { title: "Contact", links: contactLinks },
+    {
+      title: "Contact",
+      links: [
+        { href: `mailto:${site.email}`, label: site.email },
+        { href: "/contact", label: "Send a note" },
+        { href: site.links.x, label: "X" },
+        { href: site.links.github, label: "GitHub" },
+        { href: site.links.linkedin, label: "LinkedIn" },
+      ],
+    },
   ];
   return (
     <footer className="wrap pt-24 pb-8">
-      <div className="grid grid-cols-2 gap-8 text-[15px] min-[900px]:grid-cols-[2fr_1fr_1fr_1fr]">
+      <div className="grid grid-cols-2 gap-8 text-[15px] min-[900px]:grid-cols-[2fr_1fr_1fr]">
         <div className="col-span-2 min-[900px]:col-span-1">
           <Logo />
-          <p className="mt-4 max-w-[30ch] text-ink-muted">Flutter app rescue, migration and launch. Built in Kolkata, fuelled by chai.</p>
+          <p className="mt-4 max-w-[30ch] text-ink-muted">{site.tagline} Built in Kolkata, fuelled by chai.</p>
         </div>
         {cols.map((c) => (
           <div key={c.title}>
@@ -61,13 +53,11 @@ export function Footer() {
         appamania
       </p>
       <div className="flex flex-wrap justify-between gap-4 border-t border-line pt-5 font-mono text-[13px] text-ink-muted">
-        <span>© {new Date().getFullYear()} Appamania · Udyam registered</span>
+        <span>© {new Date().getFullYear()} Appamania</span>
         <span>
-          <Link href="/legal/privacy" className="hover:text-ink">Privacy</Link> ·{" "}
-          <Link href="/legal/terms" className="hover:text-ink">Terms</Link> ·{" "}
-          <Link href="/legal/refunds" className="hover:text-ink">Refunds</Link>
+          <Link href="/legal/privacy" className="hover:text-ink">Privacy</Link>
         </span>
-        <span>Kolkata · remote worldwide</span>
+        <span>Kolkata</span>
       </div>
     </footer>
   );

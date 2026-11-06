@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import { Arrow, buttonStyles } from "@/components/ui/Button";
 import { Bento, Big, Code, CtaBand, Eyebrow, PageHero, Panel, Section, SectionHeader, Steps, Tile, VersionJump } from "@/components/site/Blocks";
 import { JsonLd } from "@/components/site/JsonLd";
-import { priceText } from "@/components/site/Price";
 import { WorkCards } from "@/components/site/WorkCards";
 import { site } from "@/config/site";
 import { getWork } from "@/lib/content";
@@ -104,9 +103,9 @@ export default async function CaseStudy({ params }: PageProps<"/work/[slug]">) {
       )}
 
       <Section>
-        <CtaBand eyebrow="Your app next?" title="Stuck on an old Flutter?" body="Send the repo. Get the plan in 48 hours.">
+        <CtaBand eyebrow="A question" title="Something in this write-up?" body="Send a note. I read every row.">
           <Link href="/contact" className={buttonStyles("inverse", "lg")}>
-            Book a {priceText("audit")} audit <Arrow />
+            Send a note <Arrow />
           </Link>
         </CtaBand>
       </Section>

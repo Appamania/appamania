@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Arrow, buttonStyles } from "@/components/ui/Button";
 import { Chip, Code, CtaBand, Section, SectionHeader } from "@/components/site/Blocks";
-import { priceText } from "@/components/site/Price";
 import { packages, pubUrl } from "@/config/catalog";
 import { site } from "@/config/site";
 import { cx } from "@/lib/cx";
@@ -72,9 +71,9 @@ export default function OpenSource() {
       </Section>
 
       <Section>
-        <CtaBand eyebrow="Same standards" title="Your codebase next." body="Tested, documented, analyzer-clean. Start with a 48-hour audit.">
+        <CtaBand eyebrow="A question" title="Something about a package?" body="Send a note. I read every row.">
           <Link href="/contact" className={buttonStyles("inverse", "lg")}>
-            Book a {priceText("audit")} audit <Arrow />
+            Send a note <Arrow />
           </Link>
         </CtaBand>
       </Section>

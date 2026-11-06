@@ -4,7 +4,7 @@ import { defineConfig, devices } from "@playwright/test";
 const port = Number(process.env.E2E_PORT ?? 3000);
 const base = `http://localhost:${port}`;
 
-// PRD v4 §23: e2e against the local stack. One worker: tests share seeded rows (admin TOTP factor). CI runs `next start` on the build from the previous step.
+// CI runs `next start` on the build from the previous step.
 export default defineConfig({
   testDir: "tests/e2e",
   forbidOnly: !!process.env.CI,
@@ -18,7 +18,7 @@ export default defineConfig({
   ],
   webServer: {
     command: process.env.CI ? `npm run start -- -p ${port}` : `npm run dev -- -p ${port}`,
-    url: `${base}/portal/login`,
+    url: base,
     reuseExistingServer: !process.env.CI,
   },
 });
