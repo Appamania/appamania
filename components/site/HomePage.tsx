@@ -2,8 +2,21 @@
 
 import Link from "next/link";
 import { Arrow, buttonStyles } from "@/components/ui/Button";
-import { Big, Bento, CtaBand, Eyebrow, Faq, Glow, Panel, Section, SectionHeader, Tile, VersionJump } from "@/components/site/Blocks";
+import {
+  Big,
+  Bento,
+  CtaBand,
+  Eyebrow,
+  Faq,
+  Glow,
+  Panel,
+  Section,
+  SectionHeader,
+  Tile,
+  VersionJump,
+} from "@/components/site/Blocks";
 import { AuditScreen, FloatCard, Marquee, Phone, SprintScreen, sampleAudit } from "@/components/site/Proof";
+import { Plans } from "@/components/site/Plans";
 import { WorkCards } from "@/components/site/WorkCards";
 import { useHomeCopy } from "@/components/site/Remote";
 import type { PackageEntry, Work } from "@/lib/store";
@@ -20,7 +33,10 @@ export function HomePage({ work, packages, appCount }: { work: Work[]; packages:
         <div className="relative flex flex-col gap-7">
           <h1 className="text-display-2xl">
             {copy.hero.before}{" "}
-            <span aria-hidden className="inline-flex h-[0.72em] translate-y-[-0.06em] items-center gap-2 rounded-pill border border-line-strong bg-paper-sunken px-[0.22em] align-middle">
+            <span
+              aria-hidden
+              className="inline-flex h-[0.72em] translate-y-[-0.06em] items-center gap-2 rounded-pill border border-line-strong bg-paper-sunken px-[0.22em] align-middle"
+            >
               <i className="block size-[0.42em] rounded-full bg-brand" />
               <i className="block size-[0.42em] rounded-full bg-saffron" />
             </span>{" "}
@@ -28,10 +44,10 @@ export function HomePage({ work, packages, appCount }: { work: Work[]; packages:
           </h1>
           <p className="max-w-[46ch] text-body-lg text-ink-muted">{copy.hero.lead}</p>
           <div className="flex flex-wrap gap-3">
-            <Link href="/work" className={buttonStyles("primary", "lg")}>
+            <Link href="/contact?offer=audit" className={buttonStyles("primary", "lg")}>
               {copy.hero.primary} <Arrow />
             </Link>
-            <Link href="/contact" className={buttonStyles("outline", "lg")}>
+            <Link href="/work" className={buttonStyles("outline", "lg")}>
               {copy.hero.secondary}
             </Link>
           </div>
@@ -44,7 +60,11 @@ export function HomePage({ work, packages, appCount }: { work: Work[]; packages:
             ))}
           </dl>
         </div>
-        <div role="img" aria-label="Two phones: a written report and a release checklist" className="relative mx-auto h-[560px] w-full max-w-[360px] min-[900px]:mx-0 min-[900px]:h-[620px] min-[900px]:max-w-none">
+        <div
+          role="img"
+          aria-label="Two phones: a written report and a release checklist"
+          className="relative mx-auto h-[560px] w-full max-w-[360px] min-[900px]:mx-0 min-[900px]:h-[620px] min-[900px]:max-w-none"
+        >
           <Phone className="top-10 -left-2.5 -rotate-6 min-[900px]:left-10">
             <SprintScreen />
           </Phone>
@@ -104,8 +124,9 @@ export function HomePage({ work, packages, appCount }: { work: Work[]; packages:
           <Tile span={3}>
             <Eyebrow>Built from zero</Eyebrow>
             <h3>An in-house crash reporting platform that replaced a paid SaaS.</h3>
-            <pre className="mt-auto rounded-md whitespace-pre-wrap border border-line bg-paper-sunken px-4.5 py-4 font-mono text-code leading-[1.7] text-ink-muted">
-              <span className="text-brand">crash</span> → offline queue → <span className="text-brand">sync</span> → dashboard{"\n"}
+            <pre className="mt-auto rounded-md border border-line bg-paper-sunken px-4.5 py-4 font-mono text-code leading-[1.7] whitespace-pre-wrap text-ink-muted">
+              <span className="text-brand">crash</span> → offline queue → <span className="text-brand">sync</span> →
+              dashboard{"\n"}
               <span>no SaaS bill</span>
             </pre>
           </Tile>
@@ -121,15 +142,25 @@ export function HomePage({ work, packages, appCount }: { work: Work[]; packages:
         </Bento>
       </Section>
 
+      <Section aria-labelledby="plans">
+        <SectionHeader
+          id="plans"
+          eyebrow="02 — Plans"
+          title="Fixed prices. No surprises."
+          aside="Audit in 48 hours or it is free. The fee is credited to the sprint."
+        />
+        <Plans />
+      </Section>
+
       <Section aria-labelledby="work">
-        <SectionHeader id="work" eyebrow="02 — Work" title="The write-ups." />
+        <SectionHeader id="work" eyebrow="03 — Work" title="The write-ups." />
         <WorkCards items={work} />
       </Section>
 
       <Section aria-label="Recent work">
         <Panel>
           <div className="relative flex flex-col gap-6">
-            <Eyebrow>03 — Recent work · enterprise app</Eyebrow>
+            <Eyebrow>04 — Recent work · enterprise app</Eyebrow>
             <p className="text-[clamp(96px,14vw,220px)] leading-[0.8] font-semibold tracking-[-0.07em]">0</p>
             <p className="text-h1">regressions after a two-step Flutter upgrade.</p>
             <Link href="/work/flutter-3-47-upgrade" className={buttonStyles("outline", "md", "self-start")}>
@@ -146,13 +177,17 @@ export function HomePage({ work, packages, appCount }: { work: Work[]; packages:
       </Section>
 
       <Section>
-        <Faq eyebrow="04 — FAQ" title="Questions, answered." items={copy.faq} />
+        <Faq eyebrow="05 — FAQ" title="Questions, answered." items={copy.faq} />
       </Section>
 
       <Section>
-        <CtaBand eyebrow="The rest is on the site" title="Read the work, or send a note." body="Case studies, Play apps, and the pub.dev packages.">
-          <Link href="/contact" className={buttonStyles("inverse", "lg")}>
-            Send a note <Arrow />
+        <CtaBand
+          eyebrow="Start"
+          title="Send the repo. Get a report."
+          body="48 hours, written down, with the top fix first."
+        >
+          <Link href="/contact?offer=audit" className={buttonStyles("inverse", "lg")}>
+            Book the audit <Arrow />
           </Link>
         </CtaBand>
       </Section>

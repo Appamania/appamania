@@ -20,7 +20,10 @@ export const WorkSchema = z.object({
   stats: z.array(z.object({ label: z.string().min(1), value: z.string().min(1) })).length(3),
   problemTitle: z.string().min(1),
   problem: paragraphs.min(1),
-  steps: z.array(z.object({ title: z.string().min(1), body: z.string().min(1) })).min(2).max(4),
+  steps: z
+    .array(z.object({ title: z.string().min(1), body: z.string().min(1) }))
+    .min(2)
+    .max(4),
   checks: z.array(z.string().min(1)).optional(),
   result: z.object({ title: z.string().min(1), body: z.string().min(1) }),
   versions: z.array(z.object({ from: z.string().min(1), to: z.string().min(1) })).min(1),
@@ -63,6 +66,7 @@ export const NoteSchema = z.object({
   message: z.string(),
   // Notes are written by the public, so a non-http link (javascript:, data:) is dropped before it becomes an href.
   link: z.string().transform((link) => (/^https?:\/\//i.test(link) ? link : "")),
+  offer: z.string().optional(),
   received: z.string(),
 });
 
@@ -108,7 +112,8 @@ export function encodeValue(value: unknown): FsValue {
   if (value === null || value === undefined) return { nullValue: null };
   if (typeof value === "string") return { stringValue: value };
   if (typeof value === "boolean") return { booleanValue: value };
-  if (typeof value === "number") return Number.isInteger(value) ? { integerValue: String(value) } : { doubleValue: value };
+  if (typeof value === "number")
+    return Number.isInteger(value) ? { integerValue: String(value) } : { doubleValue: value };
   if (Array.isArray(value)) return { arrayValue: { values: value.map(encodeValue) } };
   if (typeof value === "object") {
     const fields: Record<string, FsValue> = {};
@@ -163,7 +168,10 @@ export function readToken(idToken: string): { email: string; exp: number } | nul
   if (!part) return null;
   try {
     const pad = part.length % 4 === 0 ? "" : "=".repeat(4 - (part.length % 4));
-    const json = JSON.parse(atob(part.replace(/-/g, "+").replace(/_/g, "/") + pad)) as { email?: unknown; exp?: unknown };
+    const json = JSON.parse(atob(part.replace(/-/g, "+").replace(/_/g, "/") + pad)) as {
+      email?: unknown;
+      exp?: unknown;
+    };
     if (typeof json.email !== "string" || typeof json.exp !== "number") return null;
     return { email: json.email, exp: json.exp };
   } catch {
@@ -235,7 +243,14 @@ export async function listDocs(project: string, key: string, collection: string,
   return out;
 }
 
-export async function saveDoc(project: string, key: string, token: string, collection: string, id: string, data: Record<string, unknown>) {
+export async function saveDoc(
+  project: string,
+  key: string,
+  token: string,
+  collection: string,
+  id: string,
+  data: Record<string, unknown>,
+) {
   const url = new URL(projectUrl(project, `/${collection}/${encodeURIComponent(id)}`));
   url.searchParams.set("key", key);
   const res = await fetch(url, {
@@ -253,7 +268,11 @@ export async function deleteDoc(project: string, key: string, token: string, col
   if (!res.ok) throw new Error("Could not delete");
 }
 
-export async function createNote(project: string, key: string, note: { name: string; email: string; message: string; link: string }) {
+export async function createNote(
+  project: string,
+  key: string,
+  note: { name: string; email: string; message: string; link: string; offer: string },
+) {
   const url = new URL(projectUrl(project, "/notes"));
   url.searchParams.set("key", key);
   const res = await fetch(url, {
@@ -274,11 +293,23 @@ export async function fetchRemoteConfig(project: string, key: string, appId: str
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ appInstanceId, appId, appVersion: "1", platformVersion: "web", sdkVersion: "0", languageCode: "en" }),
+      body: JSON.stringify({
+        appInstanceId,
+        appId,
+        appVersion: "1",
+        platformVersion: "web",
+        sdkVersion: "0",
+        languageCode: "en",
+      }),
     },
   );
   if (!res.ok) return null;
   const data = (await res.json()) as { entries?: Record<string, string> };
   const entries = data.entries ?? {};
-  return { version: entries.version ?? "", notice: entries.notice ?? "", staticJson: entries.static ?? "", refresh: entries.refresh ?? "" };
+  return {
+    version: entries.version ?? "",
+    notice: entries.notice ?? "",
+    staticJson: entries.static ?? "",
+    refresh: entries.refresh ?? "",
+  };
 }

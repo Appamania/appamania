@@ -6,6 +6,7 @@ const valid = {
   email: "asha@example.com",
   message: "The Flutter 3.47 write-up was useful.",
   link: "https://example.com",
+  offer: "audit",
   website: "",
 };
 
@@ -14,7 +15,7 @@ describe("prepareNote", () => {
     expect(prepareNote({ ...valid, name: "  Asha  " })).toEqual({
       ok: true,
       drop: false,
-      body: { name: "Asha", email: valid.email, message: valid.message, link: valid.link },
+      body: { name: "Asha", email: valid.email, message: valid.message, link: valid.link, offer: "audit" },
     });
   });
 
@@ -25,6 +26,10 @@ describe("prepareNote", () => {
   it("rejects a bad email and a non-http link", () => {
     expect(prepareNote({ ...valid, email: "not-an-email" })).toMatchObject({ ok: false, field: "email" });
     expect(prepareNote({ ...valid, link: "ftp://files.example" })).toMatchObject({ ok: false, field: "link" });
+  });
+
+  it("blanks an unknown offer instead of failing", () => {
+    expect(prepareNote({ ...valid, offer: "custom" })).toMatchObject({ ok: true, body: { offer: "" } });
   });
 
   it("checks one field on blur without blaming an earlier empty field", () => {

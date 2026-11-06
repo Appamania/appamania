@@ -1,7 +1,17 @@
 import { expect, test } from "@playwright/test";
 import { expectNoSeriousAxe } from "./helpers";
 
-const pages = ["/", "/work", "/work/flutter-3-47-upgrade", "/apps", "/open-source", "/blog", "/contact", "/legal/privacy"];
+const pages = [
+  "/",
+  "/services",
+  "/work",
+  "/work/flutter-3-47-upgrade",
+  "/apps",
+  "/open-source",
+  "/blog",
+  "/contact",
+  "/legal/privacy",
+];
 
 for (const path of pages)
   test(`${path} renders one h1 and passes axe`, async ({ page }) => {
@@ -10,10 +20,15 @@ for (const path of pages)
     await expectNoSeriousAxe(page);
   });
 
-test("home has no prices", async ({ page }) => {
+test("home shows the audit price and the plan cards", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByText("₹")).toHaveCount(0);
-  await expect(page.getByRole("link", { name: "Send a note" }).first()).toBeVisible();
+  await expect(page.getByText("₹2,999").first()).toBeVisible();
+  await expect(page.getByRole("link", { name: /Book the audit/ }).first()).toBeVisible();
+});
+
+test("a plan card preselects the offer on the contact form", async ({ page }) => {
+  await page.goto("/contact?offer=sprint");
+  await expect(page.getByLabel("What do you need")).toHaveValue("sprint");
 });
 
 test("unknown route shows the branded 404", async ({ page }) => {
@@ -41,7 +56,8 @@ test("old URLs 301", async ({ request }) => {
 test("llms.txt, sitemap and robots are served", async ({ request }) => {
   const llms = await (await request.get("/llms.txt")).text();
   expect(llms).toContain("envified");
-  expect(llms).not.toContain("₹");
+  expect(llms).toContain("₹2,999");
+  expect(await (await request.get("/sitemap.xml")).text()).toContain("/services");
   expect(await (await request.get("/sitemap.xml")).text()).toContain("/work/flutter-3-47-upgrade");
   expect(await (await request.get("/robots.txt")).text()).not.toContain("Disallow: /portal");
 });

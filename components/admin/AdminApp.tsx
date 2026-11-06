@@ -4,6 +4,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { z } from "zod";
 import { Button } from "@/components/ui/Button";
 import { Input, Textarea } from "@/components/ui/Field";
+import { isOfferId, offers } from "@/config/offers";
 import {
   ADMIN_EMAIL,
   AppSchema,
@@ -45,7 +46,14 @@ function Lines({
       value={text}
       helper="One item per line."
       onChange={(e) => setText(e.target.value)}
-      onBlur={() => onChange(text.split("\n").map((line) => line.trim()).filter(Boolean))}
+      onBlur={() =>
+        onChange(
+          text
+            .split("\n")
+            .map((line) => line.trim())
+            .filter(Boolean),
+        )
+      }
     />
   );
 }
@@ -204,32 +212,135 @@ function DocEditor<T extends { slug: string }>({
 function WorkForm({ draft, set, formKey }: { draft: Work; set: (next: Work) => void; formKey: string }) {
   return (
     <>
-      <Input label="Slug" name="slug" required value={draft.slug} onChange={(e) => set({ ...draft, slug: e.target.value })} />
-      <Input label="Order" name="order" type="number" required value={String(draft.order)} onChange={(e) => set({ ...draft, order: Number(e.target.value) })} />
-      <Input label="Eyebrow" name="eyebrow" required value={draft.eyebrow} onChange={(e) => set({ ...draft, eyebrow: e.target.value })} />
-      <Input label="Title" name="title" required value={draft.title} onChange={(e) => set({ ...draft, title: e.target.value })} />
-      <Input label="Accent" name="accent" required value={draft.accent} onChange={(e) => set({ ...draft, accent: e.target.value })} />
-      <Textarea label="Lead" name="lead" required value={draft.lead} onChange={(e) => set({ ...draft, lead: e.target.value })} />
-      <Input label="Teaser label" name="teaser-label" required value={draft.teaser.label} onChange={(e) => set({ ...draft, teaser: { ...draft.teaser, label: e.target.value } })} />
-      <Input label="Teaser title" name="teaser-title" required value={draft.teaser.title} onChange={(e) => set({ ...draft, teaser: { ...draft.teaser, title: e.target.value } })} />
-      <Textarea label="Teaser summary" name="teaser-summary" required value={draft.teaser.summary} onChange={(e) => set({ ...draft, teaser: { ...draft.teaser, summary: e.target.value } })} />
+      <Input
+        label="Slug"
+        name="slug"
+        required
+        value={draft.slug}
+        onChange={(e) => set({ ...draft, slug: e.target.value })}
+      />
+      <Input
+        label="Order"
+        name="order"
+        type="number"
+        required
+        value={String(draft.order)}
+        onChange={(e) => set({ ...draft, order: Number(e.target.value) })}
+      />
+      <Input
+        label="Eyebrow"
+        name="eyebrow"
+        required
+        value={draft.eyebrow}
+        onChange={(e) => set({ ...draft, eyebrow: e.target.value })}
+      />
+      <Input
+        label="Title"
+        name="title"
+        required
+        value={draft.title}
+        onChange={(e) => set({ ...draft, title: e.target.value })}
+      />
+      <Input
+        label="Accent"
+        name="accent"
+        required
+        value={draft.accent}
+        onChange={(e) => set({ ...draft, accent: e.target.value })}
+      />
+      <Textarea
+        label="Lead"
+        name="lead"
+        required
+        value={draft.lead}
+        onChange={(e) => set({ ...draft, lead: e.target.value })}
+      />
+      <Input
+        label="Teaser label"
+        name="teaser-label"
+        required
+        value={draft.teaser.label}
+        onChange={(e) => set({ ...draft, teaser: { ...draft.teaser, label: e.target.value } })}
+      />
+      <Input
+        label="Teaser title"
+        name="teaser-title"
+        required
+        value={draft.teaser.title}
+        onChange={(e) => set({ ...draft, teaser: { ...draft.teaser, title: e.target.value } })}
+      />
+      <Textarea
+        label="Teaser summary"
+        name="teaser-summary"
+        required
+        value={draft.teaser.summary}
+        onChange={(e) => set({ ...draft, teaser: { ...draft.teaser, summary: e.target.value } })}
+      />
       {draft.stats.map((stat, i) => (
         <div key={i} className="grid gap-3 min-[900px]:grid-cols-2">
-          <Input label={`Stat ${i + 1} label`} name={`stat-${i}-label`} required value={stat.label} onChange={(e) => set({ ...draft, stats: draft.stats.map((row, n) => (n === i ? { ...row, label: e.target.value } : row)) })} />
-          <Input label={`Stat ${i + 1} value`} name={`stat-${i}-value`} required value={stat.value} onChange={(e) => set({ ...draft, stats: draft.stats.map((row, n) => (n === i ? { ...row, value: e.target.value } : row)) })} />
+          <Input
+            label={`Stat ${i + 1} label`}
+            name={`stat-${i}-label`}
+            required
+            value={stat.label}
+            onChange={(e) =>
+              set({ ...draft, stats: draft.stats.map((row, n) => (n === i ? { ...row, label: e.target.value } : row)) })
+            }
+          />
+          <Input
+            label={`Stat ${i + 1} value`}
+            name={`stat-${i}-value`}
+            required
+            value={stat.value}
+            onChange={(e) =>
+              set({ ...draft, stats: draft.stats.map((row, n) => (n === i ? { ...row, value: e.target.value } : row)) })
+            }
+          />
         </div>
       ))}
-      <Input label="Problem title" name="problem-title" required value={draft.problemTitle} onChange={(e) => set({ ...draft, problemTitle: e.target.value })} />
-      <Lines key={`${formKey}-problem`} label="Problem" name="problem" value={draft.problem} onChange={(problem) => set({ ...draft, problem })} />
+      <Input
+        label="Problem title"
+        name="problem-title"
+        required
+        value={draft.problemTitle}
+        onChange={(e) => set({ ...draft, problemTitle: e.target.value })}
+      />
+      <Lines
+        key={`${formKey}-problem`}
+        label="Problem"
+        name="problem"
+        value={draft.problem}
+        onChange={(problem) => set({ ...draft, problem })}
+      />
       {draft.steps.map((step, i) => (
         <div key={i} className="grid gap-3">
-          <Input label={`Step ${i + 1} title`} name={`step-${i}-title`} required value={step.title} onChange={(e) => set({ ...draft, steps: draft.steps.map((row, n) => (n === i ? { ...row, title: e.target.value } : row)) })} />
-          <Textarea label={`Step ${i + 1}`} name={`step-${i}-body`} required value={step.body} onChange={(e) => set({ ...draft, steps: draft.steps.map((row, n) => (n === i ? { ...row, body: e.target.value } : row)) })} />
+          <Input
+            label={`Step ${i + 1} title`}
+            name={`step-${i}-title`}
+            required
+            value={step.title}
+            onChange={(e) =>
+              set({ ...draft, steps: draft.steps.map((row, n) => (n === i ? { ...row, title: e.target.value } : row)) })
+            }
+          />
+          <Textarea
+            label={`Step ${i + 1}`}
+            name={`step-${i}-body`}
+            required
+            value={step.body}
+            onChange={(e) =>
+              set({ ...draft, steps: draft.steps.map((row, n) => (n === i ? { ...row, body: e.target.value } : row)) })
+            }
+          />
         </div>
       ))}
       <div className="flex gap-3">
         {draft.steps.length < 4 && (
-          <Button type="button" variant="outline" onClick={() => set({ ...draft, steps: [...draft.steps, { title: "", body: "" }] })}>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => set({ ...draft, steps: [...draft.steps, { title: "", body: "" }] })}
+          >
             Add step
           </Button>
         )}
@@ -239,19 +350,69 @@ function WorkForm({ draft, set, formKey }: { draft: Work; set: (next: Work) => v
           </Button>
         )}
       </div>
-      <Lines key={`${formKey}-checks`} label="Checks" name="checks" value={draft.checks ?? []} onChange={(checks) => set({ ...draft, checks: checks.length ? checks : undefined })} />
-      <Input label="Result title" name="result-title" required value={draft.result.title} onChange={(e) => set({ ...draft, result: { ...draft.result, title: e.target.value } })} />
-      <Textarea label="Result" name="result-body" required value={draft.result.body} onChange={(e) => set({ ...draft, result: { ...draft.result, body: e.target.value } })} />
+      <Lines
+        key={`${formKey}-checks`}
+        label="Checks"
+        name="checks"
+        value={draft.checks ?? []}
+        onChange={(checks) => set({ ...draft, checks: checks.length ? checks : undefined })}
+      />
+      <Input
+        label="Result title"
+        name="result-title"
+        required
+        value={draft.result.title}
+        onChange={(e) => set({ ...draft, result: { ...draft.result, title: e.target.value } })}
+      />
+      <Textarea
+        label="Result"
+        name="result-body"
+        required
+        value={draft.result.body}
+        onChange={(e) => set({ ...draft, result: { ...draft.result, body: e.target.value } })}
+      />
       {draft.versions.map((version, i) => (
         <div key={i} className="grid gap-3 min-[900px]:grid-cols-2">
-          <Input label={`From ${i + 1}`} name={`from-${i}`} required value={version.from} onChange={(e) => set({ ...draft, versions: draft.versions.map((row, n) => (n === i ? { ...row, from: e.target.value } : row)) })} />
-          <Input label={`To ${i + 1}`} name={`to-${i}`} required value={version.to} onChange={(e) => set({ ...draft, versions: draft.versions.map((row, n) => (n === i ? { ...row, to: e.target.value } : row)) })} />
+          <Input
+            label={`From ${i + 1}`}
+            name={`from-${i}`}
+            required
+            value={version.from}
+            onChange={(e) =>
+              set({
+                ...draft,
+                versions: draft.versions.map((row, n) => (n === i ? { ...row, from: e.target.value } : row)),
+              })
+            }
+          />
+          <Input
+            label={`To ${i + 1}`}
+            name={`to-${i}`}
+            required
+            value={version.to}
+            onChange={(e) =>
+              set({
+                ...draft,
+                versions: draft.versions.map((row, n) => (n === i ? { ...row, to: e.target.value } : row)),
+              })
+            }
+          />
         </div>
       ))}
-      <Button type="button" variant="outline" onClick={() => set({ ...draft, versions: [...draft.versions, { from: "", to: "" }] })}>
+      <Button
+        type="button"
+        variant="outline"
+        onClick={() => set({ ...draft, versions: [...draft.versions, { from: "", to: "" }] })}
+      >
         Add version
       </Button>
-      <Lines key={`${formKey}-stack`} label="Stack" name="stack" value={draft.stack} onChange={(stack) => set({ ...draft, stack })} />
+      <Lines
+        key={`${formKey}-stack`}
+        label="Stack"
+        name="stack"
+        value={draft.stack}
+        onChange={(stack) => set({ ...draft, stack })}
+      />
     </>
   );
 }
@@ -343,6 +504,7 @@ function Notes({ token, project, apiKey }: { token: string; project: string; api
                 })}
           </p>
           <h2 className="text-h2">{note.name}</h2>
+          {note.offer && isOfferId(note.offer) && <span className="eyebrow text-brand">{offers[note.offer].name}</span>}
           <a href={`mailto:${note.email}`} className="text-brand underline-offset-4 hover:underline">
             {note.email}
           </a>
@@ -400,11 +562,14 @@ export function AdminApp({ project, apiKey }: { project: string; apiKey: string 
     setPending(true);
     setError("");
     try {
-      const res = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithEmailLink?key=${encodeURIComponent(apiKey)}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: address, oobCode: code }),
-      });
+      const res = await fetch(
+        `https://identitytoolkit.googleapis.com/v1/accounts:signInWithEmailLink?key=${encodeURIComponent(apiKey)}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: address, oobCode: code }),
+        },
+      );
       const data = (await res.json()) as { idToken?: string };
       if (!res.ok || !data.idToken) {
         setError("That link is no longer valid. Send a new one.");
@@ -454,16 +619,19 @@ export function AdminApp({ project, apiKey }: { project: string; apiKey: string 
     setError("");
     try {
       localStorage.setItem("admin-email", address);
-      const res = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${encodeURIComponent(apiKey)}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          requestType: "EMAIL_SIGNIN",
-          email: address,
-          continueUrl: `${location.origin}/admin`,
-          canHandleCodeInApp: true,
-        }),
-      });
+      const res = await fetch(
+        `https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${encodeURIComponent(apiKey)}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            requestType: "EMAIL_SIGNIN",
+            email: address,
+            continueUrl: `${location.origin}/admin`,
+            canHandleCodeInApp: true,
+          }),
+        },
+      );
       if (!res.ok) {
         setError("Could not send the link. Turn on email-link sign-in, then try again.");
         return;
@@ -521,7 +689,15 @@ export function AdminApp({ project, apiKey }: { project: string; apiKey: string 
               {error}
             </p>
           )}
-          <Input label="Email" name="email" type="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
+          <Input
+            label="Email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
           <Button type="submit" loading={pending}>
             {phase === "confirm" ? "Finish sign-in" : "Send the link"}
           </Button>
@@ -558,19 +734,66 @@ export function AdminApp({ project, apiKey }: { project: string; apiKey: string 
             </Button>
           </div>
           {tab === "Work" && (
-            <DocEditor name="work" schema={WorkSchema} empty={emptyWork()} token={token} project={project} apiKey={apiKey} label={(doc) => doc.title || doc.slug}>
+            <DocEditor
+              name="work"
+              schema={WorkSchema}
+              empty={emptyWork()}
+              token={token}
+              project={project}
+              apiKey={apiKey}
+              label={(doc) => doc.title || doc.slug}
+            >
               {(draft, set, key) => <WorkForm draft={draft} set={set} formKey={key} />}
             </DocEditor>
           )}
           {tab === "Posts" && (
-            <DocEditor name="posts" schema={PostSchema} empty={{ slug: "", date: "", title: "", summary: "", body: [] }} token={token} project={project} apiKey={apiKey} label={(doc: Post) => doc.title || doc.slug}>
+            <DocEditor
+              name="posts"
+              schema={PostSchema}
+              empty={{ slug: "", date: "", title: "", summary: "", body: [] }}
+              token={token}
+              project={project}
+              apiKey={apiKey}
+              label={(doc: Post) => doc.title || doc.slug}
+            >
               {(draft, set, key) => (
                 <>
-                  <Input label="Slug" name="slug" required value={draft.slug} onChange={(e) => set({ ...draft, slug: e.target.value })} />
-                  <Input label="Date" name="date" type="date" required value={draft.date} onChange={(e) => set({ ...draft, date: e.target.value })} />
-                  <Input label="Title" name="title" required value={draft.title} onChange={(e) => set({ ...draft, title: e.target.value })} />
-                  <Textarea label="Summary" name="summary" required value={draft.summary} onChange={(e) => set({ ...draft, summary: e.target.value })} />
-                  <Lines key={`${key}-body`} label="Body" name="body" value={draft.body} onChange={(body) => set({ ...draft, body })} />
+                  <Input
+                    label="Slug"
+                    name="slug"
+                    required
+                    value={draft.slug}
+                    onChange={(e) => set({ ...draft, slug: e.target.value })}
+                  />
+                  <Input
+                    label="Date"
+                    name="date"
+                    type="date"
+                    required
+                    value={draft.date}
+                    onChange={(e) => set({ ...draft, date: e.target.value })}
+                  />
+                  <Input
+                    label="Title"
+                    name="title"
+                    required
+                    value={draft.title}
+                    onChange={(e) => set({ ...draft, title: e.target.value })}
+                  />
+                  <Textarea
+                    label="Summary"
+                    name="summary"
+                    required
+                    value={draft.summary}
+                    onChange={(e) => set({ ...draft, summary: e.target.value })}
+                  />
+                  <Lines
+                    key={`${key}-body`}
+                    label="Body"
+                    name="body"
+                    value={draft.body}
+                    onChange={(body) => set({ ...draft, body })}
+                  />
                 </>
               )}
             </DocEditor>
@@ -579,7 +802,17 @@ export function AdminApp({ project, apiKey }: { project: string; apiKey: string 
             <DocEditor
               name="apps"
               schema={AppSchema}
-              empty={{ slug: "", order: 1, name: "", initial: "", category: "", badge: "", summary: "", url: "", body: [] }}
+              empty={{
+                slug: "",
+                order: 1,
+                name: "",
+                initial: "",
+                category: "",
+                badge: "",
+                summary: "",
+                url: "",
+                body: [],
+              }}
               token={token}
               project={project}
               apiKey={apiKey}
@@ -587,15 +820,71 @@ export function AdminApp({ project, apiKey }: { project: string; apiKey: string 
             >
               {(draft, set, key) => (
                 <>
-                  <Input label="Slug" name="slug" required value={draft.slug} onChange={(e) => set({ ...draft, slug: e.target.value })} />
-                  <Input label="Order" name="order" type="number" required value={String(draft.order)} onChange={(e) => set({ ...draft, order: Number(e.target.value) })} />
-                  <Input label="Name" name="name" required value={draft.name} onChange={(e) => set({ ...draft, name: e.target.value })} />
-                  <Input label="Initial" name="initial" required value={draft.initial} onChange={(e) => set({ ...draft, initial: e.target.value })} />
-                  <Input label="Category" name="category" required value={draft.category} onChange={(e) => set({ ...draft, category: e.target.value })} />
-                  <Input label="Badge" name="badge" required value={draft.badge} onChange={(e) => set({ ...draft, badge: e.target.value })} />
-                  <Textarea label="Summary" name="summary" required value={draft.summary} onChange={(e) => set({ ...draft, summary: e.target.value })} />
-                  <Input label="Play URL" name="url" type="url" required value={draft.url} onChange={(e) => set({ ...draft, url: e.target.value })} />
-                  <Lines key={`${key}-body`} label="Body" name="body" value={draft.body} onChange={(body) => set({ ...draft, body })} />
+                  <Input
+                    label="Slug"
+                    name="slug"
+                    required
+                    value={draft.slug}
+                    onChange={(e) => set({ ...draft, slug: e.target.value })}
+                  />
+                  <Input
+                    label="Order"
+                    name="order"
+                    type="number"
+                    required
+                    value={String(draft.order)}
+                    onChange={(e) => set({ ...draft, order: Number(e.target.value) })}
+                  />
+                  <Input
+                    label="Name"
+                    name="name"
+                    required
+                    value={draft.name}
+                    onChange={(e) => set({ ...draft, name: e.target.value })}
+                  />
+                  <Input
+                    label="Initial"
+                    name="initial"
+                    required
+                    value={draft.initial}
+                    onChange={(e) => set({ ...draft, initial: e.target.value })}
+                  />
+                  <Input
+                    label="Category"
+                    name="category"
+                    required
+                    value={draft.category}
+                    onChange={(e) => set({ ...draft, category: e.target.value })}
+                  />
+                  <Input
+                    label="Badge"
+                    name="badge"
+                    required
+                    value={draft.badge}
+                    onChange={(e) => set({ ...draft, badge: e.target.value })}
+                  />
+                  <Textarea
+                    label="Summary"
+                    name="summary"
+                    required
+                    value={draft.summary}
+                    onChange={(e) => set({ ...draft, summary: e.target.value })}
+                  />
+                  <Input
+                    label="Play URL"
+                    name="url"
+                    type="url"
+                    required
+                    value={draft.url}
+                    onChange={(e) => set({ ...draft, url: e.target.value })}
+                  />
+                  <Lines
+                    key={`${key}-body`}
+                    label="Body"
+                    name="body"
+                    value={draft.body}
+                    onChange={(body) => set({ ...draft, body })}
+                  />
                 </>
               )}
             </DocEditor>
@@ -612,12 +901,50 @@ export function AdminApp({ project, apiKey }: { project: string; apiKey: string 
             >
               {(draft, set, key) => (
                 <>
-                  <Input label="Slug" name="slug" required value={draft.slug} onChange={(e) => set({ ...draft, slug: e.target.value })} />
-                  <Input label="Order" name="order" type="number" required value={String(draft.order)} onChange={(e) => set({ ...draft, order: Number(e.target.value) })} />
-                  <Input label="Name" name="name" required value={draft.name} onChange={(e) => set({ ...draft, name: e.target.value })} />
-                  <Input label="Points" name="points" type="number" required value={String(draft.points)} onChange={(e) => set({ ...draft, points: Number(e.target.value) })} />
-                  <Textarea label="Summary" name="summary" required value={draft.summary} onChange={(e) => set({ ...draft, summary: e.target.value })} />
-                  <Lines key={`${key}-body`} label="Body" name="body" value={draft.body} onChange={(body) => set({ ...draft, body })} />
+                  <Input
+                    label="Slug"
+                    name="slug"
+                    required
+                    value={draft.slug}
+                    onChange={(e) => set({ ...draft, slug: e.target.value })}
+                  />
+                  <Input
+                    label="Order"
+                    name="order"
+                    type="number"
+                    required
+                    value={String(draft.order)}
+                    onChange={(e) => set({ ...draft, order: Number(e.target.value) })}
+                  />
+                  <Input
+                    label="Name"
+                    name="name"
+                    required
+                    value={draft.name}
+                    onChange={(e) => set({ ...draft, name: e.target.value })}
+                  />
+                  <Input
+                    label="Points"
+                    name="points"
+                    type="number"
+                    required
+                    value={String(draft.points)}
+                    onChange={(e) => set({ ...draft, points: Number(e.target.value) })}
+                  />
+                  <Textarea
+                    label="Summary"
+                    name="summary"
+                    required
+                    value={draft.summary}
+                    onChange={(e) => set({ ...draft, summary: e.target.value })}
+                  />
+                  <Lines
+                    key={`${key}-body`}
+                    label="Body"
+                    name="body"
+                    value={draft.body}
+                    onChange={(body) => set({ ...draft, body })}
+                  />
                 </>
               )}
             </DocEditor>

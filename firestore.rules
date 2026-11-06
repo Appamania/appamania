@@ -29,7 +29,9 @@ service cloud.firestore {
     }
     match /notes/{id} {
       allow create: if request.auth == null
-        && request.resource.data.keys().hasOnly(['name', 'email', 'message', 'link', 'received'])
+        && request.resource.data.keys().hasOnly(['name', 'email', 'message', 'link', 'offer', 'received'])
+        && request.resource.data.offer is string
+        && request.resource.data.offer.size() <= 20
         && capped('name', 200)
         && capped('email', 200)
         && capped('message', 4000)

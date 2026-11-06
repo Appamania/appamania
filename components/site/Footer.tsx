@@ -8,6 +8,7 @@ export function Footer() {
     {
       title: "Work",
       links: [
+        { href: "/services", label: "Services and prices" },
         { href: "/work", label: "Case studies" },
         { href: "/apps", label: "Apps" },
         { href: "/open-source", label: "Open source" },
@@ -18,7 +19,7 @@ export function Footer() {
       title: "Contact",
       links: [
         { href: `mailto:${site.email}`, label: site.email },
-        { href: "/contact", label: "Send a note" },
+        { href: "/contact?offer=audit", label: "Book an audit" },
         { href: site.links.x, label: "X" },
         { href: site.links.github, label: "GitHub" },
         { href: site.links.linkedin, label: "LinkedIn" },
@@ -34,11 +35,14 @@ export function Footer() {
         </div>
         {cols.map((c) => (
           <div key={c.title}>
-            <h2 className="eyebrow mb-3.5 text-ink-muted">{c.title}</h2>
+            <h2 className="mb-3.5 eyebrow text-ink-muted">{c.title}</h2>
             <ul>
               {c.links.map((l) => (
                 <li key={l.href}>
-                  <Link href={l.href} className="block py-1 text-ink-muted break-all hover:text-brand pointer-coarse:py-2.5">
+                  <Link
+                    href={l.href}
+                    className="block py-1 break-words text-ink-muted hover:text-brand pointer-coarse:py-2.5"
+                  >
                     {l.label}
                   </Link>
                 </li>
@@ -54,11 +58,15 @@ export function Footer() {
         appamania
       </p>
       <div className="flex flex-wrap justify-between gap-4 border-t border-line pt-5 font-mono text-[13px] text-ink-muted">
-        <span>© {new Date().getFullYear()} Appamania</span>
         <span>
-          <Link href="/legal/privacy" className="hover:text-ink">Privacy</Link>
+          © {new Date().getFullYear()} {site.identity}
         </span>
-        <span>Kolkata</span>
+        <span>
+          <Link href="/legal/privacy" className="hover:text-ink">
+            Privacy
+          </Link>
+        </span>
+        <span>{site.billing}</span>
       </div>
     </footer>
   );

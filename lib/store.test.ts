@@ -14,7 +14,7 @@ import {
 
 describe("store", () => {
   it("parses the checked-in home copy", () => {
-    expect(StaticCopy.parse(homeCopy).hero.accent).toBe("ship.");
+    expect(StaticCopy.parse(homeCopy).hero.accent).toBe("shipped.");
   });
 
   it("round-trips a document through Firestore values", () => {
@@ -55,7 +55,13 @@ describe("store", () => {
       reload: false,
       notice: "This page has a newer version.",
     });
-    expect(decideRemote({ ...base, version: "1", refresh: "true", staticJson: "" })).toMatchObject({ reload: true, mark: "1" });
-    expect(decideRemote({ ...base, version: "1", refresh: "true", reloadedFor: "1" })).toMatchObject({ reload: false, notice: "" });
+    expect(decideRemote({ ...base, version: "1", refresh: "true", staticJson: "" })).toMatchObject({
+      reload: true,
+      mark: "1",
+    });
+    expect(decideRemote({ ...base, version: "1", refresh: "true", reloadedFor: "1" })).toMatchObject({
+      reload: false,
+      notice: "",
+    });
   });
 });

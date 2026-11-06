@@ -58,7 +58,7 @@ canvas (https://claude.ai/artifact/4v4M4LY9RLzpDxYGkjRmEZ). This brief is the ta
 - Say: fixed price, you own the code, written report, shipped.
 - Never: passionate, cutting-edge, seamless, world-class, leverage, solutions, elevate, unleash,
   empower, supercharge, innovative.
-- Prices exactly from `config/offers.ts`, INR only for now.
+- Prices exactly from `config/offers.ts`. INR; USD on request.
 - One light line per page is allowed ("fuelled by chai" in the footer).
 - Proof: only real numbers and real quotes. Anonymise clients ("Enterprise · migration") unless
   named with permission. Missing facts stay as visible `[PLACEHOLDER]` markers that CI lists.

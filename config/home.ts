@@ -1,25 +1,33 @@
 import { inDevelopment, stack } from "@/config/catalog";
+import { formatPrice, offers } from "@/config/offers";
 import type { HomeCopy } from "@/lib/store";
 
 // Checked-in home copy. Remote Config `static` replaces this when the JSON parses.
 export const homeCopy: HomeCopy = {
   hero: {
-    before: "Flutter apps",
-    after: "that actually",
-    accent: "ship.",
-    lead: "I'm Sumit Pal, a Flutter engineer in Kolkata. This site is the work, the apps, and the packages.",
-    primary: "See the work",
-    secondary: "Send a note",
+    before: "Stuck Flutter app?",
+    after: "Fixed price,",
+    accent: "shipped.",
+    lead: "I'm Sumit Pal, a Flutter engineer in Kolkata. SDK upgrades, crash fixes, CI, and store releases for apps with live users. Written report first, fixed quote after.",
+    primary: `Book the ${formatPrice(offers.audit)} audit`,
+    secondary: "See the work",
   },
   stats: [
     { value: "6+ yrs", label: "production Flutter" },
-    { value: "150–160", label: "pub.dev points" },
-    { value: "4 apps", label: "live on Play" },
+    { value: "0", label: "regressions, last upgrade" },
+    { value: "48 h", label: "audit turnaround" },
   ],
   faq: [
-    { q: "Where is the work?", a: "Case studies are on this site. The apps are on Google Play. The packages are on pub.dev." },
-    { q: "Why are the write-ups unnamed?", a: "The apps are described without the company name, unless someone asked to be named." },
-    { q: "How does a note reach you?", a: "The form saves a note I read. Email works too." },
+    {
+      q: "What does it cost?",
+      a: `Audit ${formatPrice(offers.audit)}. Rescue sprint ${formatPrice(offers.sprint)}. Care retainer ${formatPrice(offers.retainer)}. MVP ${formatPrice(offers.mvp)}. All on the services page.`,
+    },
+    {
+      q: "Why a paid audit first?",
+      a: "I read the code before I quote. The fee is credited to the sprint, and the report is yours either way.",
+    },
+    { q: "Who owns the code?", a: "You do, from the first commit. Work happens in your repo." },
+    { q: "Where is the proof?", a: "Case studies on this site, the apps on Google Play, the packages on pub.dev." },
   ],
   floats: {
     upgradeEyebrow: "Upgraded to",
