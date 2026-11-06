@@ -81,3 +81,11 @@ test("a honeypot note pretends to save", async ({ page }) => {
   await page.getByRole("button", { name: "Send note" }).click();
   await expect(page.getByRole("status")).toContainText("Thanks — it's saved.");
 });
+
+test("admin shows the sign-in form and passes axe", async ({ page }) => {
+  await page.goto("/admin");
+  await expect(page.getByRole("heading", { name: "Admin" })).toBeVisible();
+  const needsKeys = await page.getByText("Add the Firebase project id").isVisible();
+  if (!needsKeys) await expect(page.getByRole("button", { name: "Send the link" })).toBeVisible();
+  await expectNoSeriousAxe(page);
+});

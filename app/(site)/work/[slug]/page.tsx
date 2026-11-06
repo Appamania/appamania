@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Arrow, buttonStyles } from "@/components/ui/Button";
@@ -55,6 +56,26 @@ export default async function CaseStudy({ params }: { params: Promise<{ slug: st
         }}
       />
       <PageHero eyebrow={w.eyebrow} title={w.title} accent={w.accent} lead={w.lead} />
+      {w.video ? (
+        <video
+          src={w.video}
+          controls
+          playsInline
+          preload="metadata"
+          poster={w.cover}
+          className="mt-10 aspect-video w-full rounded-lg border border-line bg-paper-sunken"
+        />
+      ) : w.cover ? (
+        <Image
+          src={w.cover}
+          alt=""
+          width={1232}
+          height={693}
+          sizes="(min-width: 1232px) 1232px, 100vw"
+          priority
+          className="mt-10 aspect-video w-full rounded-lg border border-line object-cover"
+        />
+      ) : null}
       <Bento className="mt-10">
         {w.stats.map((s, i) => (
           <Tile key={s.label} brand={i === w.stats.length - 1} className="min-h-45">

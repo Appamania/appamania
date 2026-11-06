@@ -24,7 +24,7 @@ A task is not done until lint, typecheck, check:tokens, unit tests, and build pa
 
 ## Architecture
 - Server Components by default. `'use client'` only on interactive leaves.
-- Site constants only in `config/site.ts`. Content is read from Firestore over REST (`lib/firestore.ts`, `lib/content.ts`) with `content/snapshot.json` as the fallback. Site notice and availability live in Firestore `settings/site`, edited in `/admin`. No Firebase SDK in the browser. `/admin` is the email-link editor for sumit@appamania.in.
+- Site constants only in `config/site.ts`. Content is read from Firestore over REST (`lib/firestore.ts`, `lib/content.ts`) with `content/snapshot.json` as the fallback. Site notice and availability live in Firestore `settings/site`, edited in `/admin`. No Firebase SDK in the browser. `/admin` is the email-link editor for sumit@appamania.in; it uploads media to Firebase Storage `media/` (`lib/storage.ts`, `storage.rules`), and only that host renders through `next/image`.
 - Prices only from `config/offers.ts`. Do not add a second database.
 
 ## Design rules (Chai Studio, details in docs/design-brief.md)

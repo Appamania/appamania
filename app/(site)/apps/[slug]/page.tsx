@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { PageHero } from "@/components/site/Blocks";
 import { getApps } from "@/lib/content";
@@ -24,6 +25,22 @@ export default async function AppPage({ params }: { params: Promise<{ slug: stri
   return (
     <article>
       <PageHero eyebrow={app.category} title={app.name} lead={app.summary} />
+      {app.screens?.length ? (
+        <ul aria-label="Screenshots" tabIndex={0} className="mb-10 flex snap-x gap-4 overflow-x-auto pb-2">
+          {app.screens.map((src, i) => (
+            <li key={src} className="shrink-0 snap-start">
+              <Image
+                src={src}
+                alt={`${app.name} screen ${i + 1}`}
+                width={270}
+                height={585}
+                sizes="270px"
+                className="h-[585px] w-auto rounded-md border border-line bg-paper-sunken object-cover"
+              />
+            </li>
+          ))}
+        </ul>
+      ) : null}
       <div className="flex max-w-[66ch] flex-col gap-5 text-body-lg text-ink-muted">
         {app.body.map((paragraph) => (
           <p key={paragraph}>{paragraph}</p>

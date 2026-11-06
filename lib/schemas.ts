@@ -8,6 +8,8 @@ export function isAdmin(email: string) {
 
 const slug = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
 const paragraphs = z.array(z.string().min(1));
+/** Uploaded through admin to Firebase Storage. Only that host renders, so a bad row cannot point next/image elsewhere. */
+const media = z.string().startsWith("https://firebasestorage.googleapis.com/");
 
 export const WorkSchema = z.object({
   slug,
@@ -20,11 +22,16 @@ export const WorkSchema = z.object({
   stats: z.array(z.object({ label: z.string().min(1), value: z.string().min(1) })).length(3),
   problemTitle: z.string().min(1),
   problem: paragraphs.min(1),
-  steps: z.array(z.object({ title: z.string().min(1), body: z.string().min(1) })).min(2).max(4),
+  steps: z
+    .array(z.object({ title: z.string().min(1), body: z.string().min(1) }))
+    .min(2)
+    .max(4),
   checks: z.array(z.string().min(1)).optional(),
   result: z.object({ title: z.string().min(1), body: z.string().min(1) }),
   versions: z.array(z.object({ from: z.string().min(1), to: z.string().min(1) })).min(1),
   stack: z.array(z.string().min(1)).min(1),
+  cover: media.optional(),
+  video: media.optional(),
 });
 
 export const PostSchema = z.object({
@@ -45,6 +52,8 @@ export const AppSchema = z.object({
   summary: z.string().min(1),
   url: z.string().regex(/^https?:\/\//),
   body: paragraphs.min(1),
+  icon: media.optional(),
+  screens: z.array(media).max(8).optional(),
 });
 
 export const PackageSchema = z.object({
