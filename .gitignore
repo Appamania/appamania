@@ -20,7 +20,8 @@
 /coverage
 *.tsbuildinfo
 next-env.d.ts
-.vercel
+.firebase/
+.firebaserc
 *.pem
 npm-debug.log*
 
