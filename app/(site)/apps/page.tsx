@@ -4,7 +4,7 @@ import { Chip, Eyebrow, PageHero, Section } from "@/components/site/Blocks";
 import { InDevelopment } from "@/components/site/InDevelopment";
 import { getApps } from "@/lib/content";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Apps",

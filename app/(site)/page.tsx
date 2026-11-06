@@ -4,7 +4,7 @@ import { JsonLd } from "@/components/site/JsonLd";
 import { site } from "@/config/site";
 import { getApps, getPackages, getWork } from "@/lib/content";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 export const metadata: Metadata = { alternates: { canonical: "/" } };
 
 export default async function Home() {

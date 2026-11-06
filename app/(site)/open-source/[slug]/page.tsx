@@ -5,7 +5,7 @@ import { PageHero } from "@/components/site/Blocks";
 import { pubUrl } from "@/config/catalog";
 import { getPackages } from "@/lib/content";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 async function find(slug: string) {
   return (await getPackages()).find((p) => p.slug === slug);

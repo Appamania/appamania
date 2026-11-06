@@ -5,7 +5,7 @@ import { PageHero } from "@/components/site/Blocks";
 import { site } from "@/config/site";
 import { getPosts } from "@/lib/content";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 function posted(date: string) {
   const parsed = new Date(date.includes("T") ? date : `${date}T00:00:00+05:30`);

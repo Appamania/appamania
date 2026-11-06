@@ -8,7 +8,7 @@ import { WorkCards } from "@/components/site/WorkCards";
 import { site } from "@/config/site";
 import { getWork } from "@/lib/content";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 async function find(slug: string) {
   return (await getWork()).find((w) => w.slug === slug);

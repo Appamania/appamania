@@ -7,7 +7,7 @@ import { site } from "@/config/site";
 import { getPackages } from "@/lib/content";
 import { cx } from "@/lib/cx";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Open source",

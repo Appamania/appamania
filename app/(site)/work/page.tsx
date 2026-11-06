@@ -3,7 +3,7 @@ import { PageHero, Section } from "@/components/site/Blocks";
 import { WorkCards } from "@/components/site/WorkCards";
 import { getWork } from "@/lib/content";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Work",

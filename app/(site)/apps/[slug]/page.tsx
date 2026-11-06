@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { PageHero } from "@/components/site/Blocks";
 import { getApps } from "@/lib/content";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 async function find(slug: string) {
   return (await getApps()).find((a) => a.slug === slug);

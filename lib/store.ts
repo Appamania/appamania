@@ -61,7 +61,8 @@ export const NoteSchema = z.object({
   name: z.string(),
   email: z.string(),
   message: z.string(),
-  link: z.string(),
+  // Notes are written by the public, so a non-http link (javascript:, data:) is dropped before it becomes an href.
+  link: z.string().transform((link) => (/^https?:\/\//i.test(link) ? link : "")),
   received: z.string(),
 });
 
@@ -147,12 +148,13 @@ export function decodeFields(fields: Record<string, FsValue>) {
 
 /** Skip a bad document. If every document is bad, keep the snapshot so one broken row does not blank the page. */
 export function chooseList<T>(remote: unknown[] | null, schema: z.ZodType<T>, fallback: T[]): T[] {
-  if (!remote) return fallback;
+  // An empty collection means "not seeded yet", so the snapshot shows instead of a blank page.
+  if (!remote || remote.length === 0) return fallback;
   const parsed = remote.flatMap((doc) => {
     const result = schema.safeParse(doc);
     return result.success ? [result.data] : [];
   });
-  if (remote.length > 0 && parsed.length === 0) return fallback;
+  if (parsed.length === 0) return fallback;
   return parsed;
 }
 
@@ -215,10 +217,11 @@ export async function listDocs(project: string, key: string, collection: string,
     url.searchParams.set("key", key);
     url.searchParams.set("pageSize", "300"); // ponytail: one page of 300, follow the token if a collection outgrows it
     if (pageToken) url.searchParams.set("pageToken", pageToken);
-    const res = await fetch(url, {
-      cache: "no-store",
-      headers: token ? { Authorization: `Bearer ${token}` } : {},
-    });
+    // Admin reads stay fresh. Public reads are cached for 60s to match the page revalidate.
+    const res = await fetch(
+      url,
+      token ? { cache: "no-store", headers: { Authorization: `Bearer ${token}` } } : { next: { revalidate: 60 } },
+    );
     if (!res.ok) throw new Error(`Could not load ${collection}`);
     const data = (await res.json()) as {
       documents?: { name: string; fields?: Record<string, FsValue> }[];
