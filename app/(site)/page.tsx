@@ -1,58 +1,42 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Arrow, buttonStyles } from "@/components/ui/Button";
-import { Big, Bento, Chip, CtaBand, Eyebrow, Faq, Glow, Panel, Section, SectionHeader, Steps, Tile, VersionJump } from "@/components/site/Blocks";
+import { Big, Bento, CtaBand, Eyebrow, Faq, Glow, Panel, Section, SectionHeader, Tile, VersionJump } from "@/components/site/Blocks";
 import { JsonLd } from "@/components/site/JsonLd";
-import { PlanCard } from "@/components/site/PlanCard";
-import { priceText } from "@/components/site/Price";
 import { AuditScreen, FloatCard, Marquee, Phone, SprintScreen, sampleAudit } from "@/components/site/Proof";
+import { WorkCards } from "@/components/site/WorkCards";
 import { packages, pubPointsRange, stack } from "@/config/catalog";
-import { offers } from "@/config/offers";
 import { site } from "@/config/site";
+import { getWork } from "@/lib/content";
 
 export const metadata: Metadata = { alternates: { canonical: "/" } };
 
-const audit = priceText("audit");
-
 const faq = [
-  { q: "Do I own the code?", a: "Yes. All work happens in your repository from day one." },
-  { q: "What if the audit finds nothing serious?", a: "You still get the written report, and it says so. That's a good outcome." },
-  {
-    q: "How do payments work?",
-    a: `Razorpay: UPI, cards or netbanking. The audit is paid upfront; sprints are 50% to start and 50% on release; the retainer is monthly in advance.`,
-  },
-  { q: "Will you sign an NDA?", a: "Yes — yours or mine, before repo access." },
-  { q: "How do we talk?", a: "WhatsApp for daily updates, one call a week, email for anything formal." },
+  { q: "Where is the work?", a: "Case studies are on this site. The apps are on Google Play. The packages are on pub.dev." },
+  { q: "Why are the write-ups unnamed?", a: "The apps are described without the company name, unless someone asked to be named." },
+  { q: "How does a note reach you?", a: "The form adds a row to a Google Sheet I read. Email works too." },
 ] as const;
 
-// Home (canvas board Main, PRD E1.1–E1.2): hero → marquee → bento → pricing → case → process → FAQ → CTA.
-export default function Home() {
+export default async function Home() {
+  const work = await getWork();
   return (
     <>
       <JsonLd
         data={{
           "@context": "https://schema.org",
-          "@type": "ProfessionalService",
-          name: site.name,
+          "@type": "Person",
+          name: site.owner,
           url: site.url,
           email: site.email,
-          description: site.tagline,
-          areaServed: "Worldwide",
+          jobTitle: "Flutter engineer",
           address: { "@type": "PostalAddress", addressLocality: "Kolkata", addressCountry: "IN" },
-          founder: { "@type": "Person", name: site.owner, jobTitle: "Senior Flutter engineer", sameAs: [site.links.linkedin, site.links.github, site.links.x] },
-          makesOffer: (["audit", "sprint", "retainer"] as const).map((id) => ({
-            "@type": "Offer",
-            name: offers[id].name,
-            price: offers[id].priceMinor / 100,
-            priceCurrency: "INR",
-          })),
+          sameAs: [site.links.linkedin, site.links.github, site.links.x],
         }}
       />
 
       <div className="relative grid items-center gap-10 pt-14 pb-6 min-[900px]:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] min-[900px]:pt-22 min-[900px]:pb-14">
         <Glow className="top-130 -right-50 min-[900px]:top-10 min-[900px]:-right-30" />
         <div className="relative flex flex-col gap-7">
-          <Chip dot className="self-start">{site.availability}</Chip>
           <h1 className="text-display-2xl">
             Flutter apps{" "}
             <span aria-hidden className="inline-flex h-[0.72em] translate-y-[-0.06em] items-center gap-2 rounded-pill border border-line-strong bg-paper-sunken px-[0.22em] align-middle">
@@ -62,14 +46,14 @@ export default function Home() {
             that actually <span className="text-brand">ship.</span>
           </h1>
           <p className="max-w-[46ch] text-body-lg text-ink-muted">
-            Slow, crashing, stuck on an old SDK — or the developer left? I rescue, migrate and release production Flutter apps. Fixed price. You own the code.
+            I&apos;m {site.owner}, a Flutter engineer in Kolkata. This site is the work, the apps, and the packages.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link href="/contact" className={buttonStyles("primary", "lg")}>
-              Book a {audit} audit <Arrow />
+            <Link href="/work" className={buttonStyles("primary", "lg")}>
+              See the work <Arrow />
             </Link>
-            <Link href="/work" className={buttonStyles("outline", "lg")}>
-              See the work
+            <Link href="/contact" className={buttonStyles("outline", "lg")}>
+              Send a note
             </Link>
           </div>
           <dl className="flex flex-wrap gap-7 pt-2">
@@ -85,7 +69,7 @@ export default function Home() {
             ))}
           </dl>
         </div>
-        <div role="img" aria-label="Two phones: a sample audit report and a rescue sprint checklist" className="relative mx-auto h-[560px] w-full max-w-[360px] min-[900px]:mx-0 min-[900px]:h-[620px] min-[900px]:max-w-none">
+        <div role="img" aria-label="Two phones: a written report and a release checklist" className="relative mx-auto h-[560px] w-full max-w-[360px] min-[900px]:mx-0 min-[900px]:h-[620px] min-[900px]:max-w-none">
           <Phone className="top-10 -left-2.5 -rotate-6 min-[900px]:left-10">
             <SprintScreen />
           </Phone>
@@ -93,14 +77,14 @@ export default function Home() {
             <AuditScreen {...sampleAudit} />
           </Phone>
           <FloatCard className="bottom-7.5 left-0 w-52.5">
-            <Eyebrow>Delivered in</Eyebrow>
-            <div className="text-h1">{offers.audit.duration}</div>
-            <span className="font-mono text-small text-ink-muted">written report + plan</span>
+            <Eyebrow>Upgraded to</Eyebrow>
+            <div className="text-h1">3.47</div>
+            <span className="font-mono text-small text-ink-muted">without pausing releases</span>
           </FloatCard>
           <FloatCard className="top-37.5 right-0 hidden min-[900px]:block">
             <span className="flex items-center gap-2.5 font-mono text-small">
               <span aria-hidden className="size-2 rounded-full bg-brand" />
-              You own the repo
+              CI on every push
             </span>
           </FloatCard>
         </div>
@@ -113,15 +97,15 @@ export default function Home() {
       <Section aria-labelledby="why">
         <SectionHeader
           id="why"
-          eyebrow="01 — Why teams hire me"
-          title="Senior Flutter, without the agency overhead."
-          aside="Six years shipping fintech, e-commerce, telecom and enterprise apps — architecture to store release."
+          eyebrow="01 — What I ship"
+          title="Production Flutter, written down."
+          aside="Six years on fintech, e-commerce, telecom and enterprise apps — architecture through store release."
         />
         <Bento>
           <Tile span={3} tall brand>
-            <Eyebrow>What I do</Eyebrow>
-            <h3 className="text-h1">Rescue, migrate and ship production Flutter apps.</h3>
-            <p>SDK upgrades, crash fixes, clean architecture, CI/CD, Play Store and App Store releases.</p>
+            <Eyebrow>The work</Eyebrow>
+            <h3 className="text-h1">Migrations, crash fixes, and releases.</h3>
+            <p>SDK upgrades, root-cause crashes, clean architecture, CI/CD, Play Store and App Store releases.</p>
             <Big>6+ yrs</Big>
           </Tile>
           <Tile span={3}>
@@ -151,11 +135,6 @@ export default function Home() {
             </pre>
           </Tile>
           <Tile>
-            <Eyebrow>Start here</Eyebrow>
-            <Big>{audit}</Big>
-            <p className="font-mono text-small">{offers.audit.duration} audit</p>
-          </Tile>
-          <Tile>
             <Eyebrow>Shipped</Eyebrow>
             <Big>4 apps</Big>
             <p className="font-mono text-small">live on Google Play</p>
@@ -167,33 +146,9 @@ export default function Home() {
         </Bento>
       </Section>
 
-      <Section aria-labelledby="pricing">
-        <SectionHeader id="pricing" eyebrow="02 — Pricing" title="Fixed scope. Fixed price." aside={<span className="font-mono text-small">INR · UPI, cards or netbanking</span>} />
-        <div className="grid gap-4 min-[900px]:grid-cols-3">
-          <PlanCard
-            id="audit"
-            eyebrow="Start here"
-            summary="A written report in 48 hours, with a fixed-price plan."
-            points={["Architecture and crash risks", "Performance and SDK debt", "Store compliance gaps", "Credited if you continue"]}
-            cta={<Link href="/contact" className={buttonStyles("primary")}>Book audit <Arrow /></Link>}
-          />
-          <PlanCard
-            id="sprint"
-            featured
-            eyebrow="Most chosen"
-            badge={<Chip className="h-6.5 text-label">{offers.sprint.duration}</Chip>}
-            summary="A current, stable app released to both stores."
-            points={["Flutter and Dart SDK upgrade", "Crash fixes at the root", "CI/CD with GitHub Actions", "Play Store and App Store release", offers.sprint.payment]}
-            cta={<Link href="/services#sprint" className={buttonStyles("outline")}>How the sprint works</Link>}
-          />
-          <PlanCard
-            id="retainer"
-            eyebrow="Stay healthy"
-            summary="Your app stays current while you build the business."
-            points={["Up to 8 hours a month", "OS, SDK and policy updates", "One release per month", "Cancel anytime"]}
-            cta={<Link href="/services#retainer" className={buttonStyles("outline")}>Retainer details</Link>}
-          />
-        </div>
+      <Section aria-labelledby="work">
+        <SectionHeader id="work" eyebrow="02 — Work" title="Three write-ups." />
+        <WorkCards items={work} />
       </Section>
 
       <Section aria-label="Recent work">
@@ -215,28 +170,14 @@ export default function Home() {
         </Panel>
       </Section>
 
-      <Section aria-labelledby="process">
-        <SectionHeader id="process" eyebrow="04 — Process" title="From repo to release." />
-        <Steps
-          items={[
-            { title: "Book the audit", body: "Pay online, share repo access. NDA on request." },
-            { title: "Get the report", body: "In 48 hours: scores, root causes, a fixed price." },
-            { title: "Ship the fix", body: "Optional sprint. Daily updates, weekly call." },
-            { title: "Stay healthy", body: "Optional retainer keeps it current." },
-          ]}
-        />
-      </Section>
-
-      {/* ponytail: 05 — Clients (quotes) renders once real quotes exist (PRD App. A, A6); no placeholder quotes in public. */}
-
       <Section>
-        <Faq eyebrow="05 — FAQ" title="Questions, answered." items={faq} />
+        <Faq eyebrow="04 — FAQ" title="Questions, answered." items={faq} />
       </Section>
 
       <Section>
-        <CtaBand eyebrow="Ready when you are" title="Send me the repo." body="I'll tell you what's wrong in 48 hours.">
+        <CtaBand eyebrow="The rest is on the site" title="Read the work, or send a note." body="Case studies, Play apps, and the pub.dev packages.">
           <Link href="/contact" className={buttonStyles("inverse", "lg")}>
-            Book a {audit} audit <Arrow />
+            Send a note <Arrow />
           </Link>
         </CtaBand>
       </Section>

@@ -5,13 +5,13 @@ import { usePathname } from "next/navigation";
 import { buttonStyles } from "@/components/ui/Button";
 
 // One primary action per view: pages whose hero already has the primary audit CTA get an outline nav button.
-const heroHasPrimary = new Set(["/", "/contact", "/services"]);
+const heroHasPrimary = new Set(["/", "/contact"]);
 
 export function NavCta() {
   const primary = !heroHasPrimary.has(usePathname());
   return (
     <Link href="/contact" className={buttonStyles(primary ? "primary" : "outline", "sm")}>
-      Book audit
+      Send a note
     </Link>
   );
 }

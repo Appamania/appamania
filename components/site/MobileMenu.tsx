@@ -2,15 +2,15 @@
 
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useRef } from "react";
-import { portalEnabled } from "@/lib/flags";
 import { navItems } from "./NavLinks";
 
 // Native <dialog> menu below 900px (design brief): Esc closes, focus returns to the trigger.
 export function MobileMenu() {
   const ref = useRef<HTMLDialogElement>(null);
+  const path = usePathname();
   const close = () => ref.current?.close();
-  const showLogin = portalEnabled();
   return (
     <>
       <button
@@ -38,16 +38,14 @@ export function MobileMenu() {
           </button>
         </div>
         <nav aria-label="Mobile" className="mt-8 grid gap-2">
-          {[{ href: "/", label: "Home" }, ...navItems, { href: "/contact", label: "Contact" }].map(({ href, label }) => (
-            <Link key={href} href={href} onClick={close} className="py-2 text-h1">
-              {label}
-            </Link>
-          ))}
-          {showLogin ? (
-            <Link href="/portal/login" onClick={close} className="mt-6 py-2 text-body-lg text-ink-muted">
-              Client login
-            </Link>
-          ) : null}
+          {[{ href: "/", label: "Home" }, ...navItems, { href: "/contact", label: "Contact" }].map(({ href, label }) => {
+            const current = href === "/" ? path === "/" : path === href || path.startsWith(`${href}/`);
+            return (
+              <Link key={href} href={href} aria-current={current ? "page" : undefined} onClick={close} className="py-2 text-h1">
+                {label}
+              </Link>
+            );
+          })}
         </nav>
       </dialog>
     </>

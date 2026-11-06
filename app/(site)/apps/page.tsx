@@ -16,7 +16,7 @@ export default function Apps() {
         eyebrow="Apps"
         title="Products I build and"
         accent="ship myself."
-        lead="Small Flutter apps on Google Play — the same architecture, release pipeline and care I bring to client work."
+        lead="Small Flutter apps on Google Play, built and shipped from Kolkata."
       />
       <ul className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 min-[900px]:grid-cols-4">
         {apps.map((a) => (

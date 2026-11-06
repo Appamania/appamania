@@ -2,11 +2,9 @@
 //
 // Exception, this advisory only: GHSA-gcqx-w48m-w2h4
 // deepmerge mergeObject() can poison the prototype of the object it returns.
-// There is no patched release. The only production path is React Email:
-//   @react-email/components → @react-email/render → html-to-text → deepmerge
-// npm currently rates it low, so `npm audit --audit-level=high` already
-// ignores it. The allowlist stays so a later severity bump does not fail CI
-// while React Email still depends on it. Do not add other GHSA ids.
+// There is no patched release. npm currently rates it low. The allowlist stays
+// so a later severity bump does not fail CI if it returns via a dependency.
+// Do not add other GHSA ids.
 import { spawnSync } from "node:child_process";
 import { pathToFileURL } from "node:url";
 
@@ -72,7 +70,7 @@ function run() {
   const blocking = blockingAdvisories(report);
   if (blocking.length === 0) {
     console.log("Production audit: no blocking high/critical advisories.");
-    console.log("Excepted if present: GHSA-gcqx-w48m-w2h4 (deepmerge, no fix, React Email only).");
+    console.log("Excepted if present: GHSA-gcqx-w48m-w2h4 (deepmerge, no fix).");
     return;
   }
   spawnSync("npm", ["audit", "--omit=dev", "--audit-level=high"], { stdio: "inherit" });

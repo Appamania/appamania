@@ -3,21 +3,18 @@ import type { NextConfig } from "next";
 
 const dev = process.env.NODE_ENV !== "production";
 
-// PRD §22. `'unsafe-eval'` only in dev: React Refresh needs it.
+// 'unsafe-eval' only in dev: React Refresh needs it.
 const csp = [
   "default-src 'self'",
   // ponytail: 'unsafe-inline' scripts; move to nonces if a third-party script is ever added.
-  `script-src 'self' 'unsafe-inline'${dev ? " 'unsafe-eval'" : ""} https://challenges.cloudflare.com https://va.vercel-scripts.com`,
+  `script-src 'self' 'unsafe-inline'${dev ? " 'unsafe-eval'" : ""} https://va.vercel-scripts.com`,
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob: https://res.cloudinary.com",
+  "img-src 'self' data: blob:",
   "font-src 'self'",
-  ["connect-src 'self'", process.env.NEXT_PUBLIC_SUPABASE_URL, "https://*.ingest.sentry.io", "https://vitals.vercel-insights.com"]
-    .filter(Boolean)
-    .join(" "),
-  "frame-src https://challenges.cloudflare.com",
+  "connect-src 'self' https://script.google.com https://script.googleusercontent.com https://vitals.vercel-insights.com",
   "frame-ancestors 'none'",
   "base-uri 'self'",
-  "form-action 'self' https://rzp.io https://*.razorpay.com",
+  "form-action 'self'",
 ].join("; ");
 
 const nextConfig: NextConfig = {
@@ -33,29 +30,24 @@ const nextConfig: NextConfig = {
           { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
         ],
       },
-      {
-        source: "/:area(portal|admin)/:path*",
-        headers: [
-          { key: "X-Robots-Tag", value: "noindex, nofollow" },
-          { key: "Cache-Control", value: "private, no-store" },
-        ],
-      },
     ];
   },
-  // E1.8: old URLs keep working (301, not Next's default 308).
   async redirects() {
     return [
       { source: "/studio", destination: "/apps", statusCode: 301 },
       { source: "/studio/:path*", destination: "/apps", statusCode: 301 },
       { source: "/oss/:path*", destination: "/open-source", statusCode: 301 },
-      {
-        source: "/login",
-        destination: process.env.NEXT_PUBLIC_PORTAL_ENABLED === "true" ? "/portal/login" : "/",
-        statusCode: 301,
-      },
+      { source: "/services", destination: "/", statusCode: 301 },
+      { source: "/services/:path*", destination: "/", statusCode: 301 },
+      { source: "/legal/terms", destination: "/", statusCode: 301 },
+      { source: "/legal/refunds", destination: "/", statusCode: 301 },
+      { source: "/login", destination: "/", statusCode: 301 },
+      { source: "/portal", destination: "/", statusCode: 301 },
+      { source: "/portal/:path*", destination: "/", statusCode: 301 },
+      { source: "/admin", destination: "/", statusCode: 301 },
+      { source: "/admin/:path*", destination: "/", statusCode: 301 },
     ];
   },
 };
 
-// MDX content (PRD §9) imported by pages from content/; no plugins, so Turbopack-compatible.
 export default createMDX()(nextConfig);

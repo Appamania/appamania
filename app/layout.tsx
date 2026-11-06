@@ -9,13 +9,13 @@ const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono"
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
-  title: { default: `${site.name} — Flutter app rescue, migration and launch`, template: `%s · ${site.name}` },
+  title: { default: `${site.name} — Flutter apps that ship`, template: `%s · ${site.name}` },
   description: site.tagline,
 };
 
 export const viewport: Viewport = { themeColor: themeColor.night };
 
-// Site pages are Night (PRD §1). Portal/admin layouts set data-theme from the saved choice (ThemeToggle).
+// Site pages are Night.
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en-IN" data-theme="night" className={`${geist.variable} ${geistMono.variable}`} suppressHydrationWarning>

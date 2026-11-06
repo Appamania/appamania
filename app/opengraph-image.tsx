@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 import { site } from "@/config/site";
-import { nightBrand as brand, themeColor } from "@/styles/theme-color";
+import { nightBrand as brand, nightInkMuted, themeColor } from "@/styles/theme-color";
 import { emailColors } from "@/styles/email";
 
 // One static OG image (1200×630, PRD E1.11), Night theme.
@@ -18,7 +18,7 @@ export default function OpengraphImage() {
       <div style={{ display: "flex", flexWrap: "wrap", fontSize: 88, fontWeight: 600, letterSpacing: -4, lineHeight: 0.95, maxWidth: 1000 }}>
         Flutter apps that actually&nbsp;<span style={{ color: brand }}>ship.</span>
       </div>
-      <div style={{ fontSize: 28, color: emailColors.line }}>Rescue · migration · launch — fixed price, you own the code</div>
+      <div style={{ fontSize: 28, color: nightInkMuted }}>Case studies, apps, and open-source packages</div>
     </div>,
     size,
   );
