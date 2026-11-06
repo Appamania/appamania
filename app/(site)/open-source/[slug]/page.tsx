@@ -4,6 +4,7 @@ import { Arrow, buttonStyles } from "@/components/ui/Button";
 import { PageHero } from "@/components/site/Blocks";
 import { pubUrl } from "@/config/catalog";
 import { getPackages } from "@/lib/content";
+import { compact } from "@/lib/live";
 
 export const revalidate = 60;
 
@@ -27,7 +28,16 @@ export default async function PackagePage({ params }: { params: Promise<{ slug: 
   if (!pkg) notFound();
   return (
     <article>
-      <PageHero eyebrow={`${pkg.points} pub points`} title={pkg.name} lead={pkg.summary}>
+      <PageHero
+        eyebrow={[
+          `${pkg.points} pub points`,
+          pkg.downloads !== undefined && `${compact(pkg.downloads)} downloads in 30 days`,
+        ]
+          .filter(Boolean)
+          .join(" · ")}
+        title={pkg.name}
+        lead={pkg.summary}
+      >
         <a href={pubUrl(pkg.name)} className={buttonStyles("primary")}>
           View on pub.dev <Arrow />
         </a>

@@ -6,7 +6,7 @@ import type { AppEntry } from "@/lib/schemas";
 /** App teaser card. Icon from Storage when uploaded, else the initial. */
 export function AppCard({ app: a }: { app: AppEntry }) {
   return (
-    <li className="flex flex-col gap-4 rounded-lg border border-line bg-paper-raised p-5">
+    <li className="reveal flex flex-col gap-4 rounded-lg border border-line bg-paper-raised p-5 transition-colors duration-(--dur) hover:border-line-strong">
       <div aria-hidden className="grid aspect-[4/5] place-items-center rounded-md border border-line bg-paper-sunken">
         {a.icon ? (
           <Image

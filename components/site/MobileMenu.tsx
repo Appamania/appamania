@@ -38,14 +38,22 @@ export function MobileMenu() {
           </button>
         </div>
         <nav aria-label="Mobile" className="mt-8 grid gap-2">
-          {[{ href: "/", label: "Home" }, ...navItems, { href: "/contact", label: "Contact" }].map(({ href, label }) => {
-            const current = href === "/" ? path === "/" : path === href || path.startsWith(`${href}/`);
-            return (
-              <Link key={href} href={href} aria-current={current ? "page" : undefined} onClick={close} className="py-2 text-h1">
-                {label}
-              </Link>
-            );
-          })}
+          {[{ href: "/", label: "Home" }, ...navItems, { href: "/contact", label: "Contact" }].map(
+            ({ href, label }) => {
+              const current = href === "/" ? path === "/" : path === href || path.startsWith(`${href}/`);
+              return (
+                <Link
+                  key={href}
+                  href={href}
+                  aria-current={current ? "page" : undefined}
+                  onClick={close}
+                  className="py-2 text-h1"
+                >
+                  {label}
+                </Link>
+              );
+            },
+          )}
         </nav>
       </dialog>
     </>

@@ -27,7 +27,7 @@ export function HomePage({ work, packages, appCount }: { work: Work[]; packages:
     <>
       <div className="relative grid items-center gap-10 pt-14 pb-6 min-[900px]:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] min-[900px]:pt-22 min-[900px]:pb-14">
         <Glow className="top-130 -right-50 min-[900px]:top-10 min-[900px]:-right-30" />
-        <div className="relative flex flex-col gap-7">
+        <div className="enter relative flex flex-col gap-7">
           <h1 className="text-display-2xl">
             {copy.hero.before}{" "}
             <span
@@ -60,7 +60,7 @@ export function HomePage({ work, packages, appCount }: { work: Work[]; packages:
         <div
           role="img"
           aria-label="Two phones: a written report and a release checklist"
-          className="relative mx-auto h-[560px] w-full max-w-[360px] min-[900px]:mx-0 min-[900px]:h-[620px] min-[900px]:max-w-none"
+          className="enter relative mx-auto h-[560px] w-full max-w-[360px] min-[900px]:mx-0 min-[900px]:h-[620px] min-[900px]:max-w-none"
         >
           <Phone className="top-10 -left-2.5 -rotate-6 min-[900px]:left-10">
             <SprintScreen />

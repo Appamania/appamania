@@ -5,6 +5,7 @@ import { Chip, Code, CtaBand, PageHero, Section, SectionHeader } from "@/compone
 import { pubUrl } from "@/config/catalog";
 import { site } from "@/config/site";
 import { getPackages } from "@/lib/content";
+import { compact } from "@/lib/live";
 import { cx } from "@/lib/cx";
 
 export const revalidate = 60;
@@ -31,7 +32,9 @@ export default async function OpenSource() {
     <>
       <div className="relative grid items-center gap-10 pt-14 pb-6 min-[900px]:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] min-[900px]:pt-22 min-[900px]:pb-14">
         <div className="relative flex flex-col gap-6">
-          <Chip dot className="self-start">pub.dev verified publisher · appamania.in</Chip>
+          <Chip dot className="self-start">
+            pub.dev verified publisher · appamania.in
+          </Chip>
           <h1 className="text-display-2xl">
             <Link href={`/open-source/${featured.slug}`}>{featured.name}</Link>
           </h1>
@@ -45,17 +48,23 @@ export default async function OpenSource() {
             </a>
           </div>
           <dl className="flex flex-wrap gap-7 pt-2">
-            {[[String(featured.points), "pub points"]].map(([v, l]) => (
-              <div key={l} className="flex flex-col-reverse">
-                <dt className="font-mono text-small text-ink-muted">{l}</dt>
-                <dd className="text-h2 tabular-nums">{v}</dd>
-              </div>
-            ))}
+            {[
+              [String(featured.points), "pub points"],
+              featured.likes !== undefined && [compact(featured.likes), "likes"],
+              featured.downloads !== undefined && [compact(featured.downloads), "downloads, 30 days"],
+            ]
+              .filter((pair): pair is [string, string] => Array.isArray(pair))
+              .map(([v, l]) => (
+                <div key={l} className="flex flex-col-reverse">
+                  <dt className="font-mono text-small text-ink-muted">{l}</dt>
+                  <dd className="text-h2 tabular-nums">{v}</dd>
+                </div>
+              ))}
           </dl>
         </div>
         <Code className="relative p-7 text-code">
           <span className="text-ink-muted"># pubspec.yaml</span>
-          {"\n"}dependencies:{"\n"}  <span className="k">{featured.name}</span>:
+          {"\n"}dependencies:{"\n"} <span className="k">{featured.name}</span>:
         </Code>
       </div>
 
@@ -73,12 +82,24 @@ export default async function OpenSource() {
               >
                 <div className="flex items-center justify-between gap-3">
                   <span className="font-mono text-body font-medium">{p.name}</span>
-                  <span className={cx("rounded-pill border px-3 py-1 font-mono text-label tabular-nums", i === 0 ? "border-on-brand/30" : "border-line-strong text-ink-muted")}>
+                  <span
+                    className={cx(
+                      "rounded-pill border px-3 py-1 font-mono text-label tabular-nums",
+                      i === 0 ? "border-on-brand/30" : "border-line-strong text-ink-muted",
+                    )}
+                  >
                     {p.points} / 160
                   </span>
                 </div>
                 <p className={i === 0 ? undefined : "text-ink-muted"}>{p.summary}</p>
-                <span className={cx("mt-auto font-mono text-small", i === 0 ? undefined : "text-brand")}>Read the package</span>
+                {p.downloads !== undefined && (
+                  <span className={cx("font-mono text-small tabular-nums", i === 0 ? undefined : "text-ink-muted")}>
+                    {compact(p.downloads)} downloads in 30 days · {compact(p.likes ?? 0)} likes
+                  </span>
+                )}
+                <span className={cx("mt-auto font-mono text-small", i === 0 ? undefined : "text-brand")}>
+                  Read the package
+                </span>
               </Link>
             </li>
           ))}

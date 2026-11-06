@@ -2,6 +2,7 @@ import "server-only";
 import snapshot from "@/content/snapshot.json";
 import { z } from "zod";
 import { getDoc, listDocs } from "@/lib/firestore";
+import { fetchPubScore, type PubScore } from "@/lib/live";
 import {
   AppSchema,
   chooseList,
@@ -57,8 +58,17 @@ export function getPosts() {
 export function getApps() {
   return load("apps", AppSchema, byOrder);
 }
-export function getPackages() {
-  return load("packages", PackageSchema, byOrder);
+export type LivePackage = PackageEntry & Partial<Pick<PubScore, "likes" | "downloads">>;
+
+/** Packages with live pub.dev points, likes and 30-day downloads. Checked-in points stay when pub.dev is unreachable. */
+export async function getPackages(): Promise<LivePackage[]> {
+  const rows = await load("packages", PackageSchema, byOrder);
+  return Promise.all(
+    rows.map(async (row) => {
+      const score = await fetchPubScore(row.name);
+      return score ? { ...row, points: score.points, likes: score.likes, downloads: score.downloads } : row;
+    }),
+  );
 }
 
 const noSettings: Settings = { notice: "", availability: "" };

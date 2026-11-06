@@ -17,7 +17,13 @@ export function Plans({ detail }: { detail?: boolean }) {
           const o: Offer = offers[id];
           const hot = id === featured;
           return (
-            <li key={id} className={cx("flex flex-col gap-5 rounded-lg border border-line bg-paper-raised p-7 min-[900px]:p-8", hot && "shadow-glow")}>
+            <li
+              key={id}
+              className={cx(
+                "reveal flex flex-col gap-5 rounded-lg border border-line bg-paper-raised p-7 transition-colors duration-(--dur) hover:border-line-strong min-[900px]:p-8",
+                hot && "shadow-glow",
+              )}
+            >
               <h3 className="eyebrow text-brand">{o.name}</h3>
               <p className="font-mono text-display tabular-nums">{formatPrice(o)}</p>
               <p className="font-mono text-small text-ink-muted">

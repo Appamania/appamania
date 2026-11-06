@@ -11,7 +11,8 @@ export default defineConfig({
   workers: 1,
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? [["github"], ["html", { open: "never" }]] : "list",
-  use: { baseURL: base, trace: "retain-on-failure" },
+  // Colour checks run with motion off, so axe does not sample a half-faded .reveal element.
+  use: { baseURL: base, trace: "retain-on-failure", reducedMotion: "reduce" },
   projects: [
     { name: "desktop", use: { ...devices["Desktop Chrome"] } },
     { name: "mobile", use: { ...devices["Pixel 7"] } },

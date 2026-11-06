@@ -8,7 +8,7 @@ export function WorkCards({ items }: { items: Work[] }) {
   return (
     <ul className="grid gap-4 min-[900px]:grid-cols-3">
       {items.map((w) => (
-        <li key={w.slug}>
+        <li key={w.slug} className="reveal">
           <Link
             href={`/work/${w.slug}`}
             className="flex h-full flex-col gap-4.5 overflow-hidden rounded-lg border border-line bg-paper-raised p-8 transition-[transform,box-shadow] duration-(--dur) hover:-translate-y-0.5 hover:shadow-card"
