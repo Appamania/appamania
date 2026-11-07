@@ -17,6 +17,6 @@ export const site = {
     play: "",
     pubPublisher: "https://pub.dev/publishers/appamania.in",
     /** Google Calendar appointment page on the Workspace account. Empty hides the link. */
-    booking: "",
+    booking: "https://calendar.app.google/52jDyd3Gt5ScQYxs9",
   },
 } as const;

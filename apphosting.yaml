@@ -9,14 +9,14 @@ runConfig:
 
 env:
   - variable: NEXT_PUBLIC_FIREBASE_API_KEY
-    value: ""
+    value: "AIzaSyC5KRmhM-mq5DK6SQ74rG2xn5WaelRdqog"
   - variable: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
-    value: ""
+    value: "ppamania-web.firebaseapp.com"
   - variable: NEXT_PUBLIC_FIREBASE_PROJECT_ID
-    value: ""
+    value: "appamania-web"
   - variable: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
-    value: ""
+    value: "appamania-web.firebasestorage.app"
   - variable: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
-    value: ""
+    value: "972349373151"
   - variable: NEXT_PUBLIC_GA_MEASUREMENT_ID
-    value: ""
+    value: "G-WVDHSSMWRK"
