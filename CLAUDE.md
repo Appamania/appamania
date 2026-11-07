@@ -1,14 +1,15 @@
 # Appamania
 
-Personal Flutter portfolio (Night theme). Portal, admin, billing, and Supabase are retired.
-Notes from the contact form go to a Google Sheet via `scripts/enquiry-sheet.gs`. No prices, no hire language: Vercel Hobby is non-commercial.
+Flutter freelance business site and portfolio (Night theme). Portal, billing, and Supabase are retired.
+Notes from the contact form go to Firestore. Case studies, posts, apps, and packages are edited at `/admin`.
+Prices and offers live only in `config/offers.ts` (INR, Udyam-registered). Hosting is Firebase App Hosting on Blaze, so commercial copy is allowed.
 
 Design brief: @docs/design-brief.md.
 If a task is ambiguous: STOP and ask. Do not invent a backend.
 
 ## Stack — do not add to this list without asking
 Next.js App Router + React Server Components, TypeScript strict, Tailwind CSS v4 mapped to tokens,
-zod, lucide-react, MDX, Vitest, Playwright + @axe-core/playwright. Hosting: Vercel Hobby.
+zod, lucide-react, Vitest, Playwright + @axe-core/playwright. Hosting: Firebase App Hosting (Blaze, `apphosting.yaml`). `firebase-tools` runs via npx in CI only.
 NOT allowed: ORMs, global state libraries, UI kits in default state, CSS-in-JS,
 animation libraries (Framer Motion, GSAP), date libraries, lodash, axios, CMS, Supabase, payment or email SDKs.
 
@@ -23,8 +24,8 @@ A task is not done until lint, typecheck, check:tokens, unit tests, and build pa
 
 ## Architecture
 - Server Components by default. `'use client'` only on interactive leaves.
-- Site constants only in `config/site.ts`. The note form posts to `NEXT_PUBLIC_ENQUIRY_URL` (Apps Script). Empty URL opens a mailto.
-- Do not add a server, a database, or a price.
+- Site constants only in `config/site.ts`. Content is read from Firestore over REST (`lib/firestore.ts`, `lib/content.ts`) with `content/snapshot.json` as the fallback. Site notice and availability live in Firestore `settings/site`, edited in `/admin`. No Firebase SDK in the browser. `/admin` is the email-link editor for sumit@appamania.in; it uploads media to Firebase Storage `media/` (`lib/storage.ts`, `storage.rules`), and only that host renders through `next/image`.
+- Prices only from `config/offers.ts`. Do not add a second database.
 
 ## Design rules (Chai Studio, details in docs/design-brief.md)
 - Use tokens only (`bg-paper`, `text-ink`, `bg-brand`…). No raw hex, no `bg-green-500`.

@@ -5,9 +5,11 @@ import { usePathname } from "next/navigation";
 import { cx } from "@/lib/cx";
 
 export const navItems = [
+  { href: "/services", label: "Services" },
   { href: "/work", label: "Work" },
   { href: "/apps", label: "Apps" },
   { href: "/open-source", label: "Open source" },
+  { href: "/blog", label: "Blog" },
 ] as const;
 
 /** Desktop nav links with aria-current (needs the pathname, so a client leaf). */

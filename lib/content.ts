@@ -1,41 +1,88 @@
 import "server-only";
-import { readdirSync } from "node:fs";
-import { join } from "node:path";
-import type { ComponentType } from "react";
+import snapshot from "@/content/snapshot.json";
 import { z } from "zod";
+import { getDoc, listDocs } from "@/lib/firestore";
+import { fetchPubScore, type PubScore } from "@/lib/live";
+import {
+  AppSchema,
+  chooseList,
+  PackageSchema,
+  PostSchema,
+  SettingsSchema,
+  WorkSchema,
+  type AppEntry,
+  type PackageEntry,
+  type Post,
+  type Settings,
+  type Work,
+} from "@/lib/schemas";
 
-// Case studies as MDX (PRD §9, E1.4). Each file exports `meta` (validated: a bad file fails the build);
-// the MDX body is the "problem" prose. Clients are described generically unless they agreed to be named.
-const WorkMeta = z.object({
-  eyebrow: z.string(), // "Case study · enterprise · migration"
-  title: z.string(),
-  accent: z.string(), // brand-coloured end of the headline
-  lead: z.string(),
-  teaser: z.object({ label: z.string(), title: z.string(), summary: z.string() }),
-  stats: z.array(z.object({ label: z.string(), value: z.string() })).length(3), // last one renders on brand
-  problemTitle: z.string(),
-  steps: z.array(z.object({ title: z.string(), body: z.string() })).min(2).max(4),
-  checks: z.array(z.string()).optional(), // CI commands shown under the steps
-  result: z.object({ title: z.string(), body: z.string() }),
-  versions: z.array(z.object({ from: z.string(), to: z.string() })),
-  stack: z.array(z.string()).min(1),
-  order: z.number(),
-});
+function checked<T>(name: "work" | "posts" | "apps" | "packages", schema: z.ZodType<T>): T[] {
+  const parsed = z.array(schema).safeParse(snapshot[name]);
+  if (!parsed.success) throw new Error(`content/snapshot.json ${name}: ${z.prettifyError(parsed.error)}`);
+  return parsed.data;
+}
 
-export type WorkMeta = z.infer<typeof WorkMeta>;
-export type Work = { slug: string; meta: WorkMeta; Body: ComponentType };
+function keys() {
+  const project = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
+  const key = process.env.NEXT_PUBLIC_FIREBASE_API_KEY;
+  return project && key ? { project, key } : null;
+}
 
-export async function getWork(): Promise<Work[]> {
-  const slugs = readdirSync(join(process.cwd(), "content", "work"))
-    .filter((f) => f.endsWith(".mdx"))
-    .map((f) => f.slice(0, -4));
-  const all = await Promise.all(
-    slugs.map(async (slug) => {
-      const mod = await import(`@/content/work/${slug}.mdx`);
-      const r = WorkMeta.safeParse(mod.meta);
-      if (!r.success) throw new Error(`content/work/${slug}.mdx: ${z.prettifyError(r.error)}`);
-      return { slug, meta: r.data, Body: mod.default as ComponentType };
+async function load<T>(
+  name: "work" | "posts" | "apps" | "packages",
+  schema: z.ZodType<T>,
+  sort: (rows: T[]) => T[],
+): Promise<T[]> {
+  const fallback = checked(name, schema);
+  const k = keys();
+  if (!k) return sort(fallback);
+  try {
+    const docs = await listDocs(k.project, k.key, name);
+    const remote = docs.map((doc) => ({ slug: doc.id, ...doc.fields }));
+    return sort(chooseList(remote, schema, fallback));
+  } catch {
+    return sort(fallback);
+  }
+}
+
+const byOrder = <T extends { order: number }>(rows: T[]) => rows.sort((a, b) => a.order - b.order);
+const byDate = (rows: Post[]) => rows.sort((a, b) => (a.date < b.date ? 1 : -1));
+
+export function getWork() {
+  return load("work", WorkSchema, byOrder);
+}
+export function getPosts() {
+  return load("posts", PostSchema, byDate);
+}
+export function getApps() {
+  return load("apps", AppSchema, byOrder);
+}
+export type LivePackage = PackageEntry & Partial<Pick<PubScore, "likes" | "downloads">>;
+
+/** Packages with live pub.dev points, likes and 30-day downloads. Checked-in points stay when pub.dev is unreachable. */
+export async function getPackages(): Promise<LivePackage[]> {
+  const rows = await load("packages", PackageSchema, byOrder);
+  return Promise.all(
+    rows.map(async (row) => {
+      const score = await fetchPubScore(row.name);
+      return score ? { ...row, points: score.points, likes: score.likes, downloads: score.downloads } : row;
     }),
   );
-  return all.sort((a, b) => a.meta.order - b.meta.order);
 }
+
+const noSettings: Settings = { notice: "", availability: "" };
+
+/** settings/site, edited in admin. Missing or broken means empty, never a failed page. */
+export async function getSettings(): Promise<Settings> {
+  const k = keys();
+  if (!k) return noSettings;
+  try {
+    const parsed = SettingsSchema.safeParse((await getDoc(k.project, k.key, "settings/site")) ?? {});
+    return parsed.success ? parsed.data : noSettings;
+  } catch {
+    return noSettings;
+  }
+}
+
+export type { AppEntry, PackageEntry, Post, Settings, Work };

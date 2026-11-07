@@ -1,0 +1,22 @@
+# Firebase App Hosting (Blaze). NEXT_PUBLIC_* values ship to the browser anyway, so they live here.
+# Fill the values from the Firebase console: Project settings > Your apps > Web app.
+runConfig:
+  minInstances: 0
+  maxInstances: 2 # cost cap, raise if traffic earns it
+  concurrency: 80
+  cpu: 1
+  memoryMiB: 512
+
+env:
+  - variable: NEXT_PUBLIC_FIREBASE_API_KEY
+    value: "AIzaSyC5KRmhM-mq5DK6SQ74rG2xn5WaelRdqog"
+  - variable: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+    value: "ppamania-web.firebaseapp.com"
+  - variable: NEXT_PUBLIC_FIREBASE_PROJECT_ID
+    value: "appamania-web"
+  - variable: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+    value: "appamania-web.firebasestorage.app"
+  - variable: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+    value: "972349373151"
+  - variable: NEXT_PUBLIC_GA_MEASUREMENT_ID
+    value: "G-WVDHSSMWRK"

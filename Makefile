@@ -1,4 +1,4 @@
-# One-stop commands. `make` lists them. Needs Node 22+.
+# One-stop commands. `make` lists them. Needs Node 24+.
 .DEFAULT_GOAL := help
 .PHONY: help setup dev test e2e check clean stop-app
 

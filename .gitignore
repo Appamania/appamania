@@ -1,7 +1,10 @@
-# Secrets (PRD §42) — never commit
+# Secrets — never commit
 .env
 .env.*
 !.env.example
+
+# Local planning notes
+/docs/status.md
 
 # Local Claude Code overrides
 .claude/settings.local.json
@@ -17,7 +20,8 @@
 /coverage
 *.tsbuildinfo
 next-env.d.ts
-.vercel
+.firebase/
+.firebaserc
 *.pem
 npm-debug.log*
 

@@ -44,7 +44,9 @@ export function AuditScreen({ scores, topFix }: { scores: readonly Score[]; topF
           </div>
         </div>
       ))}
-      <div className="rounded-[14px] border border-saffron/30 bg-saffron-tint p-3 text-[12px] leading-normal">Top fix: {topFix}</div>
+      <div className="rounded-[14px] border border-saffron/30 bg-saffron-tint p-3 text-[12px] leading-normal">
+        Top fix: {topFix}
+      </div>
     </>
   );
 }
@@ -67,7 +69,9 @@ export function SprintScreen() {
           <span className={ok ? "text-score-good" : "text-score-warn"}>{v}</span>
         </div>
       ))}
-      <div className="mt-auto grid h-11 place-items-center rounded-pill bg-brand text-[14px] font-semibold text-on-brand">Checks done</div>
+      <div className="mt-auto grid h-11 place-items-center rounded-pill bg-brand text-[14px] font-semibold text-on-brand">
+        Checks done
+      </div>
     </>
   );
 }
@@ -84,7 +88,12 @@ export const sampleAudit = {
 
 export function FloatCard({ className, children }: { className?: string; children: React.ReactNode }) {
   return (
-    <div className={cx("absolute z-3 rounded-md border border-line-strong bg-paper-raised/90 px-4 py-3.5 backdrop-blur-md shadow-card", className)}>
+    <div
+      className={cx(
+        "absolute z-3 rounded-md border border-line-strong bg-paper-raised/90 px-4 py-3.5 shadow-card backdrop-blur-md",
+        className,
+      )}
+    >
       {children}
     </div>
   );
@@ -106,7 +115,7 @@ export function Marquee({ items }: { items: readonly string[] }) {
       aria-label="Tech stack"
       role="region"
       tabIndex={0}
-      className="group overflow-hidden border-y border-line py-5.5 [mask-image:linear-gradient(90deg,transparent,black_10%,black_90%,transparent)]"
+      className="group overflow-hidden border-y border-line [mask-image:linear-gradient(90deg,transparent,black_10%,black_90%,transparent)] py-5.5"
     >
       <div className="flex w-max animate-[marquee_38s_linear_infinite] text-[22px] font-medium tracking-[-0.02em] text-ink-muted group-hover:[animation-play-state:paused] group-focus:[animation-play-state:paused] motion-reduce:animate-none">
         {row()}

@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with: { node-version: 22, cache: npm }
+        with: { node-version: 24, cache: npm }
       - run: npm ci
       - run: node scripts/audit-prod.mjs
       - run: npm run lint && npm run typecheck
@@ -21,3 +21,19 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: failure()
         with: { name: playwright-report, path: playwright-report, retention-days: 7 }
+
+  # Firestore and Storage rules deploy from the repo, so the console never drifts. App Hosting rolls out main on its own.
+  rules:
+    needs: check
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 24 }
+      - run: printf '%s' "$FIREBASE_SERVICE_ACCOUNT" > "$RUNNER_TEMP/sa.json"
+        env: { FIREBASE_SERVICE_ACCOUNT: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}" }
+      - run: npx firebase-tools@latest deploy --only firestore:rules,storage --project "$FIREBASE_PROJECT_ID" --non-interactive
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ runner.temp }}/sa.json
+          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
