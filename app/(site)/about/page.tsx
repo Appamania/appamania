@@ -41,11 +41,16 @@ export default async function About() {
         lead={aboutCopy.hero.lead}
       >
         <div className="flex flex-wrap gap-3">
-          <Link href="/contact?offer=audit" className={buttonStyles("primary", "lg")}>
+          <Link
+            href="/contact?offer=audit"
+            data-cta="about_primary"
+            data-offer="audit"
+            className={buttonStyles("primary", "lg")}
+          >
             Book the {formatPrice(offers.audit)} audit <Arrow />
           </Link>
           {site.links.booking && (
-            <a href={site.links.booking} className={buttonStyles("outline", "lg")}>
+            <a href={site.links.booking} data-cta="booking" className={buttonStyles("outline", "lg")}>
               Book a 20-minute call
             </a>
           )}
@@ -103,7 +108,12 @@ export default async function About() {
 
       <Section>
         <CtaBand eyebrow="Start" title="Send the repo." body="One form, one working day, one honest answer.">
-          <Link href="/contact?offer=audit" className={buttonStyles("inverse", "lg")}>
+          <Link
+            href="/contact?offer=audit"
+            data-cta="cta_band"
+            data-offer="audit"
+            className={buttonStyles("inverse", "lg")}
+          >
             Book the audit <Arrow />
           </Link>
         </CtaBand>

@@ -1,4 +1,5 @@
 import { Analytics } from "@/components/site/Analytics";
+import { CtaTracker } from "@/components/site/CtaTracker";
 import { Footer } from "@/components/site/Footer";
 import { JsonLd } from "@/components/site/JsonLd";
 import { Navbar } from "@/components/site/Navbar";
@@ -20,6 +21,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       </main>
       <Footer />
       <Analytics />
+      <CtaTracker />
     </div>
   );
 }

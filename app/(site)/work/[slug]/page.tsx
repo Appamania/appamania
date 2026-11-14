@@ -164,6 +164,7 @@ export default async function CaseStudy({ params }: { params: Promise<{ slug: st
         {related && (
           <Link
             href={`/services/${related.slug}`}
+            data-cta="related_service"
             className={buttonStyles("outline", "md", "mb-6 h-auto min-h-11 self-start py-2 whitespace-normal")}
           >
             See {related.eyebrow} <Arrow />
@@ -174,7 +175,12 @@ export default async function CaseStudy({ params }: { params: Promise<{ slug: st
           title="Stuck on the same problem?"
           body="Send the repo. Get a written report in 48 hours."
         >
-          <Link href="/contact?offer=audit" className={buttonStyles("inverse", "lg")}>
+          <Link
+            href="/contact?offer=audit"
+            data-cta="cta_band"
+            data-offer="audit"
+            className={buttonStyles("inverse", "lg")}
+          >
             Book the audit <Arrow />
           </Link>
         </CtaBand>

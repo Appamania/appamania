@@ -116,6 +116,34 @@ test("a bad email stays on the form", async ({ page }) => {
   await expect(page.getByLabel("Your name")).toHaveValue("Asha");
 });
 
+test("/contact asks for platform, timeline, and budget", async ({ page }) => {
+  await page.goto("/contact");
+  await expect(page.getByLabel("Platform (optional)")).toBeVisible();
+  await expect(page.getByLabel("Timeline (optional)")).toBeVisible();
+  await expect(page.getByLabel("Budget (optional)")).toBeVisible();
+  await expect(page.getByLabel("Budget (optional)").locator("option", { hasText: "Not sure yet" })).toHaveCount(1);
+});
+
+test("a CTA click sends cta_click to gtag", async ({ page }) => {
+  // Stub gtag before any page script runs. Non-writable and non-configurable, so GA's own script cannot replace it. sessionStorage keeps the events across the navigation.
+  await page.addInitScript(() => {
+    Object.defineProperty(window, "gtag", {
+      value: (...args: unknown[]) => {
+        const list = JSON.parse(sessionStorage.getItem("ev") ?? "[]");
+        list.push(args);
+        sessionStorage.setItem("ev", JSON.stringify(list));
+      },
+      writable: false,
+      configurable: false,
+    });
+  });
+  await page.goto("/");
+  await page.locator('a[data-cta="hero_primary"]').click();
+  await page.waitForURL(/\/contact/);
+  const events = await page.evaluate(() => JSON.parse(sessionStorage.getItem("ev") ?? "[]"));
+  expect(events).toContainEqual(["event", "cta_click", expect.objectContaining({ cta_id: "hero_primary" })]);
+});
+
 test("a honeypot note pretends to save", async ({ page }) => {
   await page.goto("/contact");
   await page.getByLabel("Your name").fill("Asha Rao");

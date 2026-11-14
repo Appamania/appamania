@@ -54,6 +54,7 @@ export function Footer() {
                 <li key={l.href}>
                   <Link
                     href={l.href}
+                    data-cta={l.href === site.links.booking ? "booking" : undefined}
                     className="block py-1 break-words text-ink-muted hover:text-brand pointer-coarse:py-2.5"
                   >
                     {l.label}

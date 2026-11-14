@@ -51,10 +51,15 @@ export function HomePage({ work, packages, apps }: { work: Work[]; packages: Pac
           </h1>
           <p className="max-w-[46ch] text-body-lg text-ink-muted">{copy.hero.lead}</p>
           <div className="flex flex-wrap gap-3">
-            <Link href="/contact?offer=audit" className={buttonStyles("primary", "lg")}>
+            <Link
+              href="/contact?offer=audit"
+              data-cta="hero_primary"
+              data-offer="audit"
+              className={buttonStyles("primary", "lg")}
+            >
               {copy.hero.primary} <Arrow />
             </Link>
-            <Link href="/work" className={buttonStyles("outline", "lg")}>
+            <Link href="/work" data-cta="hero_secondary" className={buttonStyles("outline", "lg")}>
               {copy.hero.secondary}
             </Link>
           </div>
@@ -249,7 +254,12 @@ export function HomePage({ work, packages, apps }: { work: Work[]; packages: Pac
           title="Send the repo. Get a report."
           body="48 hours, written down, with the top fix first."
         >
-          <Link href="/contact?offer=audit" className={buttonStyles("inverse", "lg")}>
+          <Link
+            href="/contact?offer=audit"
+            data-cta="cta_band"
+            data-offer="audit"
+            className={buttonStyles("inverse", "lg")}
+          >
             Book the audit <Arrow />
           </Link>
         </CtaBand>

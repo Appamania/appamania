@@ -24,7 +24,7 @@ export default async function Contact({ searchParams }: { searchParams: Promise<
         lead={`Say what the app does and what is wrong. ${site.owner} replies within one working day, IST, with next steps or a fixed quote.`}
       >
         {site.links.booking && (
-          <a href={site.links.booking} className={buttonStyles("outline", "md", "self-start")}>
+          <a href={site.links.booking} data-cta="booking" className={buttonStyles("outline", "md", "self-start")}>
             Book a 20-minute call <Arrow />
           </a>
         )}

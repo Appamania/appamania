@@ -46,7 +46,12 @@ export default async function ServiceLanding({ params }: { params: Promise<{ slu
         ]}
       />
       <PageHero eyebrow={l.eyebrow} title={l.h1} accent={l.accent} lead={l.lead}>
-        <Link href={`/contact?offer=${l.offer}`} className={buttonStyles("primary", "lg", "self-start")}>
+        <Link
+          href={`/contact?offer=${l.offer}`}
+          data-cta="landing_primary"
+          data-offer={l.offer}
+          className={buttonStyles("primary", "lg", "self-start")}
+        >
           Book the {formatPrice(offers[l.offer])} audit <Arrow />
         </Link>
       </PageHero>
@@ -87,7 +92,12 @@ export default async function ServiceLanding({ params }: { params: Promise<{ slu
 
       <Section>
         <CtaBand eyebrow="Start" title="Send the repo." body="One form, one working day, one honest answer.">
-          <Link href={`/contact?offer=${l.offer}`} className={buttonStyles("inverse", "lg")}>
+          <Link
+            href={`/contact?offer=${l.offer}`}
+            data-cta="cta_band"
+            data-offer={l.offer}
+            className={buttonStyles("inverse", "lg")}
+          >
             Book the audit <Arrow />
           </Link>
         </CtaBand>

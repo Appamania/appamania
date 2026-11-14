@@ -117,7 +117,7 @@ export default async function OpenSource() {
           title="Need this care on your app?"
           body="Send the repo. Get a written report in 48 hours."
         >
-          <Link href="/services" className={buttonStyles("inverse", "lg")}>
+          <Link href="/services" data-cta="cta_band" className={buttonStyles("inverse", "lg")}>
             See the services <Arrow />
           </Link>
         </CtaBand>

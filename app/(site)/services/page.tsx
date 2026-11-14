@@ -60,14 +60,14 @@ export default function Services() {
                   },
                 }
               : o.from
-              ? {
-                  priceSpecification: {
-                    "@type": "PriceSpecification",
-                    minPrice: o.priceMinor / 100,
-                    priceCurrency: "INR",
-                  },
-                }
-              : { price: o.priceMinor / 100, priceCurrency: "INR" }),
+                ? {
+                    priceSpecification: {
+                      "@type": "PriceSpecification",
+                      minPrice: o.priceMinor / 100,
+                      priceCurrency: "INR",
+                    },
+                  }
+                : { price: o.priceMinor / 100, priceCurrency: "INR" }),
           })),
         }}
       />
@@ -78,7 +78,12 @@ export default function Services() {
         lead="Every engagement starts with code Appamania has read and ends with a release you can see."
       >
         <div className="flex flex-col gap-5">
-          <Link href="/contact?offer=audit" className={buttonStyles("primary", "lg", "self-start")}>
+          <Link
+            href="/contact?offer=audit"
+            data-cta="services_primary"
+            data-offer="audit"
+            className={buttonStyles("primary", "lg", "self-start")}
+          >
             Book the {formatPrice(offers.audit)} audit <Arrow />
           </Link>
           <ul className="flex flex-wrap gap-2">
@@ -134,7 +139,12 @@ export default function Services() {
       </Section>
       <Section>
         <CtaBand eyebrow="Start" title="Send the repo." body="One form, one working day, one honest answer.">
-          <Link href="/contact?offer=audit" className={buttonStyles("inverse", "lg")}>
+          <Link
+            href="/contact?offer=audit"
+            data-cta="cta_band"
+            data-offer="audit"
+            className={buttonStyles("inverse", "lg")}
+          >
             Book the audit <Arrow />
           </Link>
         </CtaBand>

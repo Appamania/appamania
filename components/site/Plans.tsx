@@ -48,7 +48,12 @@ export function Plans({ detail, ids }: { detail?: boolean; ids?: OfferId[] }) {
                 </ul>
               )}
               {o.guarantee && <p className="text-small text-ink">{o.guarantee}</p>}
-              <Link href={`/contact?offer=${id}`} className={buttonStyles("outline", "md", "mt-auto self-start")}>
+              <Link
+                href={`/contact?offer=${id}`}
+                data-cta={`plan_${id}`}
+                data-offer={id}
+                className={buttonStyles("outline", "md", "mt-auto self-start")}
+              >
                 {o.cta} <Arrow />
               </Link>
             </li>
@@ -61,7 +66,12 @@ export function Plans({ detail, ids }: { detail?: boolean; ids?: OfferId[] }) {
           {quoted.map((id, i) => (
             <span key={id}>
               {i > 0 && " · "}
-              <Link href={`/contact?offer=${id}`} className="text-ink underline underline-offset-4 hover:text-brand">
+              <Link
+                href={`/contact?offer=${id}`}
+                data-cta={`plan_${id}`}
+                data-offer={id}
+                className="text-ink underline underline-offset-4 hover:text-brand"
+              >
                 {offers[id].name}
               </Link>{" "}
               {formatPrice(offers[id])}

@@ -16,7 +16,12 @@ export function NavCta() {
     path.startsWith("/open-source")
   );
   return (
-    <Link href="/contact?offer=audit" className={buttonStyles(primary ? "primary" : "outline", "sm")}>
+    <Link
+      href="/contact?offer=audit"
+      data-cta="nav"
+      data-offer="audit"
+      className={buttonStyles(primary ? "primary" : "outline", "sm")}
+    >
       Book an audit
     </Link>
   );

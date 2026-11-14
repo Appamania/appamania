@@ -37,7 +37,12 @@ export default async function WorkIndex() {
       )}
       <Section>
         <CtaBand eyebrow="Start" title="Send the repo." body="One form, one working day, one honest answer.">
-          <Link href="/contact?offer=audit" className={buttonStyles("inverse", "lg")}>
+          <Link
+            href="/contact?offer=audit"
+            data-cta="cta_band"
+            data-offer="audit"
+            className={buttonStyles("inverse", "lg")}
+          >
             Book the audit <Arrow />
           </Link>
         </CtaBand>
