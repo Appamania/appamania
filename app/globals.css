@@ -114,12 +114,6 @@ h2 {
   text-wrap: balance;
 }
 
-@keyframes marquee {
-  to {
-    transform: translateX(-50%);
-  }
-}
-
 /* Motion (design brief): transform and opacity only, CSS only, static under reduced motion.
    .reveal: scroll-driven fade-up as an element enters the viewport. Browsers without
    animation-timeline render the final state. .enter: one-time entrance on first paint. */

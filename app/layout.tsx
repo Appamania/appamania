@@ -10,7 +10,9 @@ const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono"
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: { default: `${site.name} — Flutter apps that ship`, template: `%s · ${site.name}` },
-  description: site.tagline,
+  description: site.description,
+  openGraph: { siteName: site.name, locale: "en_IN", type: "website" },
+  twitter: { card: "summary_large_image" },
 };
 
 export const viewport: Viewport = { themeColor: themeColor.night };
@@ -18,7 +20,12 @@ export const viewport: Viewport = { themeColor: themeColor.night };
 // Site pages are Night.
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en-IN" data-theme="night" className={`${geist.variable} ${geistMono.variable}`} suppressHydrationWarning>
+    <html
+      lang="en-IN"
+      data-theme="night"
+      className={`${geist.variable} ${geistMono.variable}`}
+      suppressHydrationWarning
+    >
       <body>
         <a
           href="#main"

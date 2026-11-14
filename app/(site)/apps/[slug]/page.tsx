@@ -1,10 +1,22 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import Link from "next/link";
+import { Arrow, buttonStyles } from "@/components/ui/Button";
+import { Breadcrumbs } from "@/components/site/Breadcrumbs";
+import { JsonLd } from "@/components/site/JsonLd";
 import { PageHero } from "@/components/site/Blocks";
 import { getApps } from "@/lib/content";
+import { describe, orgId, pageMeta } from "@/lib/seo";
 
-export const revalidate = 60;
+// Store categories that have a schema.org type; anything else is a generic mobile app.
+const applicationCategory: Record<string, string> = {
+  Finance: "FinanceApplication",
+  Health: "HealthApplication",
+  Weather: "UtilitiesApplication",
+};
+
+export const dynamicParams = false;
 
 export async function generateStaticParams() {
   return (await getApps()).map((row) => ({ slug: row.slug }));
@@ -16,7 +28,17 @@ async function find(slug: string) {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const app = await find((await params).slug);
-  return app ? { title: app.name, description: app.summary, alternates: { canonical: `/apps/${app.slug}` } } : {};
+  return app
+    ? pageMeta({
+        title: `${app.name}: ${app.category} app for Android`,
+        description: describe([
+          `${app.name} is a ${app.category.toLowerCase()} app for Android.`,
+          app.summary,
+          "Built and published by Appamania.",
+        ]),
+        path: `/apps/${app.slug}`,
+      })
+    : {};
 }
 
 export default async function AppPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -24,6 +46,24 @@ export default async function AppPage({ params }: { params: Promise<{ slug: stri
   if (!app) notFound();
   return (
     <article>
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          name: app.name,
+          operatingSystem: "Android",
+          applicationCategory: applicationCategory[app.category] ?? "MobileApplication",
+          installUrl: app.url,
+          author: { "@id": orgId },
+        }}
+      />
+      <Breadcrumbs
+        items={[
+          { name: "Home", href: "/" },
+          { name: "Apps", href: "/apps" },
+          { name: app.name, href: `/apps/${app.slug}` },
+        ]}
+      />
       <PageHero eyebrow={app.category} title={app.name} lead={app.summary} />
       {app.screens?.length ? (
         <ul aria-label="Screenshots" tabIndex={0} className="mb-10 flex snap-x gap-4 overflow-x-auto pb-2">
@@ -51,6 +91,10 @@ export default async function AppPage({ params }: { params: Promise<{ slug: stri
         >
           Get it on Google Play
         </a>
+        {app.outcome && <p className="text-h2">{app.outcome}</p>}
+        <Link href="/services" className={buttonStyles("outline", "md", "self-start")}>
+          See the services <Arrow />
+        </Link>
       </div>
     </article>
   );

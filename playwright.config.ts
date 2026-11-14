@@ -1,8 +1,9 @@
 import { defineConfig, devices } from "@playwright/test";
 
-// E2E_PORT lets e2e run next to a dev server on 3000.
+// E2E_BASE_URL runs the suite against a deployed site (no local server). E2E_PORT runs next to a dev server.
 const port = Number(process.env.E2E_PORT ?? 3000);
-const base = `http://localhost:${port}`;
+const remote = process.env.E2E_BASE_URL;
+const base = remote ?? `http://localhost:${port}`;
 
 // CI runs `next start` on the build from the previous step.
 export default defineConfig({
@@ -17,7 +18,7 @@ export default defineConfig({
     { name: "desktop", use: { ...devices["Desktop Chrome"] } },
     { name: "mobile", use: { ...devices["Pixel 7"] } },
   ],
-  webServer: {
+  webServer: remote ? undefined : {
     command: process.env.CI ? `npm run start -- -p ${port}` : `npm run dev -- -p ${port}`,
     url: base,
     reuseExistingServer: !process.env.CI,

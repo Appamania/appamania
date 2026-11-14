@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 import { JsonLd } from "@/components/site/JsonLd";
 import { PageHero } from "@/components/site/Blocks";
 import { site } from "@/config/site";
 import { getPosts } from "@/lib/content";
+import { pageMeta } from "@/lib/seo";
 
-export const revalidate = 60;
+export const dynamicParams = false;
 
 export async function generateStaticParams() {
   return (await getPosts()).map((row) => ({ slug: row.slug }));
@@ -28,7 +30,9 @@ async function find(slug: string) {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const post = await find((await params).slug);
-  return post ? { title: post.title, description: post.summary, alternates: { canonical: `/blog/${post.slug}` } } : {};
+  return post
+    ? pageMeta({ title: post.title, description: post.summary, path: `/blog/${post.slug}`, rootImage: true })
+    : {};
 }
 
 export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -36,6 +40,13 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
   if (!post) notFound();
   return (
     <article>
+      <Breadcrumbs
+        items={[
+          { name: "Home", href: "/" },
+          { name: "Blog", href: "/blog" },
+          { name: post.title, href: `/blog/${post.slug}` },
+        ]}
+      />
       <JsonLd
         data={{
           "@context": "https://schema.org",

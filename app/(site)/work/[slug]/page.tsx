@@ -17,12 +17,15 @@ import {
   Tile,
   VersionJump,
 } from "@/components/site/Blocks";
+import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 import { JsonLd } from "@/components/site/JsonLd";
 import { WorkCards } from "@/components/site/WorkCards";
+import { landingSlugs, landings } from "@/config/landing";
 import { site } from "@/config/site";
 import { getWork } from "@/lib/content";
+import { describe, orgId, pageMeta } from "@/lib/seo";
 
-export const revalidate = 60;
+export const dynamicParams = false;
 
 export async function generateStaticParams() {
   return (await getWork()).map((row) => ({ slug: row.slug }));
@@ -34,7 +37,7 @@ async function find(slug: string) {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const w = await find((await params).slug);
-  return w ? { title: w.teaser.title, description: w.lead, alternates: { canonical: `/work/${w.slug}` } } : {};
+  return w ? pageMeta({ title: w.teaser.title, description: describe([w.lead]), path: `/work/${w.slug}` }) : {};
 }
 
 export default async function CaseStudy({ params }: { params: Promise<{ slug: string }> }) {
@@ -43,6 +46,7 @@ export default async function CaseStudy({ params }: { params: Promise<{ slug: st
   const w = all.find((x) => x.slug === slug);
   if (!w) notFound();
   const others = all.filter((x) => x.slug !== slug);
+  const related = landingSlugs.map((s) => landings[s]).find((l) => l.caseStudy === slug);
   return (
     <article>
       <JsonLd
@@ -52,8 +56,18 @@ export default async function CaseStudy({ params }: { params: Promise<{ slug: st
           headline: w.teaser.title,
           description: w.lead,
           author: { "@type": "Person", name: site.owner },
+          publisher: { "@id": orgId },
+          mainEntityOfPage: `${site.url}/work/${w.slug}`,
           url: `${site.url}/work/${w.slug}`,
+          ...(w.date && { datePublished: w.date, dateModified: w.updated ?? w.date }),
         }}
+      />
+      <Breadcrumbs
+        items={[
+          { name: "Home", href: "/" },
+          { name: "Work", href: "/work" },
+          { name: w.teaser.title, href: `/work/${w.slug}` },
+        ]}
       />
       <PageHero eyebrow={w.eyebrow} title={w.title} accent={w.accent} lead={w.lead} />
       {w.video ? (
@@ -104,8 +118,8 @@ export default async function CaseStudy({ params }: { params: Promise<{ slug: st
       <Section aria-labelledby="did">
         <SectionHeader
           id="did"
-          eyebrow="02 — What I did"
-          title={`${["", "", "Two", "Three", "Four"][w.steps.length]} steps, all reversible.`}
+          eyebrow="02 — The work"
+          title={`${["", "", "Two", "Three", "Four"][w.steps.length] ?? "The"} steps, all reversible.`}
         />
         <Steps items={w.steps} />
         {w.checks && (
@@ -120,14 +134,15 @@ export default async function CaseStudy({ params }: { params: Promise<{ slug: st
         )}
       </Section>
 
-      <Section aria-label="Result">
+      <Section aria-labelledby="result">
         <Panel>
           <div className="relative flex flex-col gap-5">
             <Eyebrow>03 — Result</Eyebrow>
-            <p className="text-[clamp(40px,5vw,72px)] leading-[0.95] font-semibold tracking-[-0.05em]">
+            <h2 id="result" className="text-[clamp(40px,5vw,72px)] leading-[0.95] font-semibold tracking-[-0.05em]">
               {w.result.title}
-            </p>
+            </h2>
             <p className="text-ink-muted">{w.result.body}</p>
+            {w.outcome && <p className="text-h2">{w.outcome}</p>}
           </div>
           <div className="relative flex flex-col gap-4">
             {w.versions.map((v) => (
@@ -146,9 +161,27 @@ export default async function CaseStudy({ params }: { params: Promise<{ slug: st
       )}
 
       <Section>
-        <CtaBand eyebrow="A question" title="Something in this write-up?" body="Send a note. I read every one.">
-          <Link href="/contact" className={buttonStyles("inverse", "lg")}>
-            Send a note <Arrow />
+        {related && (
+          <Link
+            href={`/services/${related.slug}`}
+            data-cta="related_service"
+            className={buttonStyles("outline", "md", "mb-6 h-auto min-h-11 self-start py-2 whitespace-normal")}
+          >
+            See {related.eyebrow} <Arrow />
+          </Link>
+        )}
+        <CtaBand
+          eyebrow="Start"
+          title="Stuck on the same problem?"
+          body="Send the repo. Get a written report in 48 hours."
+        >
+          <Link
+            href="/contact?offer=audit"
+            data-cta="cta_band"
+            data-offer="audit"
+            className={buttonStyles("inverse", "lg")}
+          >
+            Book the audit <Arrow />
           </Link>
         </CtaBand>
       </Section>

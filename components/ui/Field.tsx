@@ -9,6 +9,8 @@ type FieldProps = {
   /** zod fieldErrors entry or a single message */
   error?: string | string[];
   required?: boolean;
+  /** Adds a muted " (optional)" after the label text. */
+  optional?: boolean;
 };
 
 function wiring(id: string, { helper, error }: FieldProps) {
@@ -27,6 +29,7 @@ export function Field({
   id,
   label,
   required,
+  optional,
   helper,
   message,
   children,
@@ -36,6 +39,7 @@ export function Field({
       <label htmlFor={id} className="text-small font-medium">
         {label}
         {required && <span className="font-normal text-ink-muted"> (required)</span>}
+        {optional && <span className="font-normal text-ink-muted"> (optional)</span>}
       </label>
       {children}
       {message ? (
@@ -63,20 +67,15 @@ export function Input({
   helper,
   error,
   required,
+  optional,
   className,
   ...rest
 }: FieldProps & ComponentProps<"input"> & { name: string }) {
   const id = rest.id ?? rest.name;
   const { message, aria } = wiring(id, { label, helper, error });
   return (
-    <Field id={id} label={label} required={required} helper={helper} message={message}>
-      <input
-        id={id}
-        required={required}
-        className={cx(controlStyles, "h-11", className)}
-        {...aria}
-        {...rest}
-      />
+    <Field id={id} label={label} required={required} optional={optional} helper={helper} message={message}>
+      <input id={id} required={required} className={cx(controlStyles, "h-11", className)} {...aria} {...rest} />
     </Field>
   );
 }
@@ -86,13 +85,14 @@ export function Textarea({
   helper,
   error,
   required,
+  optional,
   className,
   ...rest
 }: FieldProps & ComponentProps<"textarea"> & { name: string }) {
   const id = rest.id ?? rest.name;
   const { message, aria } = wiring(id, { label, helper, error });
   return (
-    <Field id={id} label={label} required={required} helper={helper} message={message}>
+    <Field id={id} label={label} required={required} optional={optional} helper={helper} message={message}>
       <textarea
         id={id}
         required={required}
@@ -110,6 +110,7 @@ export function Select({
   helper,
   error,
   required,
+  optional,
   className,
   children,
   ...rest
@@ -117,7 +118,7 @@ export function Select({
   const id = rest.id ?? rest.name;
   const { message, aria } = wiring(id, { label, helper, error });
   return (
-    <Field id={id} label={label} required={required} helper={helper} message={message}>
+    <Field id={id} label={label} required={required} optional={optional} helper={helper} message={message}>
       <div className="relative">
         <select
           id={id}
@@ -146,7 +147,10 @@ export function Choice({
 }: { label: ReactNode; type?: "checkbox" | "radio" } & Omit<ComponentProps<"input">, "type">) {
   return (
     <label
-      className={cx("inline-flex min-h-6 cursor-pointer items-center gap-2 text-small pointer-coarse:min-h-11", className)}
+      className={cx(
+        "inline-flex min-h-6 cursor-pointer items-center gap-2 text-small pointer-coarse:min-h-11",
+        className,
+      )}
     >
       <input type={type} className="size-4 accent-(--brand)" {...rest} />
       {label}
@@ -158,7 +162,10 @@ export function Choice({
 export function Switch({ label, className, ...rest }: { label: ReactNode } & Omit<ComponentProps<"input">, "type">) {
   return (
     <label
-      className={cx("inline-flex min-h-6 cursor-pointer items-center gap-2 text-small pointer-coarse:min-h-11", className)}
+      className={cx(
+        "inline-flex min-h-6 cursor-pointer items-center gap-2 text-small pointer-coarse:min-h-11",
+        className,
+      )}
     >
       <input
         type="checkbox"

@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState, type FocusEvent } from "react";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { Input, Select, Textarea } from "@/components/ui/Field";
-import { offerIds, offers, type OfferId } from "@/config/offers";
+import { budgets, isOfferId, offerIds, offers, type OfferId } from "@/config/offers";
 import { site } from "@/config/site";
-import { fieldError, prepareNote, type NoteField, type NoteFields } from "@/lib/note";
+import { track } from "@/lib/analytics";
+import { fieldError, platforms, prepareNote, timelines, type NoteField, type NoteFields } from "@/lib/note";
 import { createNote } from "@/lib/firestore";
 
 function read(form: HTMLFormElement): NoteFields {
@@ -16,18 +18,24 @@ function read(form: HTMLFormElement): NoteFields {
     message: String(fd.get("message") ?? ""),
     link: String(fd.get("link") ?? ""),
     offer: String(fd.get("offer") ?? ""),
+    platform: String(fd.get("platform") ?? ""),
+    timeline: String(fd.get("timeline") ?? ""),
+    budget: String(fd.get("budget") ?? ""),
     website: String(fd.get("website") ?? ""),
   };
 }
 
 // Creates a Firestore note when the Firebase keys are set. Otherwise opens a mailto.
-export function NoteForm({ project, apiKey, offer }: { project: string; apiKey: string; offer?: OfferId }) {
+export function NoteForm({ project, apiKey }: { project: string; apiKey: string }) {
+  const param = useSearchParams().get("offer") ?? "";
+  const offer: OfferId | undefined = isOfferId(param) ? param : undefined;
   const [errors, setErrors] = useState<Partial<Record<NoteField, string>>>({});
   const [formError, setFormError] = useState("");
   const [sent, setSent] = useState(false);
   const [pending, setPending] = useState(false);
   const statusRef = useRef<HTMLHeadingElement>(null);
   const alertRef = useRef<HTMLParagraphElement>(null);
+  const started = useRef(false);
 
   useEffect(() => {
     if (sent) statusRef.current?.focus();
@@ -45,12 +53,12 @@ export function NoteForm({ project, apiKey, offer }: { project: string; apiKey: 
 
   if (sent)
     return (
-      <div role="status" className="flex flex-col gap-3 rounded-lg border border-line bg-paper-raised p-9">
+      <div role="status" className="flex flex-col gap-3 rounded-lg border border-line bg-paper-raised p-6 sm:p-9">
         <span className="eyebrow text-brand">Note saved</span>
         <h2 ref={statusRef} tabIndex={-1} className="text-h1 outline-none">
-          Thanks — it&apos;s saved.
+          Thanks. Your note is in.
         </h2>
-        <p className="text-ink-muted">I reply within one working day, IST.</p>
+        <p className="text-ink-muted">Appamania replies within one working day.</p>
       </div>
     );
 
@@ -58,12 +66,20 @@ export function NoteForm({ project, apiKey, offer }: { project: string; apiKey: 
     <form
       noValidate
       aria-label="Send a note"
+      onFocus={(e) => {
+        if (started.current) return;
+        started.current = true;
+        track("form_start", { offer: read(e.currentTarget).offer });
+      }}
       className="relative flex flex-col gap-5 rounded-lg border border-line bg-paper-raised p-6 sm:p-9"
       onSubmit={(e) => {
         e.preventDefault();
+        if (pending) return;
         const prepared = prepareNote(read(e.currentTarget));
         if (!prepared.ok) {
+          track("form_error", { field: prepared.field });
           setErrors({ [prepared.field]: prepared.error });
+          (e.currentTarget.elements.namedItem(prepared.field) as HTMLElement | null)?.focus();
           return;
         }
         setErrors({});
@@ -72,6 +88,7 @@ export function NoteForm({ project, apiKey, offer }: { project: string; apiKey: 
           setSent(true);
           return;
         }
+        track("form_submit", { offer: prepared.body.offer });
         if (!project || !apiKey) {
           const { body: b } = prepared;
           const body = [
@@ -88,8 +105,12 @@ export function NoteForm({ project, apiKey, offer }: { project: string; apiKey: 
         }
         setPending(true);
         void createNote(project, apiKey, prepared.body)
-          .then(() => setSent(true))
+          .then(() => {
+            track("generate_lead", { offer: prepared.body.offer });
+            setSent(true);
+          })
           .catch(() => {
+            track("form_fail");
             setPending(false);
             setFormError(`Could not save the note. Email ${site.email} instead.`);
           });
@@ -109,7 +130,7 @@ export function NoteForm({ project, apiKey, offer }: { project: string; apiKey: 
           </a>
         </p>
       )}
-      <Select label="What do you need" name="offer" defaultValue={offer ?? ""}>
+      <Select label="What do you need" name="offer" defaultValue={offer ?? ""} helper="Pick the closest fit.">
         <option value="">Just a question</option>
         {offerIds.map((id) => (
           <option key={id} value={id}>
@@ -137,8 +158,35 @@ export function NoteForm({ project, apiKey, offer }: { project: string; apiKey: 
         error={errors.message}
         onBlur={onBlur}
       />
+      <Select label="Platform" name="platform" defaultValue="" optional>
+        <option value="">Choose one</option>
+        {platforms.map((p) => (
+          <option key={p.id} value={p.id}>
+            {p.label}
+          </option>
+        ))}
+      </Select>
+      <div className="grid gap-5 sm:grid-cols-2">
+        <Select label="Timeline" name="timeline" defaultValue="" optional>
+          <option value="">Choose one</option>
+          {timelines.map((t) => (
+            <option key={t.id} value={t.id}>
+              {t.label}
+            </option>
+          ))}
+        </Select>
+        <Select label="Budget" name="budget" defaultValue="" optional className="tabular-nums">
+          <option value="">Choose one</option>
+          {budgets.map((b) => (
+            <option key={b.id} value={b.id}>
+              {b.label}
+            </option>
+          ))}
+        </Select>
+      </div>
       <Input
-        label="App or repo link (optional)"
+        label="App or repo link"
+        optional
         name="link"
         type="url"
         autoComplete="url"
@@ -158,9 +206,7 @@ export function NoteForm({ project, apiKey, offer }: { project: string; apiKey: 
         Send note
       </Button>
       <span className="font-mono text-small text-ink-muted">
-        {project && apiKey
-          ? "Saved for me to read. Used only to reply."
-          : `Opens an email to ${site.email} until Firebase is connected.`}
+        {project && apiKey ? `${site.owner} reads every note. Used only to reply.` : "Opens your email app."}
       </span>
     </form>
   );

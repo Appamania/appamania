@@ -3,10 +3,17 @@ import Link from "next/link";
 import type { Work } from "@/lib/schemas";
 import { Eyebrow } from "./Blocks";
 
+// Full literals so Tailwind sees them. Two cards get two columns, so no empty third column.
+const mdCols: Record<number, string> = {
+  1: "",
+  2: "min-[900px]:grid-cols-2",
+  3: "min-[900px]:grid-cols-3",
+};
+
 /** Case-study teaser cards (canvas Work "More work"). Whole card is the link. Cover from public/media when set. */
 export function WorkCards({ items }: { items: Work[] }) {
   return (
-    <ul className="grid gap-4 min-[900px]:grid-cols-3">
+    <ul className={`grid gap-4 ${mdCols[Math.min(items.length, 3)]}`}>
       {items.map((w) => (
         <li key={w.slug} className="reveal">
           <Link
@@ -26,6 +33,7 @@ export function WorkCards({ items }: { items: Work[] }) {
             <Eyebrow>{w.teaser.label}</Eyebrow>
             <h3 className="text-[26px] leading-[1.15] font-semibold tracking-[-0.02em]">{w.teaser.title}</h3>
             <p className="text-ink-muted">{w.teaser.summary}</p>
+            {w.outcome && <p className="font-mono text-small text-ink">{w.outcome}</p>}
             <span className="mt-auto font-mono text-[13px] text-brand">Read the case study</span>
           </Link>
         </li>

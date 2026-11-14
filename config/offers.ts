@@ -103,3 +103,12 @@ export function formatPrice(offer: Pick<Offer, "priceMinor" | "from" | "per">) {
 export function isOfferId(value: string): value is OfferId {
   return (offerIds as string[]).includes(value);
 }
+
+/** Budget bands for the contact form. Labels use the same INR formatting as prices. */
+export const budgets = [
+  { id: "lt25k", label: `Under ${formatPrice({ priceMinor: 25_000_00 })}` },
+  { id: "25k-75k", label: `${formatPrice({ priceMinor: 25_000_00 })}–${formatPrice({ priceMinor: 75_000_00 })}` },
+  { id: "75k-2l", label: `${formatPrice({ priceMinor: 75_000_00 })}–${formatPrice({ priceMinor: 2_00_000_00 })}` },
+  { id: "gt2l", label: `Over ${formatPrice({ priceMinor: 2_00_000_00 })}` },
+  { id: "unsure", label: "Not sure yet" },
+] as const;

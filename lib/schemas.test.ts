@@ -2,6 +2,11 @@ import { describe, expect, it } from "vitest";
 import { WorkSchema } from "./schemas";
 
 describe("schemas", () => {
+  it("accepts ISO dates and rejects prose dates", () => {
+    expect(WorkSchema.shape.date.safeParse("2026-11-14").success).toBe(true);
+    expect(WorkSchema.shape.date.safeParse("14 Nov").success).toBe(false);
+  });
+
   it("accepts media only from /media/", () => {
     const cover = WorkSchema.shape.cover;
     expect(cover.safeParse("/media/a.png").success).toBe(true);

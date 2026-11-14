@@ -22,7 +22,7 @@ jobs:
         if: failure()
         with: { name: playwright-report, path: playwright-report, retention-days: 7 }
 
-  # Firestore rules deploy from the repo, so the console never drifts. App Hosting rolls out main on its own.
+  # Firestore rules deploy from the repo, so the console never drifts. Netlify builds and publishes main on its own.
   rules:
     needs: check
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'

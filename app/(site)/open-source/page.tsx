@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { Arrow, buttonStyles } from "@/components/ui/Button";
 import { Chip, Code, CtaBand, PageHero, Section, SectionHeader } from "@/components/site/Blocks";
@@ -6,15 +5,18 @@ import { pubUrl } from "@/config/catalog";
 import { site } from "@/config/site";
 import { getPackages } from "@/lib/content";
 import { compact } from "@/lib/live";
+import { pageMeta } from "@/lib/seo";
 import { cx } from "@/lib/cx";
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
-export const metadata: Metadata = {
-  title: "Open source",
-  description: "Flutter and Dart packages from a pub.dev verified publisher under appamania.in.",
-  alternates: { canonical: "/open-source" },
-};
+export const metadata = pageMeta({
+  title: "Open-source Flutter packages on pub.dev",
+  description:
+    "envified, drip_flutter, and screenx: Flutter and Dart packages from the appamania.in verified publisher on pub.dev, with live points and downloads.",
+  path: "/open-source",
+  rootImage: true,
+});
 
 export default async function OpenSource() {
   const packages = await getPackages();
@@ -40,12 +42,14 @@ export default async function OpenSource() {
           </h1>
           <p className="max-w-[46ch] text-body-lg text-ink-muted">{featured.summary}</p>
           <div className="flex flex-wrap gap-3">
-            <a href={pubUrl(featured.name)} className={buttonStyles("primary")}>
+            <a href={pubUrl(featured.name)} className={buttonStyles("primary", "lg")}>
               View on pub.dev <Arrow />
             </a>
-            <a href={site.links.github} className={buttonStyles("outline")}>
-              View on GitHub
-            </a>
+            {site.links.github && (
+              <a href={site.links.github} className={buttonStyles("outline", "lg")}>
+                View on GitHub
+              </a>
+            )}
           </div>
           <dl className="flex flex-wrap gap-7 pt-2">
             {[
@@ -94,7 +98,8 @@ export default async function OpenSource() {
                 <p className={i === 0 ? undefined : "text-ink-muted"}>{p.summary}</p>
                 {p.downloads !== undefined && (
                   <span className={cx("font-mono text-small tabular-nums", i === 0 ? undefined : "text-ink-muted")}>
-                    {compact(p.downloads)} downloads in 30 days · {compact(p.likes ?? 0)} likes
+                    {compact(p.downloads)} downloads in 30 days
+                    {p.likes !== undefined && ` · ${compact(p.likes)} likes`}
                   </span>
                 )}
                 <span className={cx("mt-auto font-mono text-small", i === 0 ? undefined : "text-brand")}>
@@ -107,9 +112,13 @@ export default async function OpenSource() {
       </Section>
 
       <Section>
-        <CtaBand eyebrow="A question" title="Something about a package?" body="Send a note. I read every one.">
-          <Link href="/contact" className={buttonStyles("inverse", "lg")}>
-            Send a note <Arrow />
+        <CtaBand
+          eyebrow="Start"
+          title="Need this care on your app?"
+          body="Send the repo. Get a written report in 48 hours."
+        >
+          <Link href="/services" data-cta="cta_band" className={buttonStyles("inverse", "lg")}>
+            See the services <Arrow />
           </Link>
         </CtaBand>
       </Section>
