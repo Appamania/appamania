@@ -1,14 +1,8 @@
 import { z } from "zod";
 
-export const ADMIN_EMAIL = "sumit@appamania.in";
-
-export function isAdmin(email: string) {
-  return email.trim().toLowerCase() === ADMIN_EMAIL;
-}
-
 const slug = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
 const paragraphs = z.array(z.string().min(1));
-/** Uploaded through admin to Firebase Storage. Only that host renders, so a bad row cannot point next/image elsewhere. */
+/** Uploaded in the Firebase console to Storage `media/`. Only that host renders, so a bad row cannot point next/image elsewhere. */
 const media = z.string().startsWith("https://firebasestorage.googleapis.com/");
 
 export const WorkSchema = z.object({
@@ -65,31 +59,10 @@ export const PackageSchema = z.object({
   body: paragraphs.min(1),
 });
 
-export const NoteSchema = z.object({
-  id: z.string().min(1),
-  name: z.string(),
-  email: z.string(),
-  message: z.string(),
-  // Notes are written by the public, so a non-http link (javascript:, data:) is dropped before it becomes an href.
-  link: z.string().transform((link) => (/^https?:\/\//i.test(link) ? link : "")),
-  offer: z.string().optional(),
-  received: z.string(),
-});
-
-/** One document, settings/site. Edited in admin; shown on every page. */
-export const SettingsSchema = z.object({
-  /** Banner above the nav. Empty hides it. */
-  notice: z.string().max(200).default(""),
-  /** Footer line, e.g. "Taking one sprint from January". Empty hides it. */
-  availability: z.string().max(120).default(""),
-});
-
 export type Work = z.infer<typeof WorkSchema>;
 export type Post = z.infer<typeof PostSchema>;
 export type AppEntry = z.infer<typeof AppSchema>;
 export type PackageEntry = z.infer<typeof PackageSchema>;
-export type Note = z.infer<typeof NoteSchema>;
-export type Settings = z.infer<typeof SettingsSchema>;
 
 /** Skip a bad document. If every document is bad, keep the snapshot so one broken row does not blank the page. */
 export function chooseList<T>(remote: unknown[] | null, schema: z.ZodType<T>, fallback: T[]): T[] {

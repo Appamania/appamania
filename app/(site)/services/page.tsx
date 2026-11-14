@@ -22,7 +22,7 @@ const steps = [
 
 const faq = [
   { q: "Why start with a paid audit?", a: `It makes the quote honest. I read the code before I name a price, and the ${formatPrice(offers.audit)} is credited to the sprint.` },
-  { q: "How do you bill?", a: "GST invoice from a Udyam-registered business. Bank transfer or UPI in INR. USD on request for teams outside India." },
+  { q: "How do you bill?", a: "Invoice from a Udyam-registered business. Bank transfer or UPI in INR. USD on request for teams outside India." },
   { q: "Who owns the code?", a: "You do, from the first commit. Work happens in your repo or moves there at hand-over." },
   { q: "What if the app is not Flutter?", a: "Native Android and iOS apps moving to Flutter are a fit. Other stacks are not." },
   { q: "Can you work with my team?", a: "Yes. Sprints run on your repo and CI, with your reviewers on every PR." },

@@ -10,7 +10,7 @@ const csp = [
   "img-src 'self' data: blob: https://www.google-analytics.com https://www.googletagmanager.com https://firebasestorage.googleapis.com",
   "media-src 'self' https://firebasestorage.googleapis.com",
   "font-src 'self'",
-  "connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com https://firebasestorage.googleapis.com",
+  "connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://firestore.googleapis.com",
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "form-action 'self'",
