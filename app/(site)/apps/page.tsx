@@ -1,15 +1,17 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { AppCard } from "@/components/site/AppCard";
 import { PageHero, Section } from "@/components/site/Blocks";
 import { InDevelopment } from "@/components/site/InDevelopment";
 import { getApps } from "@/lib/content";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Apps",
-  description: "Small Flutter apps on Google Play, built and shipped by Appamania.",
-  alternates: { canonical: "/apps" },
-};
+export const metadata = pageMeta({
+  title: "Flutter apps on Google Play",
+  description:
+    "Spend Analytics, Medify, Minimalist Forecast, and Wally: Flutter apps that Appamania designs, builds, and publishes on Google Play.",
+  path: "/apps",
+  rootImage: true,
+});
 
 export default async function Apps() {
   const apps = await getApps();

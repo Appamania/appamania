@@ -5,12 +5,14 @@ import { Check } from "lucide-react";
 import { Arrow, buttonStyles } from "@/components/ui/Button";
 import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 import { CtaBand, Faq, PageHero, Section, SectionHeader, Steps } from "@/components/site/Blocks";
+import { JsonLd } from "@/components/site/JsonLd";
 import { Plans } from "@/components/site/Plans";
 import { WorkCards } from "@/components/site/WorkCards";
 import { steps } from "@/config/home";
 import { landingSlugs, landings, type LandingSlug } from "@/config/landing";
 import { formatPrice, offers } from "@/config/offers";
 import { getWork } from "@/lib/content";
+import { faqJsonLd, pageMeta } from "@/lib/seo";
 
 export const dynamicParams = false;
 
@@ -25,9 +27,7 @@ function find(slug: string) {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const l = find(slug);
-  return l
-    ? { title: l.title, description: l.description, alternates: { canonical: `/services/${l.slug}` } }
-    : {};
+  return l ? pageMeta({ title: l.title, description: l.description, path: `/services/${l.slug}` }) : {};
 }
 
 export default async function ServiceLanding({ params }: { params: Promise<{ slug: string }> }) {
@@ -80,6 +80,7 @@ export default async function ServiceLanding({ params }: { params: Promise<{ slu
         <Plans ids={["audit", "sprint"]} />
       </Section>
 
+      <JsonLd data={faqJsonLd(l.faq)} />
       <Section>
         <Faq eyebrow={num("FAQ")} title="Questions, answered." items={l.faq} />
       </Section>

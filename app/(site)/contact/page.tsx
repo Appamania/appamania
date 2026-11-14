@@ -1,15 +1,16 @@
-import type { Metadata } from "next";
 import { Arrow, buttonStyles } from "@/components/ui/Button";
 import { Eyebrow, PageHero } from "@/components/site/Blocks";
 import { NoteForm } from "@/components/site/NoteForm";
 import { isOfferId } from "@/config/offers";
 import { site } from "@/config/site";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Start a project",
-  description: `Book an audit or send a note to ${site.owner}. Reply within one working day, IST.`,
-  alternates: { canonical: "/contact" },
-};
+export const metadata = pageMeta({
+  title: "Book a Flutter app audit",
+  description: `Send the app or repo and what is wrong. ${site.owner} replies within one working day, IST, with next steps or a fixed quote. Or book a 20-minute call.`,
+  path: "/contact",
+  rootImage: true,
+});
 
 export default async function Contact({ searchParams }: { searchParams: Promise<{ offer?: string }> }) {
   const { offer } = await searchParams;

@@ -1,8 +1,14 @@
-import type { Metadata } from "next";
 import { LegalPage } from "@/components/site/Prose";
 import { site } from "@/config/site";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = { title: "Privacy", alternates: { canonical: "/legal/privacy" } };
+export const metadata = pageMeta({
+  title: "Privacy",
+  description:
+    "The note form stores your name, email, message, optional link, chosen service, and receipt time in Firestore, used only to reply.",
+  path: "/legal/privacy",
+  rootImage: true,
+});
 
 export default function Privacy() {
   return (

@@ -1,18 +1,19 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { buttonStyles } from "@/components/ui/Button";
 import { PageHero, Section } from "@/components/site/Blocks";
 import { getPosts } from "@/lib/content";
+import { pageMeta } from "@/lib/seo";
 
 // Noindex until a post exists.
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata() {
   const empty = (await getPosts()).length === 0;
-  return {
+  return pageMeta({
     title: "Blog",
     description: "Notes on Flutter, releases, and the packages.",
-    alternates: { canonical: "/blog" },
-    ...(empty && { robots: { index: false, follow: true } }),
-  };
+    path: "/blog",
+    noindex: empty,
+    rootImage: true,
+  });
 }
 
 function posted(date: string) {

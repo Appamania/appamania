@@ -143,3 +143,54 @@ test("www redirects to the apex and keeps the path", async ({ request }) => {
   expect(res.status()).toBe(308);
   expect(res.headers().location).toBe("https://appamania.in/services?offer=audit");
 });
+
+test("sitemap lists about and a landing page, and no blog while posts are empty", async ({ request }) => {
+  const body = await (await request.get("/sitemap.xml")).text();
+  expect(body).toContain("/about");
+  expect(body).toContain("/services/flutter-upgrade");
+  expect(body).not.toContain("/blog</loc>");
+});
+
+test("/blog is noindex while posts are empty", async ({ page }) => {
+  await page.goto("/blog");
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /noindex/);
+});
+
+test("the case study Article JSON-LD has no undefined, NaN, or datePublished", async ({ page }) => {
+  await page.goto("/work/flutter-3-47-upgrade");
+  const ld = (await page.locator('script[type="application/ld+json"]').allTextContents()).join("\n");
+  expect(ld).toContain('"@type":"Article"');
+  expect(ld).not.toContain("undefined");
+  expect(ld).not.toContain("NaN");
+  expect(ld).not.toContain("datePublished");
+});
+
+test("an app page has SoftwareApplication JSON-LD", async ({ page }) => {
+  await page.goto("/apps/medify");
+  const ld = (await page.locator('script[type="application/ld+json"]').allTextContents()).join("\n");
+  expect(ld).toContain("SoftwareApplication");
+});
+
+test("llms.txt links the three service pages", async ({ request }) => {
+  const body = await (await request.get("/llms.txt")).text();
+  for (const slug of ["flutter-upgrade", "flutter-app-rescue", "flutter-app-audit"])
+    expect(body).toContain(`/services/${slug}`);
+});
+
+test("llms.txt names the studio and the audit price", async ({ request }) => {
+  const body = await (await request.get("/llms.txt")).text();
+  expect(body).toContain("Flutter rescue studio");
+  expect(body).toContain("₹2,999");
+});
+
+test("home has Organization and FAQPage structured data", async ({ page }) => {
+  await page.goto("/");
+  const html = await page.content();
+  expect(html).toContain('"@type":"Organization"');
+  expect(html).toContain('"@type":"FAQPage"');
+});
+
+test("a case study has BreadcrumbList structured data", async ({ page }) => {
+  await page.goto("/work/flutter-3-47-upgrade");
+  expect(await page.content()).toContain('"@type":"BreadcrumbList"');
+});

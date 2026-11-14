@@ -23,6 +23,7 @@ import { WorkCards } from "@/components/site/WorkCards";
 import { landingSlugs, landings } from "@/config/landing";
 import { site } from "@/config/site";
 import { getWork } from "@/lib/content";
+import { describe, orgId, pageMeta } from "@/lib/seo";
 
 export const dynamicParams = false;
 
@@ -36,7 +37,7 @@ async function find(slug: string) {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const w = await find((await params).slug);
-  return w ? { title: w.teaser.title, description: w.lead, alternates: { canonical: `/work/${w.slug}` } } : {};
+  return w ? pageMeta({ title: w.teaser.title, description: describe([w.lead]), path: `/work/${w.slug}` }) : {};
 }
 
 export default async function CaseStudy({ params }: { params: Promise<{ slug: string }> }) {
@@ -55,7 +56,10 @@ export default async function CaseStudy({ params }: { params: Promise<{ slug: st
           headline: w.teaser.title,
           description: w.lead,
           author: { "@type": "Person", name: site.owner },
+          publisher: { "@id": orgId },
+          mainEntityOfPage: `${site.url}/work/${w.slug}`,
           url: `${site.url}/work/${w.slug}`,
+          ...(w.date && { datePublished: w.date, dateModified: w.updated ?? w.date }),
         }}
       />
       <Breadcrumbs

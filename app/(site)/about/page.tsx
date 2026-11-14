@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { Arrow, buttonStyles } from "@/components/ui/Button";
 import { CtaBand, PageHero, Section, SectionHeader, Steps } from "@/components/site/Blocks";
@@ -12,12 +11,14 @@ import { formatPrice, offers } from "@/config/offers";
 import { site } from "@/config/site";
 import { testimonials } from "@/config/proof";
 import { getApps, getPackages } from "@/lib/content";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: { absolute: `About Appamania and founder ${site.owner}` },
+export const metadata = pageMeta({
+  title: `About Appamania and founder ${site.owner}`,
   description: `Appamania is a Flutter rescue studio in Kolkata, founded and run by ${site.owner}, a Flutter engineer with 6+ years of production apps. Udyam-registered.`,
-  alternates: { canonical: "/about" },
-};
+  path: "/about",
+  absolute: true,
+});
 
 // Live pub.dev points.
 export const revalidate = 3600;

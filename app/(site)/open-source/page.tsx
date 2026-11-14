@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { Arrow, buttonStyles } from "@/components/ui/Button";
 import { Chip, Code, CtaBand, PageHero, Section, SectionHeader } from "@/components/site/Blocks";
@@ -6,15 +5,18 @@ import { pubUrl } from "@/config/catalog";
 import { site } from "@/config/site";
 import { getPackages } from "@/lib/content";
 import { compact } from "@/lib/live";
+import { pageMeta } from "@/lib/seo";
 import { cx } from "@/lib/cx";
 
 export const revalidate = 3600;
 
-export const metadata: Metadata = {
-  title: "Open source",
-  description: "Flutter and Dart packages from a pub.dev verified publisher under appamania.in.",
-  alternates: { canonical: "/open-source" },
-};
+export const metadata = pageMeta({
+  title: "Open-source Flutter packages on pub.dev",
+  description:
+    "envified, drip_flutter, and screenx: Flutter and Dart packages from the appamania.in verified publisher on pub.dev, with live points and downloads.",
+  path: "/open-source",
+  rootImage: true,
+});
 
 export default async function OpenSource() {
   const packages = await getPackages();

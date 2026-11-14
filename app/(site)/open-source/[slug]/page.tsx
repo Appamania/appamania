@@ -6,6 +6,7 @@ import { PageHero } from "@/components/site/Blocks";
 import { pubUrl } from "@/config/catalog";
 import { getPackages } from "@/lib/content";
 import { compact } from "@/lib/live";
+import { describe, pageMeta } from "@/lib/seo";
 
 export const revalidate = 3600;
 
@@ -22,7 +23,12 @@ async function find(slug: string) {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const pkg = await find((await params).slug);
   return pkg
-    ? { title: pkg.name, description: pkg.summary, alternates: { canonical: `/open-source/${pkg.slug}` } }
+    ? pageMeta({
+        title: `${pkg.name}: Flutter package`,
+        description: describe([pkg.summary, "A Flutter package by Appamania, published on pub.dev."]),
+        path: `/open-source/${pkg.slug}`,
+        rootImage: true,
+      })
     : {};
 }
 

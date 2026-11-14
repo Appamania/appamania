@@ -4,8 +4,17 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Arrow, buttonStyles } from "@/components/ui/Button";
 import { Breadcrumbs } from "@/components/site/Breadcrumbs";
+import { JsonLd } from "@/components/site/JsonLd";
 import { PageHero } from "@/components/site/Blocks";
 import { getApps } from "@/lib/content";
+import { describe, orgId, pageMeta } from "@/lib/seo";
+
+// Store categories that have a schema.org type; anything else is a generic mobile app.
+const applicationCategory: Record<string, string> = {
+  Finance: "FinanceApplication",
+  Health: "HealthApplication",
+  Weather: "UtilitiesApplication",
+};
 
 export const dynamicParams = false;
 
@@ -19,7 +28,17 @@ async function find(slug: string) {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const app = await find((await params).slug);
-  return app ? { title: app.name, description: app.summary, alternates: { canonical: `/apps/${app.slug}` } } : {};
+  return app
+    ? pageMeta({
+        title: `${app.name}: ${app.category} app for Android`,
+        description: describe([
+          `${app.name} is a ${app.category.toLowerCase()} app for Android.`,
+          app.summary,
+          "Built and published by Appamania.",
+        ]),
+        path: `/apps/${app.slug}`,
+      })
+    : {};
 }
 
 export default async function AppPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -27,6 +46,17 @@ export default async function AppPage({ params }: { params: Promise<{ slug: stri
   if (!app) notFound();
   return (
     <article>
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          name: app.name,
+          operatingSystem: "Android",
+          applicationCategory: applicationCategory[app.category] ?? "MobileApplication",
+          installUrl: app.url,
+          author: { "@id": orgId },
+        }}
+      />
       <Breadcrumbs
         items={[
           { name: "Home", href: "/" },

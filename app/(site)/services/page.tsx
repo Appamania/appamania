@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { Arrow, buttonStyles } from "@/components/ui/Button";
 import { Chip, CtaBand, Eyebrow, Faq, PageHero, Section, SectionHeader, Steps } from "@/components/site/Blocks";
@@ -8,12 +7,13 @@ import { steps } from "@/config/home";
 import { landingSlugs, landings } from "@/config/landing";
 import { formatPrice, offers, type Offer } from "@/config/offers";
 import { site } from "@/config/site";
+import { faqJsonLd, orgId, pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Services and prices",
-  description: `Flutter app audit for ${formatPrice(offers.audit)} in 48 hours. Rescue and migration sprints, care retainers, and MVP builds at fixed prices.`,
-  alternates: { canonical: "/services" },
-};
+export const metadata = pageMeta({
+  title: "Flutter services and fixed prices",
+  description: `Flutter app audit ${formatPrice(offers.audit)} in 48 hours, rescue sprint ${formatPrice(offers.sprint)}, care retainer ${formatPrice(offers.retainer)}. Fixed prices in INR from a Udyam-registered business.`,
+  path: "/services",
+});
 
 const faq = [
   {
@@ -42,15 +42,24 @@ export default function Services() {
         data={{
           "@context": "https://schema.org",
           "@type": "ProfessionalService",
+          "@id": `${site.url}/services#service`,
           name: site.name,
           url: `${site.url}/services`,
-          areaServed: "IN",
-          priceRange: "₹₹",
+          provider: { "@id": orgId },
           makesOffer: (Object.values(offers) as Offer[]).map((o) => ({
             "@type": "Offer",
             name: o.name,
             description: o.fit,
-            ...(o.from
+            ...(o.per
+              ? {
+                  priceSpecification: {
+                    "@type": "UnitPriceSpecification",
+                    price: o.priceMinor / 100,
+                    priceCurrency: "INR",
+                    unitText: "MONTH",
+                  },
+                }
+              : o.from
               ? {
                   priceSpecification: {
                     "@type": "PriceSpecification",
@@ -119,6 +128,7 @@ export default function Services() {
         <SectionHeader id="how" eyebrow="03 — How it works" title="Four steps, one owner." />
         <Steps items={steps} />
       </Section>
+      <JsonLd data={faqJsonLd(faq)} />
       <Section>
         <Faq eyebrow="04 — FAQ" title="Money, code, and fit." items={faq} />
       </Section>

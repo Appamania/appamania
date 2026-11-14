@@ -4,6 +4,7 @@ import { JsonLd } from "@/components/site/JsonLd";
 import { PageHero } from "@/components/site/Blocks";
 import { site } from "@/config/site";
 import { getPosts } from "@/lib/content";
+import { pageMeta } from "@/lib/seo";
 
 export const dynamicParams = false;
 
@@ -28,7 +29,9 @@ async function find(slug: string) {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const post = await find((await params).slug);
-  return post ? { title: post.title, description: post.summary, alternates: { canonical: `/blog/${post.slug}` } } : {};
+  return post
+    ? pageMeta({ title: post.title, description: post.summary, path: `/blog/${post.slug}`, rootImage: true })
+    : {};
 }
 
 export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
