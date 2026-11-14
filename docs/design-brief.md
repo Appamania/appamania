@@ -57,9 +57,9 @@ pub.dev packages, and an intake form. Udyam-registered, Kolkata. Hosted on Fireb
 
 ## Imagery
 - Real UI in CSS phone frames (sample audit, sprint checklist).
-- Uploaded media comes from Firebase Storage (uploaded in the Firebase console, URL pasted into
-  `content/snapshot.json`): case-study cover (16:10) or mp4, app icon (square), app screenshots (9:19.5). Sized `next/image`, never a bare `<img>` on
-  the site.
+- Media is committed to the repo in `public/media/` and referenced from `content/snapshot.json` as
+  `/media/...` paths: case-study cover (16:10) or mp4, app icon (square), app screenshots (9:19.5).
+  Sized `next/image`, never a bare `<img>` on the site.
 - No stock photos, AI people, 3D, blobs, gradient washes across sections, emoji.
 - Icons: Lucide outline, 1.75 stroke, 20 px default.
 

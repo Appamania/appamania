@@ -1,7 +1,7 @@
 # Appamania
 
 Flutter freelance business site and portfolio (Night theme). Portal, billing, and Supabase are retired.
-Notes from the contact form go to Firestore; blog posts are read from Firestore. Case studies, apps, and packages live in `content/snapshot.json`.
+Notes from the contact form go to Firestore. All other content is static in the repo.
 Prices and offers live only in `config/offers.ts` (INR, Udyam-registered). Hosting is Firebase App Hosting on Blaze, so commercial copy is allowed.
 
 Design brief: @docs/design-brief.md.
@@ -24,7 +24,7 @@ A task is not done until lint, typecheck, check:tokens, unit tests, and build pa
 
 ## Architecture
 - Server Components by default. `'use client'` only on interactive leaves.
-- Site constants, notice, and availability only in `config/site.ts`. Work, apps, and packages come from `content/snapshot.json` through `lib/content.ts`. Blog posts are read from Firestore over REST (`lib/firestore.ts`), empty when unreachable. Notes are created anonymously and read in the Firebase console. No Firebase SDK in the browser. Media is uploaded in the Firebase console to Storage `media/`; only that host renders through `next/image`.
+- Site constants, notice, and availability only in `config/site.ts`. Work, posts, apps, and packages are static, read from `content/snapshot.json` through `lib/content.ts`. Firestore is used only for contact notes: the browser creates them anonymously over REST (`lib/firestore.ts`), and they are read in the Firebase console. Nothing reads Firestore. No Firebase SDK in the browser, no Firebase Storage. Media is committed to `public/media/` and referenced as `/media/...` paths.
 - Prices only from `config/offers.ts`. Do not add a second database.
 
 ## Design rules (Chai Studio, details in docs/design-brief.md)
