@@ -7,11 +7,6 @@ service cloud.firestore {
         && request.resource.data[field].size() <= max;
     }
 
-    // Blog posts are written in the Firebase console (Admin SDK bypasses rules).
-    match /posts/{id} {
-      allow read: if true;
-      allow write: if false;
-    }
     match /notes/{id} {
       allow create: if request.auth == null
         && request.resource.data.keys().hasOnly(['name', 'email', 'message', 'link', 'offer', 'received'])

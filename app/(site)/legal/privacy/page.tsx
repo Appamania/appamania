@@ -8,10 +8,14 @@ export default function Privacy() {
   return (
     <LegalPage title="Privacy" updated="14 Nov 2026">
       <h2>What is collected</h2>
-      <p>The note form asks for your name, email, a message, and an optional link.</p>
+      <p>
+        The note form asks for your name, email, a message, an optional link, and the service you picked. It also
+        records when the note was received.
+      </p>
       <h2>Where it goes</h2>
       <p>
-        Those fields are stored in Firestore and are read only by {site.email} in the Firebase console. They are used only to reply. Page views use Firebase Analytics.
+        Those fields are stored in Firestore and are read only by {site.email} in the Firebase console. They are used
+        only to reply. Page views use Google Analytics (GA4).
       </p>
       <h2>Your rights</h2>
       <p>

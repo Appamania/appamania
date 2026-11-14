@@ -2,8 +2,11 @@ import { z } from "zod";
 
 const slug = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
 const paragraphs = z.array(z.string().min(1));
-/** Uploaded in the Firebase console to Storage `media/`. Only that host renders, so a bad row cannot point next/image elsewhere. */
-const media = z.string().startsWith("https://firebasestorage.googleapis.com/");
+/** Repo file under public/media/. Local paths only, so a bad row cannot point next/image or <video> elsewhere. */
+const media = z
+  .string()
+  .regex(/^\/media\/[A-Za-z0-9._/-]*[A-Za-z0-9]$/)
+  .refine((s) => !s.includes("..") && !s.includes("//"));
 
 export const WorkSchema = z.object({
   slug,
@@ -63,15 +66,3 @@ export type Work = z.infer<typeof WorkSchema>;
 export type Post = z.infer<typeof PostSchema>;
 export type AppEntry = z.infer<typeof AppSchema>;
 export type PackageEntry = z.infer<typeof PackageSchema>;
-
-/** Skip a bad document. If every document is bad, keep the snapshot so one broken row does not blank the page. */
-export function chooseList<T>(remote: unknown[] | null, schema: z.ZodType<T>, fallback: T[]): T[] {
-  // An empty collection means "not seeded yet", so the snapshot shows instead of a blank page.
-  if (!remote || remote.length === 0) return fallback;
-  const parsed = remote.flatMap((doc) => {
-    const result = schema.safeParse(doc);
-    return result.success ? [result.data] : [];
-  });
-  if (parsed.length === 0) return fallback;
-  return parsed;
-}

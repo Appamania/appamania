@@ -1,9 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { decodeValue, encodeValue } from "./firestore";
+import { encodeFields } from "./firestore";
 
 describe("firestore", () => {
-  it("round-trips a document through Firestore values", () => {
-    const doc = { slug: "flutter", order: 1, ok: true, tags: ["a"] };
-    expect(decodeValue(encodeValue(doc))).toEqual(doc);
+  it("encodes note fields and drops undefined", () => {
+    expect(encodeFields({ name: "a", n: 1, skip: undefined })).toEqual({
+      name: { stringValue: "a" },
+      n: { integerValue: "1" },
+    });
   });
 });

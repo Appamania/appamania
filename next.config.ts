@@ -7,8 +7,8 @@ const csp = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline'${dev ? " 'unsafe-eval'" : ""} https://www.googletagmanager.com`,
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob: https://www.google-analytics.com https://www.googletagmanager.com https://firebasestorage.googleapis.com",
-  "media-src 'self' https://firebasestorage.googleapis.com",
+  "img-src 'self' data: blob: https://www.google-analytics.com https://www.googletagmanager.com",
+  "media-src 'self'",
   "font-src 'self'",
   "connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://firestore.googleapis.com",
   "frame-ancestors 'none'",
@@ -17,7 +17,6 @@ const csp = [
 ].join("; ");
 
 const nextConfig: NextConfig = {
-  images: { remotePatterns: [{ protocol: "https", hostname: "firebasestorage.googleapis.com" }] },
   async headers() {
     return [
       {

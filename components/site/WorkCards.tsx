@@ -3,7 +3,7 @@ import Link from "next/link";
 import type { Work } from "@/lib/schemas";
 import { Eyebrow } from "./Blocks";
 
-/** Case-study teaser cards (canvas Work "More work"). Whole card is the link. Cover from Storage when uploaded. */
+/** Case-study teaser cards (canvas Work "More work"). Whole card is the link. Cover from public/media when set. */
 export function WorkCards({ items }: { items: Work[] }) {
   return (
     <ul className="grid gap-4 min-[900px]:grid-cols-3">

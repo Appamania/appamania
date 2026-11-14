@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Chip, Eyebrow } from "@/components/site/Blocks";
 import type { AppEntry } from "@/lib/schemas";
 
-/** App teaser card. Icon from Storage when uploaded, else the initial. */
+/** App teaser card. Icon from public/media when set, else the initial. */
 export function AppCard({ app: a }: { app: AppEntry }) {
   return (
     <li className="reveal flex flex-col gap-4 rounded-lg border border-line bg-paper-raised p-5 transition-colors duration-(--dur) hover:border-line-strong">
