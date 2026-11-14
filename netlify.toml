@@ -1,6 +1,14 @@
-# Netlify builds main with its Next.js adapter. Do NOT set [build] command or publish here: an explicit command and
-# publish folder stop the adapter from running, and Netlify then serves the raw .next folder as a static site (every
-# route 404s). Deploy previews are free; production deploys cost credits.
+# Next.js on Netlify needs all three of these: the build command, the .next publish folder, and the plugin.
+# Dropping the plugin publishes the raw .next folder as a static site (every route 404s). Dropping publish makes the
+# plugin fail with "publish directory cannot be the same as the base directory". Deploy previews are free; production
+# deploys cost credits.
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
 [build.environment]
   NODE_VERSION = "24"
   # These three are public by design: Next.js writes NEXT_PUBLIC_* values into the browser bundle, so Netlify's
