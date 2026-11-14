@@ -6,12 +6,12 @@ export const metadata: Metadata = { title: "Privacy", alternates: { canonical: "
 
 export default function Privacy() {
   return (
-    <LegalPage title="Privacy" updated="6 Nov 2026">
+    <LegalPage title="Privacy" updated="14 Nov 2026">
       <h2>What is collected</h2>
       <p>The note form asks for your name, email, a message, and an optional link.</p>
       <h2>Where it goes</h2>
       <p>
-        Those fields are stored in Firestore and are readable only from the admin page signed in as {site.email}. They are used only to reply. Page views use Firebase Analytics. Admin sign-in stores a Firebase Auth session in this browser only.
+        Those fields are stored in Firestore and are read only by {site.email} in the Firebase console. They are used only to reply. Page views use Firebase Analytics.
       </p>
       <h2>Your rights</h2>
       <p>

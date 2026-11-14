@@ -1,4 +1,4 @@
-// Firestore REST client. No SDK, no zod: this file ships to the browser for the note form and admin.
+// Firestore REST client. No SDK, no zod: this file ships to the browser for the note form.
 
 type FsValue =
   | { stringValue: string }
@@ -52,31 +52,13 @@ export function decodeFields(fields: Record<string, FsValue>) {
   return out;
 }
 
-export function readToken(idToken: string): { email: string; exp: number } | null {
-  const part = idToken.split(".")[1];
-  if (!part) return null;
-  try {
-    const pad = part.length % 4 === 0 ? "" : "=".repeat(4 - (part.length % 4));
-    const json = JSON.parse(atob(part.replace(/-/g, "+").replace(/_/g, "/") + pad)) as { email?: unknown; exp?: unknown };
-    if (typeof json.email !== "string" || typeof json.exp !== "number") return null;
-    return { email: json.email, exp: json.exp };
-  } catch {
-    return null;
-  }
-}
-
 type Listed = { id: string; fields: Record<string, unknown> };
 
 function projectUrl(project: string, suffix: string) {
   return `https://firestore.googleapis.com/v1/projects/${encodeURIComponent(project)}/databases/(default)/documents${suffix}`;
 }
 
-// Admin reads stay fresh. Public reads are cached for 60s to match the page revalidate.
-function readInit(token?: string): RequestInit {
-  return token ? { cache: "no-store", headers: { Authorization: `Bearer ${token}` } } : { next: { revalidate: 60 } };
-}
-
-export async function listDocs(project: string, key: string, collection: string, token?: string): Promise<Listed[]> {
+export async function listDocs(project: string, key: string, collection: string): Promise<Listed[]> {
   const out: Listed[] = [];
   let pageToken = "";
   do {
@@ -84,7 +66,7 @@ export async function listDocs(project: string, key: string, collection: string,
     url.searchParams.set("key", key);
     url.searchParams.set("pageSize", "300"); // ponytail: one page of 300, follow the token if a collection outgrows it
     if (pageToken) url.searchParams.set("pageToken", pageToken);
-    const res = await fetch(url, readInit(token));
+    const res = await fetch(url, { next: { revalidate: 60 } });
     if (!res.ok) throw new Error(`Could not load ${collection}`);
     const data = (await res.json()) as {
       documents?: { name: string; fields?: Record<string, FsValue> }[];
@@ -96,35 +78,6 @@ export async function listDocs(project: string, key: string, collection: string,
     pageToken = data.nextPageToken ?? "";
   } while (pageToken);
   return out;
-}
-
-/** One document's fields, or null when it does not exist. */
-export async function getDoc(project: string, key: string, path: string, token?: string): Promise<Record<string, unknown> | null> {
-  const url = new URL(projectUrl(project, `/${path}`));
-  url.searchParams.set("key", key);
-  const res = await fetch(url, readInit(token));
-  if (res.status === 404) return null;
-  if (!res.ok) throw new Error(`Could not load ${path}`);
-  const data = (await res.json()) as { fields?: Record<string, FsValue> };
-  return decodeFields(data.fields ?? {});
-}
-
-export async function saveDoc(project: string, key: string, token: string, collection: string, id: string, data: Record<string, unknown>) {
-  const url = new URL(projectUrl(project, `/${collection}/${encodeURIComponent(id)}`));
-  url.searchParams.set("key", key);
-  const res = await fetch(url, {
-    method: "PATCH",
-    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ fields: encodeFields(data) }),
-  });
-  if (!res.ok) throw new Error("Could not save");
-}
-
-export async function deleteDoc(project: string, key: string, token: string, collection: string, id: string) {
-  const url = new URL(projectUrl(project, `/${collection}/${encodeURIComponent(id)}`));
-  url.searchParams.set("key", key);
-  const res = await fetch(url, { method: "DELETE", headers: { Authorization: `Bearer ${token}` } });
-  if (!res.ok) throw new Error("Could not delete");
 }
 
 export async function createNote(

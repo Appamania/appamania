@@ -1,16 +1,15 @@
 import { Analytics } from "@/components/site/Analytics";
 import { Footer } from "@/components/site/Footer";
 import { Navbar } from "@/components/site/Navbar";
-import { getSettings } from "@/lib/content";
+import { site } from "@/config/site";
 
-export default async function SiteLayout({ children }: { children: React.ReactNode }) {
-  const settings = await getSettings();
+export default function SiteLayout({ children }: { children: React.ReactNode }) {
   return (
     <div data-theme="night" className="min-h-dvh overflow-x-clip">
-      {settings.notice && (
+      {site.notice && (
         <div role="status" className="wrap pt-4">
           <p className="rounded-lg border border-line bg-paper-raised px-4 py-3 text-small text-ink">
-            {settings.notice}
+            {site.notice}
           </p>
         </div>
       )}
@@ -18,7 +17,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
       <main id="main" className="wrap">
         {children}
       </main>
-      <Footer availability={settings.availability} />
+      <Footer />
       <Analytics />
     </div>
   );

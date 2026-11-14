@@ -1,5 +1,4 @@
-// Fallback for the stack marquee and the in-development panel. Remote Config `static` overrides both.
-// Apps and packages live in Firestore.
+// Fallback for the stack marquee and the in-development panel. Work, apps, and packages live in content/snapshot.json.
 
 export const stack = [
   "Flutter",

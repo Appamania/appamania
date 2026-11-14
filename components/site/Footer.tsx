@@ -3,7 +3,7 @@ import { Logo } from "@/components/ui/Logo";
 import { site } from "@/config/site";
 
 // Footer with outlined giant wordmark (design brief). One light line: "fuelled by chai".
-export function Footer({ availability }: { availability?: string }) {
+export function Footer() {
   const cols = [
     {
       title: "Work",
@@ -32,10 +32,10 @@ export function Footer({ availability }: { availability?: string }) {
         <div className="col-span-2 min-[900px]:col-span-1">
           <Logo />
           <p className="mt-4 max-w-[30ch] text-ink-muted">{site.tagline} Built in Kolkata, fuelled by chai.</p>
-          {availability && (
+          {site.availability && (
             <p className="mt-4 flex items-center gap-2.5 font-mono text-small text-ink">
               <span aria-hidden className="size-2 rounded-full bg-brand" />
-              {availability}
+              {site.availability}
             </p>
           )}
         </div>

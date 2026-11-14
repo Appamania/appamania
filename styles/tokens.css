@@ -1,5 +1,5 @@
 /* Chai Studio tokens (PRD §7). Code copy of the design system's tokens.json — the only place raw colors live.
-   Themes: night = site (fixed); dark (default) / light = portal and admin; light = print and PDF.
+   Themes: night = site (fixed); dark (default) / light = portal; light = print and PDF.
    A theme is set with data-theme on <html> or any wrapper; every color var is redeclared per theme
    so a wrapper's theme wins over <html>. */
 

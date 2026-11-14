@@ -9,7 +9,11 @@ export const site = {
   email: "sumit@appamania.in",
   /** Footer and invoices. */
   identity: "Appamania · Sumit Pal · Udyam-registered",
-  billing: "GST invoice on request. INR; USD on request.",
+  billing: "Invoiced in INR. USD on request.",
+  /** Banner above the nav. Empty hides it. */
+  notice: "" as string,
+  /** Footer line, e.g. "Taking one sprint from January". Empty hides it. */
+  availability: "" as string,
   links: {
     github: "https://github.com/Appamania",
     linkedin: "https://www.linkedin.com/in/sumit-dev-flutter",
