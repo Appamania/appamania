@@ -33,6 +33,7 @@ export function AppCard({ app: a }: { app: AppEntry }) {
         </Link>
       </h2>
       <p className="text-ink-muted">{a.summary}</p>
+      {a.outcome && <p className="font-mono text-small text-ink">{a.outcome}</p>}
       <a
         href={a.url}
         className="mt-auto inline-flex min-h-11 items-center font-mono text-[13px] text-brand underline-offset-4 hover:underline"

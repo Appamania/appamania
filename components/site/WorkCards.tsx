@@ -26,6 +26,7 @@ export function WorkCards({ items }: { items: Work[] }) {
             <Eyebrow>{w.teaser.label}</Eyebrow>
             <h3 className="text-[26px] leading-[1.15] font-semibold tracking-[-0.02em]">{w.teaser.title}</h3>
             <p className="text-ink-muted">{w.teaser.summary}</p>
+            {w.outcome && <p className="font-mono text-small text-ink">{w.outcome}</p>}
             <span className="mt-auto font-mono text-[13px] text-brand">Read the case study</span>
           </Link>
         </li>

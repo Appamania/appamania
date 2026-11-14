@@ -9,6 +9,9 @@ export function Footer() {
       title: "Studio",
       links: [
         { href: "/services", label: "Services and prices" },
+        { href: "/services/flutter-upgrade", label: "Flutter upgrade" },
+        { href: "/services/flutter-app-rescue", label: "Flutter app rescue" },
+        { href: "/services/flutter-app-audit", label: "Flutter app audit" },
         { href: "/work", label: "Work" },
         { href: "/apps", label: "Apps" },
         { href: "/open-source", label: "Open source" },
@@ -72,7 +75,7 @@ export function Footer() {
           © {new Date().getFullYear()} {site.legalName || site.identity}
         </span>
         <span>
-          <Link href="/legal/privacy" className="inline-block py-2.5 hover:text-ink">
+          <Link href="/legal/privacy" className="inline-flex min-h-11 items-center hover:text-ink">
             Privacy
           </Link>
         </span>

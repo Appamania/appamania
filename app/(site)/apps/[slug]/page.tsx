@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import Link from "next/link";
+import { Arrow, buttonStyles } from "@/components/ui/Button";
+import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 import { PageHero } from "@/components/site/Blocks";
 import { getApps } from "@/lib/content";
 
@@ -24,6 +27,13 @@ export default async function AppPage({ params }: { params: Promise<{ slug: stri
   if (!app) notFound();
   return (
     <article>
+      <Breadcrumbs
+        items={[
+          { name: "Home", href: "/" },
+          { name: "Apps", href: "/apps" },
+          { name: app.name, href: `/apps/${app.slug}` },
+        ]}
+      />
       <PageHero eyebrow={app.category} title={app.name} lead={app.summary} />
       {app.screens?.length ? (
         <ul aria-label="Screenshots" tabIndex={0} className="mb-10 flex snap-x gap-4 overflow-x-auto pb-2">
@@ -51,6 +61,10 @@ export default async function AppPage({ params }: { params: Promise<{ slug: stri
         >
           Get it on Google Play
         </a>
+        {app.outcome && <p className="text-h2">{app.outcome}</p>}
+        <Link href="/services" className={buttonStyles("outline", "md", "self-start")}>
+          See the services <Arrow />
+        </Link>
       </div>
     </article>
   );

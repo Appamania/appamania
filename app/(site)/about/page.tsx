@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Arrow, buttonStyles } from "@/components/ui/Button";
 import { CtaBand, PageHero, Section, SectionHeader, Steps } from "@/components/site/Blocks";
+import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 import { FounderCard } from "@/components/site/FounderCard";
 import { ProofStrip } from "@/components/site/ProofStrip";
 import { Quote } from "@/components/site/Quote";
@@ -13,9 +14,8 @@ import { testimonials } from "@/config/proof";
 import { getApps, getPackages } from "@/lib/content";
 
 export const metadata: Metadata = {
-  title: { absolute: "About Appamania and founder Sumit Pal" },
-  description:
-    "Appamania is a Flutter rescue studio in Kolkata, founded and run by Sumit Pal, a Flutter engineer with 6+ years of production apps. Udyam-registered.",
+  title: { absolute: `About Appamania and founder ${site.owner}` },
+  description: `Appamania is a Flutter rescue studio in Kolkata, founded and run by ${site.owner}, a Flutter engineer with 6+ years of production apps. Udyam-registered.`,
   alternates: { canonical: "/about" },
 };
 
@@ -27,6 +27,12 @@ export default async function About() {
   const points = packages.map((p) => p.points);
   return (
     <>
+      <Breadcrumbs
+        items={[
+          { name: "Home", href: "/" },
+          { name: "About", href: "/about" },
+        ]}
+      />
       <PageHero
         eyebrow={aboutCopy.hero.eyebrow}
         title={aboutCopy.hero.title}
@@ -72,14 +78,18 @@ export default async function About() {
             <dt className="font-mono text-small text-ink-muted">Registration</dt>
             <dd className="text-body-lg">{site.udyam ? `Udyam ${site.udyam}` : "Udyam-registered"}</dd>
           </div>
-          <div className="rounded-md border border-line bg-paper-raised p-6">
-            <dt className="font-mono text-small text-ink-muted">Location</dt>
-            <dd className="text-body-lg">{site.location}</dd>
-          </div>
-          <div className="rounded-md border border-line bg-paper-raised p-6">
-            <dt className="font-mono text-small text-ink-muted">Billing</dt>
-            <dd className="text-body-lg">{site.billing}</dd>
-          </div>
+          {site.location && (
+            <div className="rounded-md border border-line bg-paper-raised p-6">
+              <dt className="font-mono text-small text-ink-muted">Location</dt>
+              <dd className="text-body-lg">{site.location}</dd>
+            </div>
+          )}
+          {site.billing && (
+            <div className="rounded-md border border-line bg-paper-raised p-6">
+              <dt className="font-mono text-small text-ink-muted">Billing</dt>
+              <dd className="text-body-lg">{site.billing}</dd>
+            </div>
+          )}
         </dl>
       </Section>
 

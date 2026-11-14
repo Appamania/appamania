@@ -5,6 +5,9 @@ const pages = [
   "/",
   "/services",
   "/about",
+  "/services/flutter-upgrade",
+  "/services/flutter-app-rescue",
+  "/services/flutter-app-audit",
   "/work",
   "/work/flutter-3-47-upgrade",
   "/apps",
@@ -25,6 +28,27 @@ test("home shows the audit price and the plan cards", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByText("₹2,999").first()).toBeVisible();
   await expect(page.getByRole("link", { name: /Book the audit/ }).first()).toBeVisible();
+});
+
+test("the home h1 names the problem and the proof strip links four facts", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.locator("h1")).toContainText("Stuck Flutter app");
+  await expect(page.locator("dl a")).toHaveCount(4);
+});
+
+test("a case study shows breadcrumbs", async ({ page }) => {
+  await page.goto("/work/flutter-3-47-upgrade");
+  await expect(page.getByRole("navigation", { name: "Breadcrumb" })).toBeVisible();
+});
+
+test("/contact says what happens next", async ({ page }) => {
+  await page.goto("/contact");
+  await expect(page.getByText("What happens next")).toBeVisible();
+});
+
+test("an unknown service page is a 404", async ({ page }) => {
+  const res = await page.goto("/services/nope");
+  expect(res?.status()).toBe(404);
 });
 
 test("/services renders the fixed-price page", async ({ page }) => {
@@ -99,7 +123,13 @@ test("a honeypot note pretends to save", async ({ page }) => {
   await page.getByLabel("Message").fill("Hello from the test.");
   await page.locator('input[name="website"]').fill("https://spam.example", { force: true });
   await page.getByRole("button", { name: "Send note" }).click();
-  await expect(page.getByRole("status")).toContainText("Thanks — it's saved.");
+  await expect(page.getByRole("status")).toContainText("Thanks. Your note is in.");
+});
+
+test("/services/flutter-upgrade has one h1 and breadcrumbs", async ({ page }) => {
+  await page.goto("/services/flutter-upgrade");
+  await expect(page.locator("h1")).toHaveCount(1);
+  await expect(page.locator('nav[aria-label="Breadcrumb"]')).toBeVisible();
 });
 
 test("/admin does not exist", async ({ page }) => {

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Arrow, buttonStyles } from "@/components/ui/Button";
+import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 import { PageHero } from "@/components/site/Blocks";
 import { pubUrl } from "@/config/catalog";
 import { getPackages } from "@/lib/content";
@@ -30,6 +31,13 @@ export default async function PackagePage({ params }: { params: Promise<{ slug: 
   if (!pkg) notFound();
   return (
     <article>
+      <Breadcrumbs
+        items={[
+          { name: "Home", href: "/" },
+          { name: "Open source", href: "/open-source" },
+          { name: pkg.name, href: `/open-source/${pkg.slug}` },
+        ]}
+      />
       <PageHero
         eyebrow={[
           `${pkg.points} pub points`,
@@ -40,7 +48,7 @@ export default async function PackagePage({ params }: { params: Promise<{ slug: 
         title={pkg.name}
         lead={pkg.summary}
       >
-        <a href={pubUrl(pkg.name)} className={buttonStyles("primary")}>
+        <a href={pubUrl(pkg.name)} className={buttonStyles("primary", "lg")}>
           View on pub.dev <Arrow />
         </a>
       </PageHero>

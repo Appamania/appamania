@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { landingSlugs } from "@/config/landing";
 import { site } from "@/config/site";
 import { getApps, getPackages, getPosts, getWork } from "@/lib/content";
 
@@ -7,6 +8,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const pages = [
     "",
     "/services",
+    ...landingSlugs.map((s) => `/services/${s}`),
+    "/about",
     "/work",
     "/apps",
     "/open-source",

@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Arrow, buttonStyles } from "@/components/ui/Button";
-import { CtaBand, Faq, PageHero, Section, SectionHeader, Steps } from "@/components/site/Blocks";
+import { Chip, CtaBand, Eyebrow, Faq, PageHero, Section, SectionHeader, Steps } from "@/components/site/Blocks";
 import { JsonLd } from "@/components/site/JsonLd";
 import { Plans } from "@/components/site/Plans";
 import { steps } from "@/config/home";
+import { landingSlugs, landings } from "@/config/landing";
 import { formatPrice, offers, type Offer } from "@/config/offers";
 import { site } from "@/config/site";
 
@@ -63,13 +64,24 @@ export default function Services() {
       />
       <PageHero
         eyebrow="Services"
-        title="Fixed price."
-        accent="Written report. Shipped."
-        lead="Three ways to work with Appamania on a Flutter app. Every one starts with code read in full and ends with a release you can see."
+        title="Read first."
+        accent="Fixed price."
+        lead="Every engagement starts with code Appamania has read and ends with a release you can see."
       >
-        <Link href="/contact?offer=audit" className={buttonStyles("primary", "lg", "self-start")}>
-          Book the {formatPrice(offers.audit)} audit <Arrow />
-        </Link>
+        <div className="flex flex-col gap-5">
+          <Link href="/contact?offer=audit" className={buttonStyles("primary", "lg", "self-start")}>
+            Book the {formatPrice(offers.audit)} audit <Arrow />
+          </Link>
+          <ul className="flex flex-wrap gap-2">
+            {["Udyam-registered", "Invoiced in INR", "You own the code", offers.audit.guarantee]
+              .filter(Boolean)
+              .map((c) => (
+                <li key={c}>
+                  <Chip>{c}</Chip>
+                </li>
+              ))}
+          </ul>
+        </div>
       </PageHero>
       <Section aria-labelledby="plans" className="min-[900px]:pt-16">
         <SectionHeader
@@ -80,12 +92,35 @@ export default function Services() {
         />
         <Plans detail />
       </Section>
+      <Section aria-labelledby="problems">
+        <SectionHeader id="problems" eyebrow="02 — Common problems" title="Which problem is yours?" />
+        <ul className="grid gap-4 min-[900px]:grid-cols-3">
+          {landingSlugs.map((slug) => {
+            const l = landings[slug];
+            return (
+              <li key={slug} className="reveal">
+                <Link
+                  href={`/services/${slug}`}
+                  className="flex h-full flex-col gap-4.5 rounded-lg border border-line bg-paper-raised p-8 transition-[transform,box-shadow] duration-(--dur) hover:-translate-y-0.5 hover:shadow-card"
+                >
+                  <Eyebrow>{l.eyebrow}</Eyebrow>
+                  <h3 className="text-[26px] leading-[1.15] font-semibold tracking-[-0.02em]">
+                    {l.h1} <span className="text-brand">{l.accent}</span>
+                  </h3>
+                  <p className="text-ink-muted">{l.lead}</p>
+                  <span className="mt-auto font-mono text-[13px] text-brand">See the service</span>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </Section>
       <Section aria-labelledby="how">
-        <SectionHeader id="how" eyebrow="02 — How it works" title="Four steps, one owner." />
+        <SectionHeader id="how" eyebrow="03 — How it works" title="Four steps, one owner." />
         <Steps items={steps} />
       </Section>
       <Section>
-        <Faq eyebrow="03 — FAQ" title="Money, code, and fit." items={faq} />
+        <Faq eyebrow="04 — FAQ" title="Money, code, and fit." items={faq} />
       </Section>
       <Section>
         <CtaBand eyebrow="Start" title="Send the repo." body="One form, one working day, one honest answer.">

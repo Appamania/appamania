@@ -48,9 +48,9 @@ export function NoteForm({ project, apiKey, offer }: { project: string; apiKey: 
       <div role="status" className="flex flex-col gap-3 rounded-lg border border-line bg-paper-raised p-9">
         <span className="eyebrow text-brand">Note saved</span>
         <h2 ref={statusRef} tabIndex={-1} className="text-h1 outline-none">
-          Thanks — it&apos;s saved.
+          Thanks. Your note is in.
         </h2>
-        <p className="text-ink-muted">Appamania replies within one working day, IST.</p>
+        <p className="text-ink-muted">Appamania replies within one working day.</p>
       </div>
     );
 
@@ -61,6 +61,7 @@ export function NoteForm({ project, apiKey, offer }: { project: string; apiKey: 
       className="relative flex flex-col gap-5 rounded-lg border border-line bg-paper-raised p-6 sm:p-9"
       onSubmit={(e) => {
         e.preventDefault();
+        if (pending) return;
         const prepared = prepareNote(read(e.currentTarget));
         if (!prepared.ok) {
           setErrors({ [prepared.field]: prepared.error });
@@ -158,9 +159,7 @@ export function NoteForm({ project, apiKey, offer }: { project: string; apiKey: 
         Send note
       </Button>
       <span className="font-mono text-small text-ink-muted">
-        {project && apiKey
-          ? "Saved for Appamania to read. Used only to reply."
-          : `Opens an email to ${site.email} until Firebase is connected.`}
+        {project && apiKey ? `${site.owner} reads every note. Used only to reply.` : "Opens your email app."}
       </span>
     </form>
   );

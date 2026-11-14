@@ -40,12 +40,14 @@ export default async function OpenSource() {
           </h1>
           <p className="max-w-[46ch] text-body-lg text-ink-muted">{featured.summary}</p>
           <div className="flex flex-wrap gap-3">
-            <a href={pubUrl(featured.name)} className={buttonStyles("primary")}>
+            <a href={pubUrl(featured.name)} className={buttonStyles("primary", "lg")}>
               View on pub.dev <Arrow />
             </a>
-            <a href={site.links.github} className={buttonStyles("outline")}>
-              View on GitHub
-            </a>
+            {site.links.github && (
+              <a href={site.links.github} className={buttonStyles("outline")}>
+                View on GitHub
+              </a>
+            )}
           </div>
           <dl className="flex flex-wrap gap-7 pt-2">
             {[
@@ -94,7 +96,8 @@ export default async function OpenSource() {
                 <p className={i === 0 ? undefined : "text-ink-muted"}>{p.summary}</p>
                 {p.downloads !== undefined && (
                   <span className={cx("font-mono text-small tabular-nums", i === 0 ? undefined : "text-ink-muted")}>
-                    {compact(p.downloads)} downloads in 30 days · {compact(p.likes ?? 0)} likes
+                    {compact(p.downloads)} downloads in 30 days
+                    {p.likes !== undefined && ` · ${compact(p.likes)} likes`}
                   </span>
                 )}
                 <span className={cx("mt-auto font-mono text-small", i === 0 ? undefined : "text-brand")}>
@@ -107,9 +110,13 @@ export default async function OpenSource() {
       </Section>
 
       <Section>
-        <CtaBand eyebrow="A question" title="Something about a package?" body="Send a note. Every one gets read.">
-          <Link href="/contact" className={buttonStyles("inverse", "lg")}>
-            Send a note <Arrow />
+        <CtaBand
+          eyebrow="Start"
+          title="Need this care on your app?"
+          body="Send the repo. Get a written report in 48 hours."
+        >
+          <Link href="/services" className={buttonStyles("inverse", "lg")}>
+            See the services <Arrow />
           </Link>
         </CtaBand>
       </Section>
