@@ -1,7 +1,7 @@
+import { Suspense } from "react";
 import { Arrow, buttonStyles } from "@/components/ui/Button";
 import { Eyebrow, PageHero } from "@/components/site/Blocks";
 import { NoteForm } from "@/components/site/NoteForm";
-import { isOfferId } from "@/config/offers";
 import { site } from "@/config/site";
 import { pageMeta } from "@/lib/seo";
 
@@ -12,8 +12,7 @@ export const metadata = pageMeta({
   rootImage: true,
 });
 
-export default async function Contact({ searchParams }: { searchParams: Promise<{ offer?: string }> }) {
-  const { offer } = await searchParams;
+export default function Contact() {
   const details = [`${site.location}, IST`, site.billing].filter(Boolean).join(" · ");
   return (
     <div className="relative grid items-start gap-10 pb-6 min-[900px]:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)]">
@@ -43,11 +42,14 @@ export default async function Contact({ searchParams }: { searchParams: Promise<
           </ol>
         </div>
       </PageHero>
-      <NoteForm
-        project={process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID ?? ""}
-        apiKey={process.env.NEXT_PUBLIC_FIREBASE_API_KEY ?? ""}
-        offer={offer && isOfferId(offer) ? offer : undefined}
-      />
+      <Suspense
+        fallback={<div aria-hidden className="min-h-[40rem] rounded-lg border border-line bg-paper-raised p-6 sm:p-9" />}
+      >
+        <NoteForm
+          project={process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID ?? ""}
+          apiKey={process.env.NEXT_PUBLIC_FIREBASE_API_KEY ?? ""}
+        />
+      </Suspense>
     </div>
   );
 }

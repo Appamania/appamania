@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState, type FocusEvent } from "react";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { Input, Select, Textarea } from "@/components/ui/Field";
-import { budgets, offerIds, offers, type OfferId } from "@/config/offers";
+import { budgets, isOfferId, offerIds, offers, type OfferId } from "@/config/offers";
 import { site } from "@/config/site";
 import { track } from "@/lib/analytics";
 import { fieldError, platforms, prepareNote, timelines, type NoteField, type NoteFields } from "@/lib/note";
@@ -25,7 +26,9 @@ function read(form: HTMLFormElement): NoteFields {
 }
 
 // Creates a Firestore note when the Firebase keys are set. Otherwise opens a mailto.
-export function NoteForm({ project, apiKey, offer }: { project: string; apiKey: string; offer?: OfferId }) {
+export function NoteForm({ project, apiKey }: { project: string; apiKey: string }) {
+  const param = useSearchParams().get("offer") ?? "";
+  const offer: OfferId | undefined = isOfferId(param) ? param : undefined;
   const [errors, setErrors] = useState<Partial<Record<NoteField, string>>>({});
   const [formError, setFormError] = useState("");
   const [sent, setSent] = useState(false);
