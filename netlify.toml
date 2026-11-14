@@ -5,3 +5,7 @@
 
 [build.environment]
   NODE_VERSION = "24"
+  # These three are public by design: Next.js writes NEXT_PUBLIC_* values into the browser bundle, so Netlify's
+  # secret scan would always flag them. Real secrets must never use a NEXT_PUBLIC_ name. The Firebase web key is
+  # limited by the referrer list in Google Cloud and by firestore.rules (anonymous notes create only).
+  SECRETS_SCAN_OMIT_KEYS = "NEXT_PUBLIC_FIREBASE_API_KEY,NEXT_PUBLIC_FIREBASE_PROJECT_ID,NEXT_PUBLIC_GA_MEASUREMENT_ID"
