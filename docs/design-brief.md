@@ -7,7 +7,7 @@ canvas and this file disagree, this file wins.
 
 ## What the site is
 A Flutter freelance business: fixed-price offers (`config/offers.ts`), case studies, Play apps,
-pub.dev packages, and an intake form. Udyam-registered, Kolkata. Hosted on Firebase App Hosting.
+pub.dev packages, and an intake form. Udyam-registered, Kolkata. Hosted on Netlify.
 
 ## Art direction
 - **Mood:** a careful senior engineer you would trust with your codebase. Not an agency, not a

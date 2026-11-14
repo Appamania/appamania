@@ -2,7 +2,7 @@ import { formatPrice, offers } from "@/config/offers";
 import { site } from "@/config/site";
 import { getApps, getPackages, getPosts } from "@/lib/content";
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 export async function GET() {
   const [apps, packages, posts] = await Promise.all([getApps(), getPackages(), getPosts()]);

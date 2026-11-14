@@ -4,8 +4,6 @@ import { PageHero, Section } from "@/components/site/Blocks";
 import { InDevelopment } from "@/components/site/InDevelopment";
 import { getApps } from "@/lib/content";
 
-export const revalidate = 60;
-
 export const metadata: Metadata = {
   title: "Apps",
   description: "Small Flutter apps on Google Play, built and shipped by Appamania.",

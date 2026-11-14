@@ -22,7 +22,7 @@ import { WorkCards } from "@/components/site/WorkCards";
 import { site } from "@/config/site";
 import { getWork } from "@/lib/content";
 
-export const revalidate = 60;
+export const dynamicParams = false;
 
 export async function generateStaticParams() {
   return (await getWork()).map((row) => ({ slug: row.slug }));

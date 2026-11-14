@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { PageHero } from "@/components/site/Blocks";
 import { getApps } from "@/lib/content";
 
-export const revalidate = 60;
+export const dynamicParams = false;
 
 export async function generateStaticParams() {
   return (await getApps()).map((row) => ({ slug: row.slug }));

@@ -6,7 +6,9 @@ import { pubUrl } from "@/config/catalog";
 import { getPackages } from "@/lib/content";
 import { compact } from "@/lib/live";
 
-export const revalidate = 60;
+export const revalidate = 3600;
+
+export const dynamicParams = false;
 
 export async function generateStaticParams() {
   return (await getPackages()).map((row) => ({ slug: row.slug }));

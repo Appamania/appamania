@@ -88,6 +88,7 @@ test("/admin does not exist", async ({ page }) => {
 });
 
 test("www redirects to the apex and keeps the path", async ({ request }) => {
+  test.skip(!!process.env.E2E_BASE_URL, "Needs a local server: Netlify routes by real host.");
   const res = await request.get("/services?offer=audit", { headers: { host: "www.appamania.in" }, maxRedirects: 0 });
   expect(res.status()).toBe(308);
   expect(res.headers().location).toBe("https://appamania.in/services?offer=audit");

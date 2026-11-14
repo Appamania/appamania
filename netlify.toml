@@ -1,0 +1,7 @@
+# Netlify builds main with the OpenNext adapter (zero config). Deploy previews are free; production deploys cost credits.
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "24"

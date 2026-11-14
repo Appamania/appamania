@@ -5,7 +5,7 @@ import { PageHero } from "@/components/site/Blocks";
 import { site } from "@/config/site";
 import { getPosts } from "@/lib/content";
 
-export const revalidate = 60;
+export const dynamicParams = false;
 
 export async function generateStaticParams() {
   return (await getPosts()).map((row) => ({ slug: row.slug }));

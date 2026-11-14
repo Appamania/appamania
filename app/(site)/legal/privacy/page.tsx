@@ -17,6 +17,9 @@ export default function Privacy() {
         Those fields are stored in Firestore and are read only by {site.email} in the Firebase console. They are used
         only to reply. Page views use Google Analytics (GA4).
       </p>
+      <p>
+        The site is hosted on Netlify, which keeps standard server logs (IP address, browser, time) for security and abuse prevention.
+      </p>
       <h2>Your rights</h2>
       <p>
         Ask for a copy, a correction, or deletion at <a href={`mailto:${site.email}`}>{site.email}</a>.

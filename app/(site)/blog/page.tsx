@@ -4,8 +4,6 @@ import { buttonStyles } from "@/components/ui/Button";
 import { PageHero, Section } from "@/components/site/Blocks";
 import { getPosts } from "@/lib/content";
 
-export const revalidate = 60;
-
 export const metadata: Metadata = {
   title: "Blog",
   description: "Notes on Flutter, releases, and the packages.",

@@ -8,7 +8,7 @@ import { getPackages } from "@/lib/content";
 import { compact } from "@/lib/live";
 import { cx } from "@/lib/cx";
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Open source",
