@@ -1,6 +1,6 @@
 import Script from "next/script";
 
-// GA4 via gtag.js. No Firebase SDK: the note form and blog talk REST, so the browser bundle stays SDK-free.
+// GA4 via gtag.js. No Firebase SDK: the note form talks REST, so the browser bundle stays SDK-free.
 export function Analytics() {
   const id = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
   if (!id) return null;

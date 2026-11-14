@@ -1,11 +1,9 @@
 import "server-only";
 import snapshot from "@/content/snapshot.json";
 import { z } from "zod";
-import { listDocs } from "@/lib/firestore";
 import { fetchPubScore, type PubScore } from "@/lib/live";
 import {
   AppSchema,
-  chooseList,
   PackageSchema,
   PostSchema,
   WorkSchema,
@@ -15,16 +13,10 @@ import {
   type Work,
 } from "@/lib/schemas";
 
-function checked<T>(name: "work" | "apps" | "packages", schema: z.ZodType<T>): T[] {
+function checked<T>(name: "work" | "apps" | "packages" | "posts", schema: z.ZodType<T>): T[] {
   const parsed = z.array(schema).safeParse(snapshot[name]);
   if (!parsed.success) throw new Error(`content/snapshot.json ${name}: ${z.prettifyError(parsed.error)}`);
   return parsed.data;
-}
-
-function keys() {
-  const project = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
-  const key = process.env.NEXT_PUBLIC_FIREBASE_API_KEY;
-  return project && key ? { project, key } : null;
 }
 
 const byOrder = <T extends { order: number }>(rows: T[]) => rows.sort((a, b) => a.order - b.order);
@@ -37,16 +29,9 @@ export async function getApps() {
   return byOrder(checked("apps", AppSchema));
 }
 
-/** Blog posts from Firestore. Empty when Firestore is not configured or unreachable. */
-export async function getPosts(): Promise<Post[]> {
-  const k = keys();
-  if (!k) return [];
-  try {
-    const docs = await listDocs(k.project, k.key, "posts");
-    return byDate(chooseList(docs.map((d) => ({ slug: d.id, ...d.fields })), PostSchema, []));
-  } catch {
-    return [];
-  }
+/** Blog posts from content/snapshot.json, newest first. */
+export async function getPosts() {
+  return byDate(checked("posts", PostSchema));
 }
 
 export type LivePackage = PackageEntry & Partial<Pick<PubScore, "likes" | "downloads">>;
