@@ -13,7 +13,7 @@ export const metadata = pageMeta({
 });
 
 export default function Contact() {
-  const details = [`${site.location}, IST`, site.billing].filter(Boolean).join(" · ");
+  const details = [site.location && `${site.location}, IST`, site.billing].filter(Boolean).join(" · ");
   return (
     <div className="relative grid items-start gap-10 pb-6 min-[900px]:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)]">
       <PageHero
@@ -43,7 +43,9 @@ export default function Contact() {
         </div>
       </PageHero>
       <Suspense
-        fallback={<div aria-hidden className="min-h-[40rem] rounded-lg border border-line bg-paper-raised p-6 sm:p-9" />}
+        fallback={
+          <div aria-hidden className="min-h-[40rem] rounded-lg border border-line bg-paper-raised p-6 sm:p-9" />
+        }
       >
         <NoteForm
           project={process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID ?? ""}

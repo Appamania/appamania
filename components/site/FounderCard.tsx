@@ -19,7 +19,7 @@ export function FounderCard({ compact }: { compact?: boolean }) {
       {site.founderPhoto ? (
         <Image
           src={site.founderPhoto}
-          alt={`${site.owner}, ${site.founderRole.toLowerCase()}, ${site.name}`}
+          alt={[site.owner, site.founderRole.toLowerCase(), site.name].filter(Boolean).join(", ")}
           width={160}
           height={160}
           className="size-40 rounded-lg"
@@ -45,7 +45,7 @@ export function FounderCard({ compact }: { compact?: boolean }) {
         )}
         {compact && (
           <Link href="/about" className="inline-flex min-h-11 items-center gap-2 text-ink hover:text-brand">
-            About Appamania <Arrow />
+            Read about Appamania <Arrow />
           </Link>
         )}
       </div>

@@ -30,12 +30,15 @@ export function HomePage({ work, packages, apps }: { work: Work[]; packages: Pac
   const points = packages.map((p) => p.points);
   const min = points.length ? Math.min(...points) : 0;
   const max = points.length ? Math.max(...points) : 0;
+  let n = 0;
+  const num = (label: string) => `${String(++n).padStart(2, "0")} — ${label}`;
+  const featured = work.find((w) => w.slug === "flutter-3-47-upgrade");
   return (
     <>
       <div className="relative grid items-center gap-10 pt-14 pb-6 min-[900px]:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] min-[900px]:pt-22 min-[900px]:pb-14">
         <Glow className="top-130 -right-50 min-[900px]:top-10 min-[900px]:-right-30" />
         <div className="enter relative flex flex-col gap-7">
-          <Chip dot className="self-start">
+          <Chip className="self-start">
             {site.descriptor} · {site.location}
           </Chip>
           <h1 className="text-display-2xl">
@@ -98,7 +101,7 @@ export function HomePage({ work, packages, apps }: { work: Work[]; packages: Pac
       <Section aria-labelledby="why">
         <SectionHeader
           id="why"
-          eyebrow="01 — What Appamania fixes"
+          eyebrow={num("What Appamania fixes")}
           title="Four problems, one fix list."
           aside="Every job starts with a written audit and ends with a release you can see."
         />
@@ -166,7 +169,7 @@ export function HomePage({ work, packages, apps }: { work: Work[]; packages: Pac
       <Section aria-labelledby="plans">
         <SectionHeader
           id="plans"
-          eyebrow="02 — Plans"
+          eyebrow={num("Plans")}
           title="Fixed prices. No surprises."
           aside="Audit in 48 hours or it is free. The fee is credited to the sprint."
         />
@@ -174,40 +177,42 @@ export function HomePage({ work, packages, apps }: { work: Work[]; packages: Pac
       </Section>
 
       <Section aria-labelledby="how">
-        <SectionHeader id="how" eyebrow="03 — How it works" title="Four steps, one owner." />
+        <SectionHeader id="how" eyebrow={num("How it works")} title="Four steps, one owner." />
         <Steps items={steps} />
       </Section>
 
       {work.length > 0 && (
         <Section aria-labelledby="work">
-          <SectionHeader id="work" eyebrow="04 — Work" title="The write-ups." />
+          <SectionHeader id="work" eyebrow={num("Work")} title="The write-ups." />
           <WorkCards items={work} />
-          <div className="mt-4">
-            <Panel>
-              <div className="relative flex flex-col gap-6">
-                <Eyebrow>Recent work · enterprise app</Eyebrow>
-                <p className="text-[clamp(96px,14vw,220px)] leading-[0.8] font-semibold tracking-[-0.07em]">0</p>
-                <p className="text-h1">regressions after a two-step Flutter upgrade.</p>
-                <Link href="/work/flutter-3-47-upgrade" className={buttonStyles("outline", "md", "self-start")}>
-                  Read the case study <Arrow />
-                </Link>
-              </div>
-              <div className="relative flex flex-col gap-5">
-                <VersionJump from="Flutter 3.41" to="3.47" />
-                <VersionJump from="CocoaPods" to="Swift PM" />
-                <VersionJump from="AppDelegate" to="UIScene" />
-                <p className="mt-2 text-ink-muted">
-                  A production app with live users, upgraded without pausing releases.
-                </p>
-              </div>
-            </Panel>
-          </div>
+          {featured && (
+            <div className="mt-4">
+              <Panel>
+                <div className="relative flex flex-col gap-6">
+                  <Eyebrow>Recent work · enterprise app</Eyebrow>
+                  <p className="text-[clamp(96px,14vw,220px)] leading-[0.8] font-semibold tracking-[-0.07em]">0</p>
+                  <p className="text-h1">regressions after a two-step Flutter upgrade.</p>
+                  <Link href={`/work/${featured.slug}`} className={buttonStyles("outline", "md", "self-start")}>
+                    Read the case study <Arrow />
+                  </Link>
+                </div>
+                <div className="relative flex flex-col gap-5">
+                  <VersionJump from="Flutter 3.41" to="3.47" />
+                  <VersionJump from="CocoaPods" to="Swift PM" />
+                  <VersionJump from="AppDelegate" to="UIScene" />
+                  <p className="mt-2 text-ink-muted">
+                    A production app with live users, upgraded without pausing releases.
+                  </p>
+                </div>
+              </Panel>
+            </div>
+          )}
         </Section>
       )}
 
       {(apps.length > 0 || packages.length > 0) && (
         <Section aria-labelledby="built">
-          <SectionHeader id="built" eyebrow="05 — Products" title="Built and run by Appamania." />
+          <SectionHeader id="built" eyebrow={num("Products")} title="Built and run by Appamania." />
           <Bento>
             {apps.length > 0 && (
               <Tile span={apps.length > 0 && packages.length > 0 ? 3 : 6}>
@@ -240,12 +245,12 @@ export function HomePage({ work, packages, apps }: { work: Work[]; packages: Pac
       )}
 
       <Section aria-labelledby="who">
-        <SectionHeader id="who" eyebrow="06 — Who runs it" title="Run by the founder." />
+        <SectionHeader id="who" eyebrow={num("Who runs it")} title="Run by the founder." />
         <FounderCard compact />
       </Section>
 
       <Section>
-        <Faq eyebrow="07 — FAQ" title="Questions, answered." items={copy.faq} />
+        <Faq eyebrow={num("FAQ")} title="Questions, answered." items={copy.faq} />
       </Section>
 
       <Section>

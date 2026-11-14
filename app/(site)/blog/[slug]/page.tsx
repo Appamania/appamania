@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 import { JsonLd } from "@/components/site/JsonLd";
 import { PageHero } from "@/components/site/Blocks";
 import { site } from "@/config/site";
@@ -39,6 +40,13 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
   if (!post) notFound();
   return (
     <article>
+      <Breadcrumbs
+        items={[
+          { name: "Home", href: "/" },
+          { name: "Blog", href: "/blog" },
+          { name: post.title, href: `/blog/${post.slug}` },
+        ]}
+      />
       <JsonLd
         data={{
           "@context": "https://schema.org",

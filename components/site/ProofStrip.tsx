@@ -20,7 +20,7 @@ export function ProofStrip({ items }: { items: readonly ProofFact[] }) {
           className="flex flex-col-reverse border-line px-4 py-6 min-[900px]:border-l min-[900px]:first:border-l-0 [&:nth-child(even)]:border-l [&:nth-child(n+3)]:border-t min-[900px]:[&:nth-child(n+3)]:border-t-0"
         >
           <dt className="font-mono text-small text-ink-muted">{f.label}</dt>
-          <dd className="text-display tabular-nums">
+          <dd className="text-h1 tabular-nums min-[900px]:text-display">
             <Link href={f.href} className="underline decoration-line-strong underline-offset-4 hover:text-brand">
               {f.value}
             </Link>

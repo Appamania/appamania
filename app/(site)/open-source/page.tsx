@@ -46,7 +46,7 @@ export default async function OpenSource() {
               View on pub.dev <Arrow />
             </a>
             {site.links.github && (
-              <a href={site.links.github} className={buttonStyles("outline")}>
+              <a href={site.links.github} className={buttonStyles("outline", "lg")}>
                 View on GitHub
               </a>
             )}
