@@ -35,6 +35,7 @@ A task is not done until lint, typecheck, check:tokens, unit tests, and build pa
 - Motion: CSS only, transform/opacity only, respect `prefers-reduced-motion`.
 - Accessibility: WCAG 2.2 AA; keyboard complete; visible focus ring; labels on every field.
 - Copy: sentence case, verb-first buttons, no "please/successfully/simply", no AI clichés.
+  Voice: the brand is the subject; never "we" or "our team"; "I" only where Sumit signs (docs/brand.md §6).
 
 ## Workflow
 - Plan first for anything touching more than 2 files.

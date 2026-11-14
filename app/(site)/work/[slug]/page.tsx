@@ -104,7 +104,7 @@ export default async function CaseStudy({ params }: { params: Promise<{ slug: st
       <Section aria-labelledby="did">
         <SectionHeader
           id="did"
-          eyebrow="02 — What I did"
+          eyebrow="02 — What Appamania did"
           title={`${["", "", "Two", "Three", "Four"][w.steps.length]} steps, all reversible.`}
         />
         <Steps items={w.steps} />
@@ -146,7 +146,7 @@ export default async function CaseStudy({ params }: { params: Promise<{ slug: st
       )}
 
       <Section>
-        <CtaBand eyebrow="A question" title="Something in this write-up?" body="Send a note. I read every one.">
+        <CtaBand eyebrow="A question" title="Something in this write-up?" body="Send a note. Every one gets read.">
           <Link href="/contact" className={buttonStyles("inverse", "lg")}>
             Send a note <Arrow />
           </Link>

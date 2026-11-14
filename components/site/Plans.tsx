@@ -8,12 +8,19 @@ const featured: OfferId = "sprint";
 const cards: OfferId[] = ["audit", "sprint", "retainer"];
 const quoted: OfferId[] = ["mvp", "website"];
 
-/** Three plan cards, middle featured with shadow-glow (design brief). Prices from config/offers.ts only. Buttons are outline: the page hero holds the one primary. */
-export function Plans({ detail }: { detail?: boolean }) {
+// Column class by card count. Full class strings so Tailwind sees them.
+const gridCols: Record<number, string> = {
+  2: "min-[900px]:grid-cols-2",
+  3: "min-[900px]:grid-cols-3",
+};
+
+/** Plan cards (up to three), middle featured with shadow-glow (design brief). Prices from config/offers.ts only. Buttons are outline: the page hero holds the one primary. */
+export function Plans({ detail, ids }: { detail?: boolean; ids?: OfferId[] }) {
+  const list = ids ?? cards;
   return (
     <div className="flex flex-col gap-6">
-      <ul className="grid gap-4 min-[900px]:grid-cols-3">
-        {cards.map((id) => {
+      <ul className={cx("grid gap-4", gridCols[list.length])}>
+        {list.map((id) => {
           const o: Offer = offers[id];
           const hot = id === featured;
           return (
@@ -48,19 +55,21 @@ export function Plans({ detail }: { detail?: boolean }) {
           );
         })}
       </ul>
-      <p className="font-mono text-small text-ink-muted">
-        Also:{" "}
-        {quoted.map((id, i) => (
-          <span key={id}>
-            {i > 0 && " · "}
-            <Link href={`/contact?offer=${id}`} className="text-ink underline underline-offset-4 hover:text-brand">
-              {offers[id].name}
-            </Link>{" "}
-            {formatPrice(offers[id])}
-          </span>
-        ))}
-        . INR; USD on request.
-      </p>
+      {!ids && (
+        <p className="font-mono text-small text-ink-muted">
+          Also:{" "}
+          {quoted.map((id, i) => (
+            <span key={id}>
+              {i > 0 && " · "}
+              <Link href={`/contact?offer=${id}`} className="text-ink underline underline-offset-4 hover:text-brand">
+                {offers[id].name}
+              </Link>{" "}
+              {formatPrice(offers[id])}
+            </span>
+          ))}
+          . INR; USD on request.
+        </p>
+      )}
     </div>
   );
 }

@@ -50,7 +50,7 @@ export function NoteForm({ project, apiKey, offer }: { project: string; apiKey: 
         <h2 ref={statusRef} tabIndex={-1} className="text-h1 outline-none">
           Thanks — it&apos;s saved.
         </h2>
-        <p className="text-ink-muted">I reply within one working day, IST.</p>
+        <p className="text-ink-muted">Appamania replies within one working day, IST.</p>
       </div>
     );
 
@@ -159,7 +159,7 @@ export function NoteForm({ project, apiKey, offer }: { project: string; apiKey: 
       </Button>
       <span className="font-mono text-small text-ink-muted">
         {project && apiKey
-          ? "Saved for me to read. Used only to reply."
+          ? "Saved for Appamania to read. Used only to reply."
           : `Opens an email to ${site.email} until Firebase is connected.`}
       </span>
     </form>

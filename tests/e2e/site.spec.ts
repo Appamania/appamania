@@ -4,6 +4,7 @@ import { expectNoSeriousAxe } from "./helpers";
 const pages = [
   "/",
   "/services",
+  "/about",
   "/work",
   "/work/flutter-3-47-upgrade",
   "/apps",
@@ -26,6 +27,26 @@ test("home shows the audit price and the plan cards", async ({ page }) => {
   await expect(page.getByRole("link", { name: /Book the audit/ }).first()).toBeVisible();
 });
 
+test("/services renders the fixed-price page", async ({ page }) => {
+  const res = await page.goto("/services");
+  expect(res?.status()).toBe(200);
+  await expect(page.locator("h1")).toContainText("Fixed price");
+});
+
+test("the nav has About and no Blog", async ({ page, isMobile }) => {
+  test.skip(isMobile, "desktop nav is hidden under 900px");
+  await page.goto("/");
+  const nav = page.getByRole("navigation", { name: "Main" });
+  await expect(nav.getByRole("link", { name: "About" })).toBeVisible();
+  await expect(nav.getByRole("link", { name: "Blog" })).toHaveCount(0);
+});
+
+test("/about names the founder and links the audit", async ({ page }) => {
+  await page.goto("/about");
+  await expect(page.getByText("Sumit Pal").first()).toBeVisible();
+  await expect(page.getByRole("link", { name: /Book the/ }).first()).toBeVisible();
+});
+
 test("a plan card preselects the offer on the contact form", async ({ page }) => {
   await page.goto("/contact?offer=sprint");
   await expect(page.getByLabel("What do you need")).toHaveValue("sprint");
@@ -42,7 +63,6 @@ test("old URLs 301", async ({ request }) => {
     ["/studio", "/apps"],
     ["/studio/x", "/apps"],
     ["/oss/envified", "/open-source"],
-    ["/services", "/"],
     ["/legal/terms", "/"],
     ["/legal/refunds", "/"],
     ["/login", "/"],

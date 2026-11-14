@@ -56,7 +56,7 @@ work, and a release you can see at the end. The code stays yours from the first 
 
 | Claim | Source |
 |---|---|
-| 6+ years of production Flutter | `config/home.ts` stats |
+| 6+ years of production Flutter | `proofFacts` in `config/home.ts` |
 | Flutter 3.41 → 3.47, two-step upgrade, 0 regressions, releases not paused | `content/snapshot.json` work[0] |
 | Flutter 2 → 3 for an enterprise telecom app, 0 regressions in production | work[2] |
 | Built two internal platforms that replaced paid crash and task tools | work[1] |

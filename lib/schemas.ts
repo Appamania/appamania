@@ -2,6 +2,7 @@ import { z } from "zod";
 
 const slug = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
 const paragraphs = z.array(z.string().min(1));
+const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
 /** Repo file under public/media/. Local paths only, so a bad row cannot point next/image or <video> elsewhere. */
 const media = z
   .string()
@@ -29,6 +30,9 @@ export const WorkSchema = z.object({
   stack: z.array(z.string().min(1)).min(1),
   cover: media.optional(),
   video: media.optional(),
+  outcome: z.string().min(1).optional(),
+  date: isoDate.optional(),
+  updated: isoDate.optional(),
 });
 
 export const PostSchema = z.object({
@@ -51,6 +55,8 @@ export const AppSchema = z.object({
   body: paragraphs.min(1),
   icon: media.optional(),
   screens: z.array(media).max(8).optional(),
+  outcome: z.string().min(1).optional(),
+  updated: isoDate.optional(),
 });
 
 export const PackageSchema = z.object({
@@ -60,6 +66,7 @@ export const PackageSchema = z.object({
   summary: z.string().min(1),
   points: z.number().int().nonnegative(),
   body: paragraphs.min(1),
+  updated: isoDate.optional(),
 });
 
 export type Work = z.infer<typeof WorkSchema>;

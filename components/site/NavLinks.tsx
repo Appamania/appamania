@@ -9,7 +9,7 @@ export const navItems = [
   { href: "/work", label: "Work" },
   { href: "/apps", label: "Apps" },
   { href: "/open-source", label: "Open source" },
-  { href: "/blog", label: "Blog" },
+  { href: "/about", label: "About" },
 ] as const;
 
 /** Desktop nav links with aria-current (needs the pathname, so a client leaf). */
@@ -24,7 +24,10 @@ export function NavLinks({ className, linkClass }: { className?: string; linkCla
             key={href}
             href={href}
             aria-current={current ? "page" : undefined}
-            className={cx("text-ink-muted hover:text-ink aria-[current=page]:text-ink", linkClass)}
+            className={cx(
+              "text-ink-muted underline-offset-8 hover:text-ink aria-[current=page]:text-ink aria-[current=page]:underline",
+              linkClass,
+            )}
           >
             {label}
           </Link>

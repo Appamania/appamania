@@ -98,29 +98,3 @@ export function FloatCard({ className, children }: { className?: string; childre
     </div>
   );
 }
-
-/** Tech marquee: CSS transform loop, pauses on hover/focus, static under reduced motion. Duplicate set is aria-hidden. */
-export function Marquee({ items }: { items: readonly string[] }) {
-  const row = (hidden?: boolean) => (
-    <ul aria-hidden={hidden || undefined} className="flex shrink-0 gap-14 pr-14">
-      {items.map((t) => (
-        <li key={t} className="flex items-center gap-14 after:text-[14px] after:text-brand after:content-['/']">
-          {t}
-        </li>
-      ))}
-    </ul>
-  );
-  return (
-    <div
-      aria-label="Tech stack"
-      role="region"
-      tabIndex={0}
-      className="group overflow-hidden border-y border-line [mask-image:linear-gradient(90deg,transparent,black_10%,black_90%,transparent)] py-5.5"
-    >
-      <div className="flex w-max animate-[marquee_38s_linear_infinite] text-[22px] font-medium tracking-[-0.02em] text-ink-muted group-hover:[animation-play-state:paused] group-focus:[animation-play-state:paused] motion-reduce:animate-none">
-        {row()}
-        {row(true)}
-      </div>
-    </div>
-  );
-}

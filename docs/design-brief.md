@@ -6,7 +6,7 @@ canvas (https://claude.ai/artifact/4v4M4LY9RLzpDxYGkjRmEZ). This brief is the ta
 canvas and this file disagree, this file wins.
 
 ## What the site is
-A Flutter freelance business: fixed-price offers (`config/offers.ts`), case studies, Play apps,
+A Flutter rescue studio (docs/brand.md): fixed-price offers (`config/offers.ts`), case studies, Play apps,
 pub.dev packages, and an intake form. Udyam-registered, Kolkata. Hosted on Netlify.
 
 ## Art direction
@@ -25,13 +25,14 @@ pub.dev packages, and an intake form. Udyam-registered, Kolkata. Hosted on Netli
 - `tabular-nums` on every number that can change. Prices in Geist Mono.
 
 ## Layout
+- Components: ProofStrip, Breadcrumbs, FounderCard, Quote (components/site).
 - 12-column grid, max 1200 px; hero padding `space-24`; `space-16` between sections desktop,
   `space-12` mobile; single column under 768 px.
 - Section headers: numbered mono eyebrow ("02 — Plans") + heading, optional right-aligned muted
   note.
-- Home rhythm: hero (copy left, two tilted phones right with two floating cards) → tech marquee →
-  bento → three plan cards (middle featured with `shadow-glow`) → case-study cards → case panel
-  with a giant number → FAQ (`<details>`) → full-green CTA band → footer with outlined giant
+- Home rhythm: hero (copy left, two tilted phones right with two floating cards) → proof strip (real
+  facts, linked) → bento → three plan cards (middle featured with `shadow-glow`) → case-study cards → case panel
+  with a giant number → built-and-run tiles → founder card → FAQ (`<details>`) → full-green CTA band → footer with outlined giant
   wordmark.
 - Services: hero with the one primary button → plan cards with includes → 4 steps → FAQ → CTA.
 - Bento: asymmetric spans (c3 r2 + c3 + c3 / c2 c2 c2). Never a row of three identical feature
@@ -50,8 +51,6 @@ pub.dev packages, and an intake form. Udyam-registered, Kolkata. Hosted on Netli
 - `.enter`: one entrance on first paint for the hero copy and phones (`@starting-style`).
 - `.reveal`: scroll-driven fade-up on cards, tiles, panels and section headers
   (`animation-timeline: view()`). Browsers without it render the final state. No JS listeners.
-- Tech marquee: CSS transform loop, pauses on hover/focus, static under reduced motion,
-  duplicate set `aria-hidden`.
 - Forbidden: scroll-jacking, parallax, kinetic split-letter headlines, scroll listeners,
   animation libraries, autoplay video with sound.
 
@@ -72,7 +71,7 @@ pub.dev packages, and an intake form. Udyam-registered, Kolkata. Hosted on Netli
 - Prices exactly from `config/offers.ts`. INR; "USD on request" as one line, never a second list.
 - Proof: only real numbers and real quotes. pub.dev points, likes and downloads are live. Anonymise
   clients ("Enterprise · migration") unless named with permission. No invented badges
-  ("Most booked"). Missing facts stay as visible `[PLACEHOLDER]` markers.
+  ("Most booked"). Missing owner facts render nothing until filled (empty string or empty array in config or snapshot).
 - Buttons are verb-first: "Book the audit", "Start a sprint", "Add new", "Save".
 - One light line per page is allowed ("fuelled by chai" in the footer).
 

@@ -13,15 +13,15 @@ import {
   Tile,
   VersionJump,
 } from "@/components/site/Blocks";
-import { AuditScreen, FloatCard, Marquee, Phone, SprintScreen, sampleAudit } from "@/components/site/Proof";
+import { ProofStrip } from "@/components/site/ProofStrip";
+import { AuditScreen, FloatCard, Phone, SprintScreen, sampleAudit } from "@/components/site/Proof";
 import { Plans } from "@/components/site/Plans";
 import { WorkCards } from "@/components/site/WorkCards";
-import { homeCopy as copy } from "@/config/home";
+import { homeCopy as copy, proofFacts } from "@/config/home";
 import type { PackageEntry, Work } from "@/lib/schemas";
 
 export function HomePage({ work, packages, appCount }: { work: Work[]; packages: PackageEntry[]; appCount: number }) {
   const points = packages.map((p) => p.points);
-  const min = points.length ? Math.min(...points) : 0;
   const max = points.length ? Math.max(...points) : 0;
   return (
     <>
@@ -48,14 +48,6 @@ export function HomePage({ work, packages, appCount }: { work: Work[]; packages:
               {copy.hero.secondary}
             </Link>
           </div>
-          <dl className="flex flex-wrap gap-7 pt-2">
-            {copy.stats.map((s) => (
-              <div key={s.label} className="flex flex-col-reverse">
-                <dt className="font-mono text-small text-ink-muted">{s.label}</dt>
-                <dd className="text-h2 tabular-nums">{s.value}</dd>
-              </div>
-            ))}
-          </dl>
         </div>
         <div
           role="img"
@@ -82,14 +74,12 @@ export function HomePage({ work, packages, appCount }: { work: Work[]; packages:
         </div>
       </div>
 
-      <div className="mx-[calc(50%-50vw)]">
-        <Marquee items={copy.stack} />
-      </div>
+      <ProofStrip items={proofFacts({ points, appCount })} />
 
       <Section aria-labelledby="why">
         <SectionHeader
           id="why"
-          eyebrow="01 — What I ship"
+          eyebrow="01 — What Appamania ships"
           title="Production Flutter, written down."
           aside="Six years on fintech, e-commerce, telecom and enterprise apps — architecture through store release."
         />
@@ -100,24 +90,24 @@ export function HomePage({ work, packages, appCount }: { work: Work[]; packages:
             <p>SDK upgrades, root-cause crashes, clean architecture, CI/CD, Play Store and App Store releases.</p>
             <Big>6+ yrs</Big>
           </Tile>
-          <Tile span={3}>
-            <Eyebrow>Open source</Eyebrow>
-            <h3 className="tabular-nums">
-              {packages.length} packages. Scores {min}–{max}.
-            </h3>
-            <div className="mt-auto flex items-end gap-5">
-              <div aria-hidden className="grid size-30 place-items-center rounded-full bg-brand">
-                <b className="grid size-24 place-items-center rounded-full bg-night text-h2 tabular-nums">{max}</b>
+          {packages.length > 0 && (
+            <Tile span={3}>
+              <Eyebrow>Open source</Eyebrow>
+              <h3 className="tabular-nums">{packages.length} open-source packages on pub.dev.</h3>
+              <div className="mt-auto flex items-end gap-5">
+                <div aria-hidden className="grid size-30 place-items-center rounded-full bg-brand">
+                  <b className="grid size-24 place-items-center rounded-full bg-night text-h2 tabular-nums">{max}</b>
+                </div>
+                <p className="font-mono text-small">
+                  {packages.map((p) => (
+                    <span key={p.name} className="block">
+                      {p.name}
+                    </span>
+                  ))}
+                </p>
               </div>
-              <p className="font-mono text-small">
-                {packages.map((p) => (
-                  <span key={p.name} className="block">
-                    {p.name}
-                  </span>
-                ))}
-              </p>
-            </div>
-          </Tile>
+            </Tile>
+          )}
           <Tile span={3}>
             <Eyebrow>Built from zero</Eyebrow>
             <h3>An in-house crash reporting platform that replaced a paid SaaS.</h3>

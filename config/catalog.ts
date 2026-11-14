@@ -1,19 +1,4 @@
-// Fallback for the stack marquee and the in-development panel. Work, apps, and packages live in content/snapshot.json.
-
-export const stack = [
-  "Flutter",
-  "Dart",
-  "Riverpod",
-  "BLoC",
-  "Clean Architecture",
-  "Supabase",
-  "Firebase",
-  "GitHub Actions",
-  "Kotlin",
-  "Swift",
-  "Play Store",
-  "App Store",
-] as const;
+// Fallback for the in-development panel. Work, apps, and packages live in content/snapshot.json.
 
 export const inDevelopment = {
   name: "Network.",

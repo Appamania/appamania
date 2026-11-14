@@ -107,7 +107,7 @@ export default async function OpenSource() {
       </Section>
 
       <Section>
-        <CtaBand eyebrow="A question" title="Something about a package?" body="Send a note. I read every one.">
+        <CtaBand eyebrow="A question" title="Something about a package?" body="Send a note. Every one gets read.">
           <Link href="/contact" className={buttonStyles("inverse", "lg")}>
             Send a note <Arrow />
           </Link>

@@ -43,8 +43,6 @@ const nextConfig: NextConfig = {
       { source: "/studio", destination: "/apps", statusCode: 301 },
       { source: "/studio/:path*", destination: "/apps", statusCode: 301 },
       { source: "/oss/:path*", destination: "/open-source", statusCode: 301 },
-      { source: "/services", destination: "/", statusCode: 301 },
-      { source: "/services/:path*", destination: "/", statusCode: 301 },
       { source: "/legal/terms", destination: "/", statusCode: 301 },
       { source: "/legal/refunds", destination: "/", statusCode: 301 },
       { source: "/login", destination: "/", statusCode: 301 },

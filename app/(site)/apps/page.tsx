@@ -16,8 +16,8 @@ export default async function Apps() {
     <>
       <PageHero
         eyebrow="Apps"
-        title="Products I build and"
-        accent="ship myself."
+        title="Products Appamania builds and"
+        accent="ships in-house."
         lead="Small Flutter apps on Google Play, built and shipped from Kolkata."
       />
       <ul className="mt-10 grid grid-cols-1 gap-4 min-[900px]:grid-cols-4 sm:grid-cols-2">
