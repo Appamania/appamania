@@ -86,3 +86,9 @@ test("/admin does not exist", async ({ page }) => {
   const res = await page.goto("/admin");
   expect(res?.status()).toBe(404);
 });
+
+test("www redirects to the apex and keeps the path", async ({ request }) => {
+  const res = await request.get("/services?offer=audit", { headers: { host: "www.appamania.in" }, maxRedirects: 0 });
+  expect(res.status()).toBe(308);
+  expect(res.headers().location).toBe("https://appamania.in/services?offer=audit");
+});

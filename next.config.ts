@@ -34,6 +34,13 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      // www is not a second site: any host starting with www. goes to the apex, path kept.
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.appamania.in" }],
+        destination: "https://appamania.in/:path*",
+        permanent: true,
+      },
       { source: "/studio", destination: "/apps", statusCode: 301 },
       { source: "/studio/:path*", destination: "/apps", statusCode: 301 },
       { source: "/oss/:path*", destination: "/open-source", statusCode: 301 },
